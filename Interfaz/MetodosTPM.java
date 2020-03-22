@@ -89,10 +89,8 @@ public class MetodosTPM{
             p.waitFor();
             p.exitValue();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -115,10 +113,8 @@ public class MetodosTPM{
             p.waitFor();
             p.exitValue();
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -156,11 +152,6 @@ public class MetodosTPM{
         
     }
 
-    public static void informacion_verificada(String rutaArchivo){
-
-    }
-
-    
     /*
         Este método devuelve un ArrayList con un número determinado
         de números aleatorios, generado por el modulo TPM. Como limitación,
@@ -187,6 +178,72 @@ public class MetodosTPM{
             System.out.println(ioe.getMessage());
         }
         return lista_numeros;
+    }
+
+
+
+    public static void tpm2_firmar_informacion(String rutahandler,String rutaArchivo,String rutaDestino){
+        ProcessBuilder pb1 = new ProcessBuilder(
+        new String[]{
+            "openssl", "pkeyutl",
+            "-engine", "tpm2tss",
+            "-keyform", "ENGINE",
+            "-inkey", rutahandler,
+            "-sign", 
+            "-in", rutaArchivo,
+            "-out", rutaDestino
+        });
+
+        pb1.redirectErrorStream(true);
+        try {
+            Process p = pb1.start();
+            p.waitFor();
+            p.exitValue();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public static int tpm2_informacion_verificada(String rutaArchivo,String rutaHandler,String rutaCifrada){
+        int resultado = 1;
+        ProcessBuilder pb1 = new ProcessBuilder(
+        new String[]{
+            "openssl", "pkeyutl",
+            "-engine", "tpm2tss",
+            "-keyform", "ENGINE",
+            "-inkey", rutaHandler,
+            "-verify",
+            "-in", rutaArchivo,
+            "-sigfile", rutaCifrada,
+        });
+
+        pb1.redirectErrorStream(true);
+        String result="";
+        try {
+            String line;
+            Process p = pb1.start();
+            p.waitFor();
+            p.exitValue();
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while((line=in.readLine())!=null){
+                result+=line;
+            }
+            in.close();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String validacion = "engine \"tpm2tss\" set.Signature Verified Successfully";
+        if(result.equals(validacion)){
+            resultado = 0;
+        }
+        return resultado;
     }
 
 }

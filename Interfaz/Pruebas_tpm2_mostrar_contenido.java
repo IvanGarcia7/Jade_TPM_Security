@@ -18,7 +18,6 @@ public class Pruebas_tpm2_mostrar_contenido {
             content = MetodosTPM.tpm2_mostrar_contenido(ruta_fichero);
             assertEquals("Los contenidos difieren","",content.trim());
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

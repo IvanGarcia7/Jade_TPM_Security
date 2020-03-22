@@ -34,7 +34,6 @@ public class Pruebas_tpm2_generarclaves2 {
             assertTrue(existKeys == true);
 
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
