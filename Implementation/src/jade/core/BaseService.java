@@ -327,7 +327,7 @@ public abstract class BaseService implements Service {
 		try {
 			sb.append(s.getClass().getName()).append(": node = "+s.getNode().getName());
 		}
-		catch (ServiceException se) {
+		catch (ServiceException | IMTPException se) {
 			// Should never happen as this is a local call
 			se.printStackTrace();
 		}
