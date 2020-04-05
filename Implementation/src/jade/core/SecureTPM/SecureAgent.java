@@ -7,7 +7,8 @@ import jade.core.SecureTPM.INTER.SecureAgentInterHelper;
 import jade.core.SecureTPM.INTERFAZ_TPM.Utils_TPM;
 import jade.core.SecureTPM.INTRA.SecureAgentIntraHelper;
 import jade.core.ServiceException;
-import jade.core.mobility.AgentMobilityHelper;
+import jade.core.SecureTPM.mobilityModify.AgentMobilityHelper;
+import jade.core.SecureTPM.mobilityModify.Movable;
 
 import java.util.logging.Level;
 
@@ -15,6 +16,7 @@ public class SecureAgent extends jade.core.Agent {
 
     private transient SecureAgentInterHelper mobHelperInter;
     private transient SecureAgentIntraHelper mobHelperIntra;
+    private transient AgentMobilityHelper mobHelper;
 
     /**
         Se ha extendido la clase del agente, con el objetivo de
@@ -120,14 +122,28 @@ public class SecureAgent extends jade.core.Agent {
 
 
     public void doMoveSecurity(SecureAgent sa, Location sl) {
+        // Do nothing if the mobility service is not installed
+        try {
+            initMobHelper();
+            mobHelper.move(sl);
+        }
+        catch(ServiceException se) {
+            // FIXME: Log a proper warning
+            return;
+        }
     }
 
     public void doCloneSecurity(SecureAgent sa, Location sl, String sn) {
+        // Do nothing if the mobility service is not installed
+        try {
+            initMobHelper();
+            mobHelper.clone(sl, sn);
+        }
+        catch(ServiceException se) {
+            // FIXME: Log a proper warning
+            return;
+        }
     }
-
-
-
-
 
     /*
         Código relacionado con la inicialización del servicio
@@ -142,6 +158,29 @@ public class SecureAgent extends jade.core.Agent {
     private void initAgentInterHelper() throws ServiceException {
         if (mobHelperInter == null) {
             mobHelperInter = (SecureAgentInterHelper) getHelper(AgentMobilityHelper.NAME);
+        }
+    }
+
+    private void initMobHelper() throws ServiceException {
+        if (mobHelper == null) {
+            mobHelper = (jade.core.SecureTPM.mobilityModify.AgentMobilityHelper) getHelper(jade.core.SecureTPM.mobilityModify.AgentMobilityHelper.NAME);
+            mobHelper.registerMovable(new Movable() {
+                public void beforeMove() {
+                    SecureAgent.this.beforeMove();
+                }
+
+                public void afterMove() {
+                    SecureAgent.this.afterMove();
+                }
+
+                public void beforeClone() {
+                    SecureAgent.this.beforeClone();
+                }
+
+                public void afterClone() {
+                    SecureAgent.this.afterClone();
+                }
+            } );
         }
     }
 
