@@ -55,7 +55,7 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
             misma agencia.
         */
 
-        public synchronized void doSecureMove(SecureAgent agente, Location destino) {
+        public  void doSecureMove(SecureAgent agente, Location destino) {
             /**
                 En base a las limitaciones de componentes, se ha definido el comportamiento
                 en principio monohilo, es decir, solo se puede realizar una operación de
@@ -68,7 +68,7 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
 
             StringBuilder sb = new StringBuilder();
 
-            if (lista_peticiones_movimiento.size()>0 || lista_peticiones_clonacion.size()>0) {
+            if (lista_peticiones_movimiento.size()!=0 || lista_peticiones_clonacion.size()!=0) {
 
                 Peticion_Movimiento nueva_peticion = new Peticion_Movimiento(agente,destino);
                 lista_peticiones_movimiento.add(nueva_peticion);
@@ -99,7 +99,7 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
 
         }
 
-        @Override
+
         public void doSecureClone(SecureAgent agente, Location destino, String nombre_agente) {
             /**
              En base a las limitaciones de componentes, se ha definido el comportamiento
@@ -148,6 +148,9 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
         public void init(Agent agente) {
             agent=agente;
         }
+
+
+
     }
 
     private class CommandTargetSink implements Sink {
@@ -163,26 +166,9 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
                 else if(name.equals(jade.core.SecureTPM.INTRA.SecureAgentIntraHelper.REQUEST_CONFIRMATION)) {
                     ManejadorPeticionRespuesta(cmd);
                 }
-                else if(name.equals(jade.core.SecureTPM.INTRA.SecureAgentIntraHelper.REQUEST_DATA)) {
-                    ManejadorPeticionDatos(cmd);
-                }
-                else if(name.equals(jade.core.SecureTPM.INTRA.SecureAgentIntraHelper.REQUEST_RESPONSE)) {
-                    ManejadorPeticionFinalizacion(cmd);
-                }else if(name.equals(jade.core.SecureTPM.INTRA.SecureAgentIntraHelper.REQUEST_ERROR)){
-                    ManejadorPeticionError(cmd);
-                }
             }catch(Exception ioe){
                 ioe.printStackTrace();
             }
-        }
-
-        private void ManejadorPeticionError(VerticalCommand cmd) {
-        }
-
-        private void ManejadorPeticionFinalizacion(VerticalCommand cmd) {
-        }
-
-        private void ManejadorPeticionDatos(VerticalCommand cmd) {
         }
 
         private void ManejadorPeticionRespuesta(VerticalCommand comando) throws NotFoundException {
@@ -207,7 +193,7 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
                 Peticion_Movimiento peticion = lista_peticiones_movimiento.get(0);
                 SecureAgent sa = peticion.getAgent();
                 Location sl = peticion.getLocation();
-                sa.doMoveSecurity(sa,sl);
+                sa.doMoveSecurityMod(sl);
                 lista_peticiones_movimiento.clear();
             }else if(lista_peticiones_clonacion.size()>0){
                 /*
@@ -217,8 +203,8 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
                 SecureAgent sa = peticion.getAgent();
                 Location sl = peticion.getLocation();
                 String sn = peticion.getString();
+                sa.doCloneSecurityMod(sl,sn);
                 lista_peticiones_clonacion.clear();
-                sa.doCloneSecurity(sa,sl,sn);
             }
         }
 
@@ -231,7 +217,7 @@ public class SecureAgentIntraService<Triplet> extends BaseService {
             Object[] parametros = comando.getParams();
             PeticionAtestacion paquete_confirmacion = (PeticionAtestacion) parametros[0];
             PeticionConfirmacion peticion_confirmacion = new PeticionConfirmacion(paquete_confirmacion.getNameAgent(),paquete_confirmacion.getLocationdestino(),paquete_confirmacion.getLocationorigen(),paquete_confirmacion.getAMS());
-            GenericCommand comando_generado = new GenericCommand(SecureAgentIntraHelper.REQUEST_ATTESTATION, SecureAgentIntraHelper.NAME, null);
+            GenericCommand comando_generado = new GenericCommand(SecureAgentIntraHelper.REQUEST_CONFIRMATION, SecureAgentIntraHelper.NAME, null);
             SecureAgentIntraSlice objetivo_confirmacion = (SecureAgentIntraSlice) getSlice(paquete_confirmacion.getLocationorigen().getName());
             comando_generado.addParam(peticion_confirmacion);
             try {

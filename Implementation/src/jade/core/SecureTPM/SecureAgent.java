@@ -71,10 +71,12 @@ public class SecureAgent extends jade.core.Agent {
     */
 
     public void doSecureMoveError(String mensaje) {
+
         System.out.println(mensaje);
     }
 
     public void doSecureCloneError(String mensaje) {
+
         System.out.println(mensaje);
     }
 
@@ -158,6 +160,7 @@ public class SecureAgent extends jade.core.Agent {
     private void initAgentInterHelper() throws ServiceException {
         if (mobHelperInter == null) {
             mobHelperInter = (SecureAgentInterHelper) getHelper(AgentMobilityHelper.NAME);
+
         }
     }
 
@@ -183,5 +186,28 @@ public class SecureAgent extends jade.core.Agent {
             } );
         }
     }
+
+    public void doMoveSecurityMod(Location sl) {
+        try {
+            initMobHelper();
+            mobHelper.move(sl);
+        }
+        catch(ServiceException se) {
+            // FIXME: Log a proper warning
+            return;
+        }
+    }
+
+    public void doCloneSecurityMod(Location sl, String sn) {
+        try {
+            initMobHelper();
+            mobHelper.clone(sl, sn);
+        }
+        catch(ServiceException se) {
+            // FIXME: Log a proper warning
+            return;
+        }
+    }
+
 
 }

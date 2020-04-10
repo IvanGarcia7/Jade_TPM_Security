@@ -36,27 +36,5 @@ public class SecureAgentIntraProxy extends Service.SliceProxy implements SecureA
         }
     }
 
-    @Override
-    public void doRequestData(VerticalCommand comando) {
-
-    }
-
-    @Override
-    public void doRequestResponse(VerticalCommand comando) {
-
-    }
-
-    @Override
-    public void doRequestInform(VerticalCommand comando) {
-
-    }
-
-    @Override
-    public void doRequestError(VerticalCommand comando_generado) {
-
-    }
-
-
-
 
 }

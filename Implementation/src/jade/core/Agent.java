@@ -87,6 +87,8 @@ public class Agent implements Runnable, Serializable
 	
 	private Logger log = Logger.getJADELogger(this.getClass().getName());
 
+
+
 	/**
 	 Inner class Interrupted.
 	 This class is used to handle change state requests that occur

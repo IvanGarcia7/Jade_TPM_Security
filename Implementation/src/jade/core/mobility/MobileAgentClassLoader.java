@@ -35,7 +35,7 @@ import jade.util.Logger;
 /**
    @author Giovanni Rimassa - FRAMeTech s.r.l.
  */
-class MobileAgentClassLoader extends ClassLoader {
+public class MobileAgentClassLoader extends ClassLoader {
 
     private AgentMobilitySlice classServer;
     private String agentName;

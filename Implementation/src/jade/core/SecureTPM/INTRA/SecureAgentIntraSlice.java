@@ -13,10 +13,7 @@ public interface SecureAgentIntraSlice extends Service.Slice {
 
     public void doRequestAttestation(VerticalCommand comando);
     public void doRequestConfirmation(VerticalCommand comando);
-    public void doRequestData(VerticalCommand comando);
-    public void doRequestResponse(VerticalCommand comando);
-    public void doRequestInform(VerticalCommand comando);
-    public void doRequestError(VerticalCommand comando_generado);
+
 
     /**
      En primer lugar, enumeramos los comandos que hemos definido anteriormente
@@ -26,12 +23,6 @@ public interface SecureAgentIntraSlice extends Service.Slice {
 
     static final String REMOTE_REQUEST_ATTESTATION = "10";
     static final String REMOTE_REQUEST_CONFIRMATION = "11";
-    static final String REMOTE_REQUEST_DATA = "12";
-    static final String REMOTE_REQUEST_RESPONSE = "13";
-    static final String REMOTE_REQUEST_INFORM = "14";
-    static final String REMOTE_REQUEST_ERROR = "15";
-
-
 
 
 }
