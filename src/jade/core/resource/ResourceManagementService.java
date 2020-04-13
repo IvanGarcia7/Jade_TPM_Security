@@ -247,19 +247,19 @@ public class ResourceManagementService extends BaseService {
 		public void init(Agent a) {
 		}
 
-		public byte[] getResource(String name) throws ServiceException, NotFoundException, IMTPException {
+		public byte[] getResource(String name) throws ServiceException, NotFoundException {
 			return getResource(name, ResourceManagementHelper.ALL_RESOURCES, null);
 		}
 
-		public byte[] getResource(String name, int fetchMode) throws ServiceException, NotFoundException, IMTPException {
+		public byte[] getResource(String name, int fetchMode) throws ServiceException, NotFoundException {
 			return getResource(name, fetchMode, null);
 		}
 
-		public byte[] getResource(String name, String containerName) throws ServiceException, NotFoundException, IMTPException {
+		public byte[] getResource(String name, String containerName) throws ServiceException, NotFoundException {
 			return getResource(name, ResourceManagementHelper.ALL_RESOURCES, containerName);
 		}
 
-		public byte[] getResource(String name, int fetchMode, String containerName) throws ServiceException, NotFoundException, IMTPException {
+		public byte[] getResource(String name, int fetchMode, String containerName) throws ServiceException, NotFoundException {
 			// If not specified send request to Main-Container
 			if (containerName == null) {
 				containerName = MAIN_SLICE;

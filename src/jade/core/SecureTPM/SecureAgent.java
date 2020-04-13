@@ -3,58 +3,45 @@ package jade.core.SecureTPM;
 import jade.core.Agent;
 import jade.core.ContainerID;
 import jade.core.Location;
-import jade.core.SecureTPM.INTER.SecureAgentInterHelper;
-import jade.core.SecureTPM.INTERFAZ_TPM.Utils_TPM;
-import jade.core.SecureTPM.INTRA.SecureAgentIntraHelper;
+import jade.core.SecureIntraTPM.SecureIntraTPMHelper;
+import jade.core.SecureIntraTPM.SecureIntraTPMService;
 import jade.core.ServiceException;
-import jade.core.SecureTPM.mobilityModify.AgentMobilityHelper;
-import jade.core.SecureTPM.mobilityModify.Movable;
+import jade.core.mobility.Movable;
+
 
 import java.util.logging.Level;
 
-public class SecureAgent extends jade.core.Agent {
+public class SecureAgent extends Agent {
+    private static final long serialVersionUID = 9058618378207435614L;
 
-    private transient SecureAgentInterHelper mobHelperInter;
-    private transient SecureAgentIntraHelper mobHelperIntra;
-    private transient AgentMobilityHelper mobHelper;
+    //Create the service to call this later
+    private transient SecureIntraTPMHelper mobHelperIntra;
 
-    /**
-        Se ha extendido la clase del agente, con el objetivo de
-        crear nuevos métodos, todos ellos orientados en un principio
-        a la migración de los agentes.
-    */
+    public final void doMoveOld(Location destiny){
+        super.doMove(destiny);
+    }
 
-    /**
-     Este metodo es utilizado para mover a un agente, a una localizacion
-     pasada como parametro. Inicializa el proceso de migracion.
-     Dentro del mismo, se ha diferenciado si la localización corresponde
-     con una plataforma disponible dentro del contenedor actual, o bien
-     con una nueva plataforma. Para cada uno de los casos, se crearan
-     servicios que ejecuten el proceso de forma correcta.
-     */
+    public final void doCloneOld(Location destiny, String name){
+        super.doClone(destiny, name);
+    }
 
     public void doSecureMove(Location destino) {
+        //System.out.println("Estoy dentro del metodo que acabo de llamar");
         try {
             if(destino instanceof ContainerID){
-                StringBuilder sb = new StringBuilder();
-                sb.append("SE HA REGISTRADO UNA PETICION PARA MOVER AL AGENTE CON LOS SIGUIENTES DATOS:\n")
-                    .append("Agente: "+this.getAID()+"\n")
-                    .append("A LA AGENCIA ACTUAL "+destino.getName()+" CON DIRECCION "+destino.getAddress());
-                //Mensaje nivel detalle y clase
-                Utils_TPM.printLog("COMIENZO DE LA EJECUCION DEL SERVICIO", Level.INFO,SecureAgentIntraHelper.DEBUG,this.getClass().getName());
-                initAgentIntraHelper();
-                //Se llama al Helper que gestiona la migración en el mismo contenedor.
-                mobHelperIntra.doSecureMove(this,destino);
-            }else{
+                //System.out.println("Estoy en el primero");
                 StringBuilder sb = new StringBuilder();
                 sb.append("SE HA REGISTRADO UNA PETICION PARA MOVER AL AGENTE CON LOS SIGUIENTES DATOS:\n")
                         .append("Agente: "+this.getAID()+"\n")
-                        .append("OTRA AGENCIA EXTERNA "+destino.getName()+" CON DIRECCION "+destino.getAddress());
+                        .append("A LA AGENCIA ACTUAL "+destino.getName()+" CON DIRECCION "+destino.getAddress());
                 //Mensaje nivel detalle y clase
-                Utils_TPM.printLog("COMIENZO DE LA EJECUCION DEL SERVICIO", Level.INFO,SecureAgentInterHelper.DEBUG,this.getClass().getName());
-                initAgentInterHelper();
+                Agencia.printLog("COMIENZO DE LA EJECUCION DEL SERVICIO",
+                                 Level.INFO,SecureIntraTPMHelper.DEBUG,this.getClass().getName());
+                initmobHelperIntra();
                 //Se llama al Helper que gestiona la migración en el mismo contenedor.
-                mobHelperInter.doSecureMove(this,destino);
+                mobHelperIntra.doMoveTPM(this,destino);
+            }else{
+
             }
         }
         catch(ServiceException se) {
@@ -62,35 +49,6 @@ public class SecureAgent extends jade.core.Agent {
             return;
         }
     }
-
-
-    /**
-        El metodo definido a continuacion, se utiliza con el fin de mostrar mensajes
-        de errores que puedan derivarse a lo largo del proceso de migracion de un agente
-        en particular, mostrando el error generado y el agente del cual proviene.
-    */
-
-    public void doSecureMoveError(String mensaje) {
-
-        System.out.println(mensaje);
-    }
-
-    public void doSecureCloneError(String mensaje) {
-
-        System.out.println(mensaje);
-    }
-
-
-    /**
-     Este metodo es utilizado para clonar a un agente, a una localizacion
-     pasada como parametro. Inicializa el proceso de migracion.
-     Dentro del mismo, se ha diferenciado si la localización corresponde
-     con una plataforma disponible dentro del contenedor actual, o bien
-     con una nueva plataforma. Para cada uno de los casos, se crearan
-     servicios que ejecuten el proceso de forma correcta. Por otro lado,
-     el segundo parámetro corresponde con el nombre que se le va a dar
-     al nuevo agente, una vez que la migracion haya concluido.
-     */
 
     public void doSecureClone(Location destino, String nombre_agente) {
         try {
@@ -100,20 +58,13 @@ public class SecureAgent extends jade.core.Agent {
                         .append("Agente: "+this.getAID()+"\n")
                         .append("A LA AGENCIA ACTUAL "+destino.getName()+" CON DIRECCION "+destino.getAddress());
                 //Mensaje nivel detalle y clase
-                Utils_TPM.printLog("COMIENZO DE LA EJECUCION DEL SERVICIO", Level.INFO,SecureAgentIntraHelper.DEBUG,this.getClass().getName());
-                initAgentIntraHelper();
+                Agencia.printLog("COMIENZO DE LA EJECUCION DEL SERVICIO", Level.INFO,
+                                 SecureIntraTPMHelper.DEBUG,this.getClass().getName());
+                initmobHelperIntra();
                 //Se llama al Helper que gestiona la migración en el mismo contenedor.
-                mobHelperIntra.doSecureClone(this, destino, nombre_agente);
+                mobHelperIntra.doCloneTPM(this, destino, nombre_agente);
             }else{
-                StringBuilder sb = new StringBuilder();
-                sb.append("SE HA REGISTRADO UNA PETICION PARA CLONAR AL AGENTE CON LOS SIGUIENTES DATOS:\n")
-                        .append("Agente: "+this.getAID()+"\n")
-                        .append("OTRA AGENCIA EXTERNA "+destino.getName()+" CON DIRECCION "+destino.getAddress());
-                //Mensaje nivel detalle y clase
-                Utils_TPM.printLog("COMIENZO DE LA EJECUCION DEL SERVICIO", Level.INFO,SecureAgentInterHelper.DEBUG,this.getClass().getName());
-                initAgentInterHelper();
-                //Se llama al Helper que gestiona la migración en el mismo contenedor.
-                mobHelperInter.doSecureClone(this, destino, nombre_agente);
+
             }
         }
         catch(ServiceException se) {
@@ -123,89 +74,22 @@ public class SecureAgent extends jade.core.Agent {
     }
 
 
-    public void doMoveSecurity(SecureAgent sa, Location sl) {
-        // Do nothing if the mobility service is not installed
-        try {
-            initMobHelper();
-            mobHelper.move(sl);
-        }
-        catch(ServiceException se) {
-            // FIXME: Log a proper warning
-            return;
-        }
+
+    //Function to print if appear one error in the secure move
+    public void doSecureMoveError(String ms){
+        System.out.println(ms);
     }
 
-    public void doCloneSecurity(SecureAgent sa, Location sl, String sn) {
-        // Do nothing if the mobility service is not installed
-        try {
-            initMobHelper();
-            mobHelper.clone(sl, sn);
-        }
-        catch(ServiceException se) {
-            // FIXME: Log a proper warning
-            return;
-        }
+    //Function to print if appear one error in the secure clonation
+    public void doSecureCloneError(String ms){
+        System.out.println(ms);
     }
 
-    /*
-        Código relacionado con la inicialización del servicio
-    */
-
-    private void initAgentIntraHelper() throws ServiceException {
-        if (mobHelperIntra == null) {
-            mobHelperIntra = (SecureAgentIntraHelper) getHelper(AgentMobilityHelper.NAME);
-        }
-    }
-
-    private void initAgentInterHelper() throws ServiceException {
-        if (mobHelperInter == null) {
-            mobHelperInter = (SecureAgentInterHelper) getHelper(AgentMobilityHelper.NAME);
-
-        }
-    }
-
-    private void initMobHelper() throws ServiceException {
-        if (mobHelper == null) {
-            mobHelper = (jade.core.SecureTPM.mobilityModify.AgentMobilityHelper) getHelper(jade.core.SecureTPM.mobilityModify.AgentMobilityHelper.NAME);
-            mobHelper.registerMovable(new Movable() {
-                public void beforeMove() {
-                    SecureAgent.this.beforeMove();
-                }
-
-                public void afterMove() {
-                    SecureAgent.this.afterMove();
-                }
-
-                public void beforeClone() {
-                    SecureAgent.this.beforeClone();
-                }
-
-                public void afterClone() {
-                    SecureAgent.this.afterClone();
-                }
-            } );
-        }
-    }
-
-    public void doMoveSecurityMod(Location sl) {
-        try {
-            initMobHelper();
-            mobHelper.move(sl);
-        }
-        catch(ServiceException se) {
-            // FIXME: Log a proper warning
-            return;
-        }
-    }
-
-    public void doCloneSecurityMod(Location sl, String sn) {
-        try {
-            initMobHelper();
-            mobHelper.clone(sl, sn);
-        }
-        catch(ServiceException se) {
-            // FIXME: Log a proper warning
-            return;
+    //Call this function to inicialize the service
+    private void initmobHelperIntra() throws ServiceException {
+        if(mobHelperIntra == null){
+            mobHelperIntra = (SecureIntraTPMHelper) getHelper(SecureIntraTPMHelper.NAME);
+            System.out.println(mobHelperIntra);
         }
     }
 

@@ -115,7 +115,7 @@ public interface Service {
 	   @throws ServiceException If some problems occur in
 	   retrieving the local node.
 		 */
-		Node getNode() throws ServiceException, IMTPException;
+		Node getNode() throws ServiceException;
 
 		/**
 	   Serves an incoming horizontal command, performing any

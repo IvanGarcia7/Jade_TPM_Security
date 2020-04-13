@@ -25,7 +25,6 @@ package jade.core;
 
 
 //#MIDP_EXCLUDE_BEGIN
-import jade.core.SecureTPM.SecureAgent;
 import jade.domain.AMSEventQueueFeeder;
 //#MIDP_EXCLUDE_END
 import jade.lang.acl.ACLMessage;

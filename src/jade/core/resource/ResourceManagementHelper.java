@@ -22,7 +22,6 @@
  *****************************************************************/
 package jade.core.resource;
 
-import jade.core.IMTPException;
 import jade.core.NotFoundException;
 import jade.core.ServiceException;
 import jade.core.ServiceHelper;
@@ -56,7 +55,7 @@ public interface ResourceManagementHelper extends ServiceHelper {
 	 * @param name resource name
 	 * @return resource as byte array
 	 */
-	byte[] getResource(String name) throws ServiceException, NotFoundException, IMTPException;
+	byte[] getResource(String name) throws ServiceException, NotFoundException;
 	
 	/**
 	 * Get remote resource
@@ -64,7 +63,7 @@ public interface ResourceManagementHelper extends ServiceHelper {
 	 * @param fetchMode resource fetch mode
 	 * @return resource as byte array
 	 */
-	byte[] getResource(String name, int fetchMode) throws ServiceException, NotFoundException, IMTPException;
+	byte[] getResource(String name, int fetchMode) throws ServiceException, NotFoundException;
 	
 	/**
 	 * Get remote resource
@@ -72,7 +71,7 @@ public interface ResourceManagementHelper extends ServiceHelper {
 	 * @param containerName name of container containing the resource
 	 * @return resource as byte array
 	 */
-	byte[] getResource(String name, String containerName) throws ServiceException, NotFoundException, IMTPException;
+	byte[] getResource(String name, String containerName) throws ServiceException, NotFoundException;
 	
 	/**
 	 * Get remote resource
@@ -81,5 +80,5 @@ public interface ResourceManagementHelper extends ServiceHelper {
 	 * @param containerName name of container containing the resource
 	 * @return resource as byte array
 	 */
-	byte[] getResource(String name, int fetchMode, String containerName) throws ServiceException, NotFoundException, IMTPException;
+	byte[] getResource(String name, int fetchMode, String containerName) throws ServiceException, NotFoundException;
 }

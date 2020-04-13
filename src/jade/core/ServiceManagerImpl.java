@@ -559,7 +559,7 @@ public class ServiceManagerImpl implements ServiceManager, ServiceFinder {
 		}
 	}
 
-	private Service.Slice bindToLocalNode(Service.Slice slice) throws ServiceException, IMTPException {
+	private Service.Slice bindToLocalNode(Service.Slice slice) throws ServiceException {
 		if (slice != null) {
 			// If the newly retrieved slice is a proxy, bind it to the local node
 			if (slice instanceof SliceProxy) {

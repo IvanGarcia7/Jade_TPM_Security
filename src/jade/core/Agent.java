@@ -26,6 +26,7 @@ package jade.core;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 
+import jade.core.SecureIntraTPM.SecureIntraTPMService;
 import jade.util.Logger;
 import jade.util.leap.Serializable;
 import jade.util.leap.Iterator;
@@ -86,8 +87,6 @@ public class Agent implements Runnable, Serializable
 	private static final long     serialVersionUID = 3487495895819000L;
 	
 	private Logger log = Logger.getJADELogger(this.getClass().getName());
-
-
 
 	/**
 	 Inner class Interrupted.
@@ -2222,8 +2221,10 @@ public class Agent implements Runnable, Serializable
 		se = (ServiceHelper) helpersTable.get(serviceName);
 		// is the helper already into the agent's helpersTable ?
 		if (se == null) {
+
 			// there isn't, request its creation
 			se = myToolkit.getHelper(this, serviceName);
+
 			if (se != null) {
 				se.init(this);
 				helpersTable.put(serviceName, se);
@@ -2234,6 +2235,12 @@ public class Agent implements Runnable, Serializable
 		}
 		return se;
 	}
+
+	/*
+	public ServiceHelper getHelper2( String serviceName ) throws ServiceException {
+		return new SecureIntraTPMService.SecureIntraTPMServiceHelperImpl();
+	}
+	*/
 	//#CUSTOM_EXCLUDE_END
 
 	/**

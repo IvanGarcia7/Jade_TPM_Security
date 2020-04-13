@@ -327,7 +327,7 @@ public abstract class BaseService implements Service {
 		try {
 			sb.append(s.getClass().getName()).append(": node = "+s.getNode().getName());
 		}
-		catch (ServiceException | IMTPException se) {
+		catch (ServiceException se) {
 			// Should never happen as this is a local call
 			se.printStackTrace();
 		}
@@ -349,6 +349,4 @@ public abstract class BaseService implements Service {
 	
 	protected ServiceFinder myFinder;
 	protected transient jade.util.Logger myLogger = jade.util.Logger.getMyLogger(getName());
-
-
 }
