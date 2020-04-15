@@ -1,3 +1,0 @@
-java -cp TPMV20.jar jade.Boot -gui -host localhost -container-name Pruebas1 -services jade.core.SecureIntraTPM.SecureIntraTPMService;jade.core.mobility.AgentMobilityService 
-java -cp TPMV20.jar jade.Boot -container -container-name Pruebas2 -services jade.core.SecureIntraTPM.SecureIntraTPMService;jade.core.mobility.AgentMobilityService
-java -cp TPMV20.jar jade.Boot -container -container-name Pruebas3 -services jade.core.SecureIntraTPM.SecureIntraTPMService;jade.core.mobility.AgentMobilityService
