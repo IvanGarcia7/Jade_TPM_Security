@@ -694,6 +694,7 @@ public class AgentMobilityService extends BaseService {
 					// Actually start the agent thread
 					myContainer.powerUpLocalAgent(agentID);
 				}
+
 			}
 			catch (IMTPException imtpe) {
 				throw imtpe;

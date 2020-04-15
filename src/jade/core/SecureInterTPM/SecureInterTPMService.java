@@ -1,21 +1,22 @@
-package jade.core.SecureIntraTPM;
+package jade.core.SecureInterTPM;
 
 import jade.core.*;
 import jade.core.SecureTPM.*;
-import jade.core.management.AgentManagementSlice;
-import jade.core.mobility.AgentMobilityService;
-import jade.core.replication.MainReplicationHandle;
-import jade.util.Logger;
+import jade.core.behaviours.Behaviour;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.proto.AchieveREInitiator;
+import jade.proto.FIPAProtocolNames;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class SecureIntraTPMService extends BaseService {
+public class SecureInterTPMService extends BaseService {
 
     //Interesting variables
-    public static final String NAME = "jade.core.SecureIntraTPM.SecureIntraTPM";
-    public static final String VERBOSE = "jade_core_SecureIntraTPMS_SecureIntraTPMService_verbose";
+    public static final String NAME = "jade.core.SecureInterTPM.SecureInterTPM";
+    public static final String VERBOSE = "jade_core_SecureInterTPMS_SecureInterTPMService_verbose";
 
     //Time var
     long startTime = System.nanoTime();
@@ -24,8 +25,8 @@ public class SecureIntraTPMService extends BaseService {
     private List<RequestMove> request_move_list = new ArrayList<RequestMove>();
     private List<RequestClone> request_clone_list = new ArrayList<RequestClone>();
 
-    private Service.Slice actualSlicer=new ServiceComponent();
-    private ServiceHelper thisHelper = new SecureIntraTPMServiceHelperImpl();
+    private Slice actualSlicer=new ServiceComponent();
+    private ServiceHelper thisHelper = new SecureInterTPMServiceHelperImpl();
 
     //Define input and output Filters
     private Filter OutFilter = null;
@@ -37,8 +38,8 @@ public class SecureIntraTPMService extends BaseService {
 
     //Request the commands that i have implemeted
     private String [] actualCommands = new String [] {
-            SecureIntraTPMHelper.REQUEST_ATTESTATION,
-            SecureIntraTPMHelper.REQUEST_CONFIRMATION
+            SecureInterTPMHelper.REQUEST_ATTESTATION,
+            SecureInterTPMHelper.REQUEST_CONFIRMATION
     };
 
     //performative printer
@@ -47,7 +48,7 @@ public class SecureIntraTPMService extends BaseService {
 
     @Override
     public String getName() {
-        return SecureIntraTPMHelper.NAME;
+        return SecureInterTPMHelper.NAME;
     }
 
 
@@ -60,7 +61,7 @@ public class SecureIntraTPMService extends BaseService {
     public void boot(Profile prof) throws ServiceException {
         super.boot(prof);
         verbose = prof.getBooleanProperty(VERBOSE, false);
-        System.out.println("SECUREINTRATPM SERVICE STARTED CORRECTLY ON CONTAINER CALLED: "+actualcontainer.getID());
+        System.out.println("SECUREINTERTPM SERVICE STARTED CORRECTLY ON CONTAINER CALLED: "+actualcontainer.getID());
 
     }
 
@@ -75,11 +76,11 @@ public class SecureIntraTPMService extends BaseService {
 
     //Function to get Horizontal Commands
     public Class getHorizontalInterface(){
-        return SecureIntraTPMSlice.class;
+        return SecureInterTPMSlice.class;
     }
 
     //Function to get the slice of this service
-    public Service.Slice getLocalSlice(){
+    public Slice getLocalSlice(){
         return actualSlicer;
     }
 
@@ -108,7 +109,25 @@ public class SecureIntraTPMService extends BaseService {
         }
     }
 
-    public class SecureIntraTPMServiceHelperImpl implements SecureIntraTPMHelper{
+    public Behaviour getAMSBehaviour() {
+        System.out.println("KIWI");
+        AID amsAID = new AID("ams", false);
+        Agent ams = actualcontainer.acquireLocalAgent(amsAID);
+        MessageTemplate mt =
+                MessageTemplate.and(
+                        MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
+                        MessageTemplate.or(
+                                MessageTemplate.MatchOntology(SecureInterTPMHelper.REQUEST_ATTESTATION),
+                                MessageTemplate.MatchOntology(SecureInterTPMHelper.REQUEST_CONFIRMATION)));
+        // Create the behaviour
+        ResponserACL resp = new ResponserACL(ams, mt);
+        // Release the AMS agent
+        actualcontainer.releaseLocalAgent(amsAID);
+        return resp;
+
+    }
+
+    public class SecureInterTPMServiceHelperImpl implements SecureInterTPMHelper {
 
         private Agent mySecureAgent;
 
@@ -134,8 +153,6 @@ public class SecureIntraTPMService extends BaseService {
             if (request_move_list.size()==0 & request_clone_list.size()==0) {
                 request_move_list.add(new RequestMove(agent,destiny));
 
-                System.out.println("SE EJECUTA EL COMANDO DOMOVETPM");
-
                 //INICIALIZE THE HANDLER OPERATIONS TO PERFORM THE MOVE REQUEST
 
                 sb.append("-> THE PROCCES TO MOVE THE AGENT HAS JUST STARTED").append(agent.getAID());
@@ -149,16 +166,12 @@ public class SecureIntraTPMService extends BaseService {
                     ACCORDING TO THE DOCUMENTATION.
                 */
 
-                GenericCommand command = new GenericCommand(SecureIntraTPMHelper.REQUEST_ATTESTATION,
-                        SecureIntraTPMHelper.NAME,null);
-
-                System.out.println("CREO EL COMANDO VERTICAL DE REQUEST ATTESTATION");
+                GenericCommand command = new GenericCommand(SecureInterTPMHelper.REQUEST_ATTESTATION,
+                        SecureInterTPMHelper.NAME,null);
 
                 //CREATE A NEW PACKET WITH THE INFORMATION THAT I CONSIDER GOOF TO KNOW
                 RequestAttestation paquet = new RequestAttestation(agent.getAID(),agent.here(),destiny,agent.getAMS());
                 command.addParam(paquet);
-
-                System.out.println("DEFINO EL NUEVO PAQUETE DEL TIPO REQUESTATTESTATION");
 
                 //SEND THE VERTICAL COMMAND, IN ORDER TO CATCH IT IN THE SPECIFIC SERVICE
                 //Agencia.printLog("AGENT REQUEST MOVE AND SEND THE REQUEST TO THE AGENCY",
@@ -167,8 +180,7 @@ public class SecureIntraTPMService extends BaseService {
                 //SUBMMIT THE VERTICALCOMMAND
                 try{
                     System.out.println("-> THE VERTICAL COMMAND TO MOVE IS CORRECTLY SUBMITED");
-                    System.out.println("LANZO EL COMANDO");
-                    SecureIntraTPMService.this.submit(command);
+                    SecureInterTPMService.this.submit(command);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -199,7 +211,6 @@ public class SecureIntraTPMService extends BaseService {
                 request_clone_list.add(new RequestClone(agent,destiny,nameAgent));
 
                 //INICIALIZE THE HANDLER OPERATIONS TO PERFORM THE CLONE REQUEST
-                System.out.println("SE EJECUTA EL COMANDO DOCLONETPM");
 
                 sb.append("THE PROCCES TO CLONE THE AGENT HAS JUST STARTED").append(agent.getAID());
                 System.out.println(sb.toString());
@@ -212,16 +223,12 @@ public class SecureIntraTPMService extends BaseService {
                     ACCORDING TO THE DOCUMENTATION.
                 */
 
-                GenericCommand command = new GenericCommand(SecureIntraTPMHelper.REQUEST_ATTESTATION,
-                                                            SecureIntraTPMHelper.NAME,null);
-
-                System.out.println("CREO EL COMANDO VERTICAL DE REQUEST ATTESTATION");
+                GenericCommand command = new GenericCommand(SecureInterTPMHelper.REQUEST_ATTESTATION,
+                                                            SecureInterTPMHelper.NAME,null);
 
                 //CREATE A NEW PACKET WITH THE INFORMATION THAT I CONSIDER GOOF TO KNOW
                 RequestAttestation paquet = new RequestAttestation(agent.getAID(),agent.here(),destiny,agent.getAMS());
                 command.addParam(paquet);
-
-                System.out.println("DEFINO EL NUEVO PAQUETE DEL TIPO REQUESTATTESTATION");
 
                 //SEND THE VERTICAL COMMAND, IN ORDER TO CATCH IT IN THE SPECIFIC SERVICE
                 Agencia.printLog("AGENT REQUEST CLONATION AND SEND THE REQUEST TO THE AGENCY",
@@ -230,8 +237,7 @@ public class SecureIntraTPMService extends BaseService {
                 //SUBMMIT THE VERTICALCOMMAND
                 try{
                     System.out.println("THE VERTICAL COMMAND TO CLONE IS CORRECTLY SUBMITED");
-                    System.out.println("LANZO EL COMANDO");
-                    SecureIntraTPMService.this.submit(command);
+                    SecureInterTPMService.this.submit(command);
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -258,16 +264,13 @@ public class SecureIntraTPMService extends BaseService {
         public void consume(VerticalCommand command){
             try{
                 String commandName = command.getName();
-                if(commandName.equals(SecureIntraTPMHelper.REQUEST_ATTESTATION)){
+                if(commandName.equals(SecureInterTPMHelper.REQUEST_ATTESTATION)){
                     System.out.println("-> VERTICAL COMMAND CATCH BY CONSUME SOURCE SINK");
                     //Process the command before to send it
-                    System.out.println("AGARRO EL COMANDO VERTICAL QUE DESEO MANDAR EN ESTE CASO DE ATESTACION");
                     Object[] params = command.getParams();
                     RequestAttestation pack = (RequestAttestation) params[0];
-                    System.out.println("DEFINO EL SLICE AL CUAL ENVIAR LA INFORMACION");
-                    SecureIntraTPMSlice obj = (SecureIntraTPMSlice) getSlice(pack.getOriginLocation().getName());
+                    SecureInterTPMSlice obj = (SecureInterTPMSlice) getSlice(MAIN_SLICE);
                     try {
-                        System.out.println("ENVIO LA INFORMACION AL SLICE");
                         obj.doRequestAttestation(command);
                         startTime = System.nanoTime();
                     } catch (Exception ie) {
@@ -292,54 +295,66 @@ public class SecureIntraTPMService extends BaseService {
         public void consume(VerticalCommand command) {
             try{
                 String CommandName = command.getName();
-                if(CommandName.equals(SecureIntraTPMHelper.REQUEST_ATTESTATION)){
+                if(CommandName.equals(SecureInterTPMHelper.REQUEST_ATTESTATION)){
                     //At this point process the request attestation that i send in the other container
-                    System.out.println("CONSUMO EL COMANDO VERTICAL DESDE LA PLATAFORMA DESTINO, EN ESTE CASO UNA PETICION DE ATESTACION");
                     System.out.println("PROCESSING THE VERTICAL COMMAND ATTESTATION INTO THE DESTINATION CONTAINER");
                     RequestAttestation pack = (RequestAttestation) command.getParams()[0];
                     //CREATING THE NEW VERTICAL COMMAND
-                    GenericCommand newCommand = new GenericCommand(SecureIntraTPMHelper.REQUEST_ATTESTATION,
-                                                                   SecureIntraTPMHelper.NAME, null);
-                    System.out.println("CREO UN COMANDO VERTICAL PARA LANZARLO POSTERIORMENTE");
-                    RequestConfirmation packnew = new RequestConfirmation(pack.getNameAgent(),pack.getDestinyLocation(),
-                                                                          pack.getOriginLocation(),pack.getAMSName());
-                    System.out.println("CREO UN NUEVO PAQUETE DE CONFIRMACION CON LOS DATOS QUE VEA OPORTUNO");
+                    GenericCommand newCommand = new GenericCommand(SecureInterTPMHelper.REQUEST_ATTESTATION,
+                                                                   SecureInterTPMHelper.NAME, null);
+
                     //ADD THE PACK
-                    newCommand.addParam(packnew);
-                    //GET THE SLICE
-                    System.out.println("OBTENGO EL SLICE");
-                    SecureIntraTPMSlice newSlice = (SecureIntraTPMSlice)getSlice(pack.getOriginLocation().getName());
-                    try {
-                        System.out.println("MANDO EL COMANDO VERTICAL");
-                        newSlice.doRequestConfirmation(newCommand);
-                    }
-                    catch(Exception ex) {
-                        // Try to get a newer slice and repeat...
-                        newSlice = (SecureIntraTPMSlice) getFreshSlice(pack.getOriginLocation().getName());
-                        newSlice.doRequestConfirmation(newCommand);
-                    }
-                }else if(CommandName.equals(SecureIntraTPMHelper.REQUEST_CONFIRMATION)){
-                    System.out.println("CONSUMO EL COMANDO VERTICAL DESDE LA PLATAFORMA DESTINO, EN ESTE CASO UNA PETICION DE CONFIRMACION");
+                    newCommand.addParam(pack);
+
+                    //CREATE THE PACKET ACL TO SEND
+                    System.out.println("ESTOY ANTES DE DEFINIR EL AMS");
+                    AID amsMain = new AID("ams",false);
+                    System.out.println("ESTOY DESPUES DE DEFINIR EL AMS");
+                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                    System.out.println("ESTOY DESPUES DE DEFINIR EL ACQUIRE DEL CONTENEDOR");
+                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+
+
+                    amsMainPlatform.addBehaviour(
+                            //new SenderACL(message, pack, amsMainPlatform, SecureInterTPMService.this)
+                            new SenderACL(message,pack,amsMainPlatform,SecureInterTPMService.this){
+                                protected void handleInform(ACLMessage inform) {
+                                    System.out.println("Protocol finished. Rational Effet achieved. Received the following message "+inform);
+                                }
+                            }
+                    );
+                    System.out.println("ESTOY DESPUES DE DEFINIR EL COMPORTAMIENTO");
+                    actualcontainer.releaseLocalAgent(amsMain);
+                    System.out.println("ESTOY DESPUES DE LIBERAR LA PLATAFORMA");
+
+                }else if(CommandName.equals(SecureInterTPMHelper.REQUEST_CONFIRMATION)){
                     long endTime = System.nanoTime();
                     long timeElapsed = endTime - startTime;
-                    System.out.println("EL TIEMPO OBTENIDO HA SIDO "+timeElapsed);
                     if ((timeElapsed/1000000) <= Agencia.getTimeout()){
-                        //At this point process the request confirmation that i send in the other container
-                        System.out.println("PROCESSING THE VERTICAL COMMAND CONFIRMATION INTO THE DESTINATION CONTAINER");
-                        RequestConfirmation pack = (RequestConfirmation) command.getParams()[0];
-                        System.out.println("OBTENGO EL PAQUETE DE CONFIRMACION QUE ME HAN ENVIADO");
-                        if(request_move_list.size()>0){
-                            //EXECUTE THE MODIFIED FUNCTION TO MOVE
-                            System.out.println("A MOVERSE SE HA DICHO");
-                            SecureAgent security = request_move_list.get(0).getSecureAgent();
-                            security.doMove(request_move_list.get(0).getLocation());
-                            request_move_list.clear();
-                        }else if(request_clone_list.size()>0){
-                            //EXECUTE THE MODIFIED FUNCTION TO CLONE
-                            SecureAgent security = request_clone_list.get(0).getSecureAgent();
-                            security.doClone(request_clone_list.get(0).getLocation(),
-                                             request_clone_list.get(0).getNewName());
-                            request_clone_list.clear();
+                        if(AgentContainer.MAIN_CONTAINER_NAME.equals(actualcontainer.getID().getName())){
+                            //At this point process the request confirmation that i send in the other container
+                            System.out.println("PROCESSING THE VERTICAL COMMAND CONFIRMATION INTO THE DESTINATION CONTAINER");
+                            AID amsDestiny = new AID("ams", false);
+                            Agent amsActual = actualcontainer.acquireLocalAgent(amsDestiny);
+                            ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                            RequestConfirmation pack = (RequestConfirmation) command.getParams()[0];
+                            amsActual.addBehaviour(
+                                    new SenderACL2(message, pack, amsActual, SecureInterTPMService.this)
+                            );
+                            actualcontainer.releaseLocalAgent(amsDestiny);
+                        }else{
+                            if(request_move_list.size()>0){
+                                //EXECUTE THE MODIFIED FUNCTION TO MOVE
+                                SecureAgent security = request_move_list.get(0).getSecureAgent();
+                                security.doMove(request_move_list.get(0).getLocation());
+                                request_move_list.clear();
+                            }else if(request_clone_list.size()>0){
+                                //EXECUTE THE MODIFIED FUNCTION TO CLONE
+                                SecureAgent security = request_clone_list.get(0).getSecureAgent();
+                                security.doClone(request_clone_list.get(0).getLocation(),
+                                        request_clone_list.get(0).getNewName());
+                                request_clone_list.clear();
+                            }
                         }
                     }else{
                         System.out.println("SISTEM TIMED OUT IN ORDER TO RECEIVE THE ACK");
@@ -357,17 +372,17 @@ public class SecureIntraTPMService extends BaseService {
     /**
      *This class consume the horizotal commands that i receive
      */
-    private class ServiceComponent implements Service.Slice {
+    private class ServiceComponent implements Slice {
 
         @Override
         public Service getService() {
-            return SecureIntraTPMService.this;
+            return SecureInterTPMService.this;
         }
 
         @Override
         public Node getNode() throws ServiceException {
             try{
-                return SecureIntraTPMService.this.getLocalNode();
+                return SecureInterTPMService.this.getLocalNode();
             }catch(Exception e){
                 throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE SERVICE COMPONENT");
             }
@@ -378,24 +393,19 @@ public class SecureIntraTPMService extends BaseService {
             GenericCommand commandResponse = null;
             try{
                 String commandReceive = command.getName();
-                if(commandReceive.equals(SecureIntraTPMSlice.REMOTE_REQUEST_ATTESTATION)){
+                if(commandReceive.equals(SecureInterTPMSlice.REMOTE_REQUEST_ATTESTATION)){
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND ATTESTATION IN THE SERVICE COMPONENT");
-                    System.out.println("CONSUMO EL COMANDO HORIZONTAL DESDE LA PLATAFORMA DESTINO QUE HE RECIBIDO DE ATESTACION");
                     //Fetch the packet that i send
                     RequestAttestation pack = (RequestAttestation) command.getParams()[0];
                     //Transform the horizontal command into a vertical command
-                    System.out.println("CREO SU RESPECTIVO COMANDO VERTICAL");
-                    commandResponse = new GenericCommand(SecureIntraTPMHelper.REQUEST_ATTESTATION, SecureIntraTPMHelper.NAME,null);
+                    commandResponse = new GenericCommand(SecureInterTPMHelper.REQUEST_ATTESTATION, SecureInterTPMHelper.NAME,null);
                     commandResponse.addParam(pack);
-                }else if(commandReceive.equals(SecureIntraTPMSlice.REMOTE_REQUEST_CONFIRMATION)){
+                }else if(commandReceive.equals(SecureInterTPMSlice.REMOTE_REQUEST_CONFIRMATION)){
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CONFIRMATION IN THE SERVICE COMPONENT");
-                    System.out.println("CONSUMO EL COMANDO HORIZONTAL DESDE LA PLATAFORMA DESTINO QUE HE RECIBIDO DE CONFIRMACION");
-
                     //Fetch the packet that i send
                     RequestConfirmation pack = (RequestConfirmation) command.getParams()[0];
                     //Transform the horizontal command into a vertical command
-                    System.out.println("CREO SU RESPECTIVO COMANDO VERTICAL");
-                    commandResponse = new GenericCommand(SecureIntraTPMHelper.REQUEST_CONFIRMATION, SecureIntraTPMHelper.NAME,null);
+                    commandResponse = new GenericCommand(SecureInterTPMHelper.REQUEST_CONFIRMATION, SecureInterTPMHelper.NAME,null);
                     commandResponse.addParam(pack);
                 }
             }catch(Exception e){

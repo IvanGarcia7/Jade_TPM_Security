@@ -2,8 +2,9 @@ package jade.core.SecureTPM;
 
 import jade.core.AID;
 import jade.core.Location;
+import jade.util.leap.Serializable;
 
-public class RequestAttestation {
+public class RequestAttestation implements Serializable {
 
     private AID NameAgent;
     private AID NameAms;
