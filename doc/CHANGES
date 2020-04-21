@@ -1,0 +1,29 @@
+Changes in 1.2 (26/06/2007)
+
+* Adapted to Jade 3.5 version.
+
+* JAR files are managed within the service.
+
+
+Changes in 1.1.2 (23/04/2007)
+
+* Fixed bug using the add-on with Java 6.
+
+
+
+Changes in 1.1.1 (17/10/2007)
+
+* Fixed bug of temporal JAR files removing running on Windows.
+
+
+
+Changes in 1.1 (03/07/2006)
+
+* Fixed JAR removing to destination platform in error cases
+
+* Added method to completely remove agents installed in a destination
+platform but not initiated (avoids the class clash problem in future
+migrations of the same agent).
+
+* Added timeout parametrization.
+

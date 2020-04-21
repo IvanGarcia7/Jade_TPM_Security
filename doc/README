@@ -1,0 +1,256 @@
+
+              Inter-Platform Mobility Service Documentation
+                          for the JADE Platform  
+                         Joan Ametller-Esquerra & 
+                           Jordi Cucurull-Juan
+                              Version 1.5
+
+
+0. Contents
+============
+
+  1. How it works ?
+  2. Security Considerations
+  3. Installation
+  4. Build
+  5. Usage
+  6. Class Analysis and JAR Agents
+  7. About the Authors
+
+NOTE: This version requires the JADE 4.5 release.
+
+
+1. How it works
+==================
+
+The Inter-Platform Mobility Service has been designed and implemented
+to provide platform-to-platform mobility for JADE agents, a feature
+which is not available with the JADE built-in Agent Mobility Service.
+
+This service has been built to be as transparent as possible to the
+agent programmer, in the sense that, programming agents that will move
+across different platforms will be as easy as moving agents between
+JADE containers.
+
+This version of the service doesn't provide a fully featured,
+optimal, secure and fault-tolerant migration system. The migration
+system provided, althought simple, tries to be the basis to create a
+more sophisticated service in the future. It has been built taking
+into account the requirements that will surely arise from its
+usage by the community.
+
+In this README file we will try to describe the design philosophy and
+some notes about the usage, configuration and installation of this
+service.
+
+1.1 The core
+-------------
+
+The basic idea behind this service is moving agents from platforms to
+other platforms carrying them inside FIPA ACL Messages. These messages
+are sent between AMS agents of the involved platforms and follow the
+rules imposed by some of the FIPA Interaction Protocols
+(http://www.fipa.org).
+
+The migration system provided by the IPMS add-on is significantly
+different from the usual intra-platform mobility system embedded in JADE.
+In the latter in facts the agent's class files are transferred on demand
+as they are needed by the agent. This approach is efficient as it only 
+transfers actually required classes that are not found in the destination 
+container, but may require several interactions between the source and the 
+destination containers (one per class) and, as a consequence, highly depends 
+on the reliability of the network. 
+IPMS on the contrary collects all classes used by an agent at migration time,
+packages them in a single ACLMessage together with the agent'state and
+transfers everything with a one-shot approach. 
+
+Agent's class files are automatically detected and packaged by the IPMS 
+add-on at migration time. Alternatively the programmer can pack an agent
+inside a jar file (we call it a "jar agent") to speed-up migration 
+performances. More details can be found in section 6.
+
+Once the package containing the agent's code and state is ready it is 
+transferred by the source platform AMS to the destination platform AMS. The
+latter is responsible for recreating the incoming agent and reactivating it.
+ 
+
+2. Security Considerations
+===========================
+
+It is very important to stress that security implications of using
+inter-platform mobility are much more important than in intra-platform
+mobility provided by default in the JADE platform. For this reason,
+the authors encourage users to read carefully this section and take
+into account all the risks of using migration.
+
+Activating inter-platform mobility service implies that the machine
+where the JADE platform is running, executes arbitrary code (by means
+of an agent) comming from any machine reachable via network.
+
+At the present time, no access control mechanism exists to
+decide which incomming agents will be executed and which won't. Using
+this version, we can only perform access control by means of a secure
+MTP (for instance, HTTPS MTP provides some simple authentication
+features that can be used for this purpose) or using network firewalls
+to prevent connections from malicious platforms.
+
+In any case, while we don't have access control for incomming mobile
+agents we recommend that platforms using inter-platform mobility
+services should take some security precautions:
+
+  1. Do not use this mobility service in open environments or in
+machines where sensitive information exist.
+  2. Try to restrict network access to platforms by using firewalls.
+  3. Try to use MTPs with some kind of authentication to prevent the
+sending of malicious agent's from foreign platforms.
+
+We hope that in next versions of this mobility service we can provide
+some configurable security mechanisms, which allow to build secure
+mobile-agent based applications in open environments.
+
+
+3. Installation
+========================
+
+The IPMS Add-on can be downloaded from the Download area of the JAE web site.
+To install it, it is sufficient to unzip the installation package in the 
+JADE home directory thus obtaining a directory structure similar to that below
+jade/
+  |--add-ons
+       |--...
+	   |--ipms/
+	       |--doc/
+		   |--lib/
+		       |--migration.jar
+		   |--runSamples/
+		   |--src/
+  |--...
+  |--lib/
+      |--commons-codec/
+	         |--commons-codec-1.3.jar
+	  |--jade.jar
+	  
+Furthermore be sure both jade.jar, commons-codec-1.3.jar and migration.jar
+libraries are included in the classpath when you launch JADE with the IPMS.
+
+Finally proper configurations must be set when launching JADE
+- the InterPlatformMobilityService must be activated
+- JADE must be instructed to accept "foreign agents" i.e. agents whose 
+names do not have the usual form <local-name>@<platform-name> since they
+come from a different platform.
+The following command line provides an example 
+
+java -cp ... jade.Boot ... -accept-foreign-agents true -services jade.core.mobility.AgentMobilityService;jade.core.migration.InterPlatformMobilityService;jade.core.event.NotificationService ... 
+
+NOTE: If you are working in a Linux environment do remember to escape the ;
+
+The runSamples directory contains an example that can be used to try 
+inter-platform mobility and test that everything is OK. Read carefully the 
+README file included in the runSamples directory for information about 
+how to launch the example.
+
+4. Build
+==========================
+
+In case of modifications, the IPMS library (migration.jar) can be rebuilt
+opening a shell in the jade/add-ons/ipms directory and typing
+
+ant clean lib
+
+This requires ANT 1.7 or later to be installed.
+
+
+5. Usage
+=========
+
+From the programming point of view inter-platform migration is initiated
+by calling the doMove() method exactly as in the case of container-to-container 
+mobility. Te only difference is that a PlatformID object must be passed 
+as destination location instead of a ContaierID as exemplified below.
+
+AID remoteAMS = new AID("ams@remotePlatform", AID.ISGUID);
+remoteAMS.addAddresses("http://remotePlatformaddr:7778/acc");
+PlatformID destination = new PlatformID(remoteAMS); 
+myAgent.doMove(destination);
+
+Usual callback methods beforeMove() and afterMove() are invoked normally.
+
+
+6 Class Analysis and JAR Agents
+===============================
+
+As we pointed at the beginning, the migration system needs to keep
+track of all agent's code. In this version, we provide two ways to
+achieve this goal, one which is transparent to the programmer, so
+nothing special has to be done, and another that requires to do some
+extra steps that we will detail below.
+
+An easy way to isolate the code of an agent from the rest of the code
+pointed in the classpath is enforcing that, all agent's that will
+migrate to other platforms have all the code they need inside a jar file.
+
+Of course, some times this requirement can be tedious for the agent
+programmer who is used to compile agents, put its code in the
+classpath and run them within the platform. For this reason, we have
+provided a first mechanism in the migration system which automatically
+generates a jarfile given an agent. This jarfile contains all agent's
+code and the programmer will never notice its existence. This
+mechanism has been built examining recursively the agent's main class
+looking for all dependant classes, and building a jar from the final
+obtained set.
+
+In the present version, it is possible that in some special cases, the
+mechanism explained above doesn't detect all the agent classes. This
+could happen in agents where, for example, reflection is used to load
+classes (eg Class.forName("ClassName").newInstance()). If you
+experience problems, in the migration of the agent, related to class
+loading it is possible that some class has not been included in the
+agent's jar.
+
+To avoid this problems we provide the possibility to manually create
+the jar file containing all agent's code by ourselves. In order to do
+that follow the next steps:
+
+ 1. We must create a jarfile with all our agent's class files. The jar
+file name must follows a naming convention, which consists in giving
+the agent's main class name as the jar file name. The name of the
+class must be the qualified name, so it must contain the package it
+belongs, replacing "." by "_". Following this convention, the agent
+with main class org.example.MyAgent must be packed in a jar file named
+org_example_MyAgent.jar.
+
+ 2. Define a folder to place all your jar packed
+agents. You can specify it with the following parameter when launching 
+JADE from the command line:
+
+java jade.Boot -jade_core_management_AgentManagementService_agentspath=folder
+
+   Of course, a config file can be used for specifying this parameter
+instead of using the command line. If we ommit this step, the present
+directory when the platform is started is taken for this propose.
+
+ 3. The agents like those we have described, do not need to have its
+jar files in the classpath, and we load them as we do for normal
+agents.
+
+
+7. About the Authors
+====================
+
+Jordi Cucurull-Juan and Joan Ametller-Esquerra are PhD students at the
+Engineering of the Information and Communications Department at the
+Autonomous University of Barcelona.
+
+Contact info:
+-------------
+
+Email: Jordi Cucurull-Juan (jcucurull@deic.uab.es) 
+       Joan Ametller-Esquerra (Joan.Ametller@uab.es)
+
+Postal Address:
+
+Departament d'Enginyeria de la Informació i de les Comunicacions
+Universitat Autònoma de Barcelona 
+08193 Bellaterra (Spain)
+
+Phone: +34 93 581 35 77
