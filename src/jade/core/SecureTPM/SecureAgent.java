@@ -3,6 +3,7 @@ package jade.core.SecureTPM;
 import jade.core.*;
 import jade.core.SecureInterTPM.SecureInterTPMHelper;
 import jade.core.SecureIntraTPM.SecureIntraTPMHelper;
+import jade.core.SecureOnionTPM.SecureOnionTPMHelper;
 import jade.core.mobility.Movable;
 import jade.domain.AMSService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
@@ -22,6 +23,9 @@ public class SecureAgent extends Agent {
      */
     private transient SecureIntraTPMHelper mobHelperIntra;
     private transient SecureInterTPMHelper mobHelperInter;
+    private transient SecureOnionTPMHelper mobHelperOnion;
+
+    private byte [] serialized_certificate = null;
 
     /**
      * THIS FUNCTION, INITIATES THE ATTESTATION PROTOCOL DESIGNED FOR THIS TFG,
@@ -166,6 +170,16 @@ public class SecureAgent extends Agent {
     }
 
 
+    public void doSecureOnionTransfer(Location destiny_platform) throws ServiceException {
+        System.out.println("THERE ARE A ONION SECURE REQUEST:");
+        initmobHelperOnion();
+        Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
+                Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
+        System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
+        mobHelperOnion.sendBroadcastACL(this,destiny_platform);
+    }
+
+
     /**
      * FUNCTION TO PRINT IF APPEAR ONE ERROR IN THE SECURE MOVE
      * @param ms
@@ -244,4 +258,19 @@ public class SecureAgent extends Agent {
     }
 
 
+    /**
+     * CALL THIS FUNCTION TO INICALIZE THE ONION SERVICE
+     * @throws ServiceException
+     */
+    private void initmobHelperOnion() throws ServiceException {
+        if(mobHelperOnion == null){
+            mobHelperOnion = (SecureOnionTPMHelper) getHelper(SecureOnionTPMHelper.NAME);
+            mobHelperOnion.registerMovable(new Movable() {
+                public void beforeMove() { SecureAgent.this.beforeMove(); }
+                public void afterMove() { SecureAgent.this.afterMove(); }
+                public void beforeClone() { SecureAgent.this.beforeClone(); }
+                public void afterClone() { SecureAgent.this.afterClone(); }
+            } );
+        }
+    }
 }

@@ -12,6 +12,7 @@ public interface SecureInterTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_ATTESTATION = "1";
     static final String REMOTE_REQUEST_CONFIRMATION = "2";
 
+
     /**
      * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
      * @param newCommand
