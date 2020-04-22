@@ -216,7 +216,7 @@ public class SecureInterTPMService extends BaseService {
                 Agencia.printLog("START THE SERVICE TO MOVE THE SECUREAGENT",
                         Level.INFO, true, this.getClass().getName());
                 System.out.println("CREATE A NEW VERTICAL ATTESTATION COMMAND TO PERFORM THE OPERATION THAT " +
-                        "THE SERVICE NEED TO PERFORM");
+                        "THE SERVICE NEED ");
                 GenericCommand command = new GenericCommand(SecureInterTPMHelper.REQUEST_ATTESTATION,
                         SecureInterTPMHelper.NAME, null);
                 System.out.println("CREATING THE PACKET WITH THE INFORMATION THAT I WANT TO SEND FROM MY NODE");

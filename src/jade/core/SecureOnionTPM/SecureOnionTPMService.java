@@ -1,13 +1,12 @@
 package jade.core.SecureOnionTPM;
 
+import jade.content.ContentManager;
 import jade.core.*;
 import jade.core.SecureInterTPM.ResponserACL;
 import jade.core.SecureInterTPM.SecureInterTPMHelper;
 import jade.core.SecureInterTPM.SecureInterTPMService;
 import jade.core.SecureInterTPM.SecureInterTPMSlice;
-import jade.core.SecureTPM.RequestClone;
-import jade.core.SecureTPM.RequestMove;
-import jade.core.SecureTPM.SecureAgent;
+import jade.core.SecureTPM.*;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
@@ -15,6 +14,7 @@ import jade.lang.acl.MessageTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class SecureOnionTPMService extends BaseService {
 
@@ -48,6 +48,11 @@ public class SecureOnionTPMService extends BaseService {
     private boolean verbose = false;
     private AgentContainer actualcontainer;
 
+    //SECURE VARIABLES THAT I WILL NEED TO IMPLEMENT THE ONION METHOD IN THE FUTURE
+    private byte [] serialized_certificate = null;
+
+    //KEYSTORAGELIST TO SAVE THE LOCATION AND THE CERTIFICATE OF EVERY HOST THAT THE PLATFORM SCAN
+    List<KeyStorage> device_list = new ArrayList<KeyStorage>();
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -57,6 +62,17 @@ public class SecureOnionTPMService extends BaseService {
     @Override
     public String getName() {
         return SecureOnionTPMHelper.NAME;
+    }
+
+    /**
+     * THIS FUNCTION TRY TO SIMULATE A CERTIFICATE MADE BY INFINEON
+     * ON EVERY TPM. THIS CERTIFICATE, CONTAINS THE PUBLIC KEY OF
+     * THE DEVICE, SIGNED BY INFINEON PRIVATE KEY;
+     */
+    public void defineCertificate(){
+        if(serialized_certificate == null){
+            serialized_certificate = Agencia.InfineonCertificate();
+        }
     }
 
 
@@ -169,6 +185,7 @@ public class SecureOnionTPMService extends BaseService {
                                 MessageTemplate.MatchOntology(SecureOnionTPMHelper.REQUEST_ADDRESS),
                                 MessageTemplate.MatchOntology(SecureOnionTPMHelper.CONFIRM_ADDRESS)));
         ResponserACL resp = new ResponserACL(ams, mt, SecureOnionTPMService.this);
+        ReceiveOnionKeystorage response = new ReceiveOnionKeystorage();
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
     }
@@ -188,10 +205,34 @@ public class SecureOnionTPMService extends BaseService {
             myMovable = m;
         }
 
-        public synchronized void sendBroadcastACL(SecureAgent agent, Location destiny){
-            //TO-DEFINE
+        /**
+         * THIS METHOD, TRY TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM, TO DEPLOY
+         * THE BROADCAST MESSAGE.
+         * @param agent
+         * @param destiny
+         * @param devices_list
+         */
+        public synchronized void sendBroadcastACL(SecureAgent agent, Location destiny, List<KeyStorage> devices_list){
+            StringBuilder sb = new StringBuilder();
+            sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:").append(agent.getAID());
+            System.out.println(sb.toString());
+            Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
+                              Level.INFO, true, this.getClass().getName());
+            System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
+                    "THE SERVICE NEED ");
+            GenericCommand command = new GenericCommand(SecureOnionTPMHelper.REQUEST_ADDRESS,
+                    SecureInterTPMHelper.NAME, null);
+            //NEED THE LIST OF THE HOSTPOTS AVAILABLES TO PERFORM THE TEST
+            command.addParam(devices_list);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
+                    Level.INFO, true, this.getClass().getName());
+            try {
+                System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
+                SecureOnionTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
     /**
@@ -200,6 +241,23 @@ public class SecureOnionTPMService extends BaseService {
     private class CommandSourceSink implements Sink {
         @Override
         public void consume(VerticalCommand command) {
+            try{
+                String commandName = command.getName();
+                if(commandName.equals(SecureOnionTPMHelper.REQUEST_ADDRESS)){
+                    System.out.println("PROCEED THE COMMANDO TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM");
+                    Object[] params = command.getParams();
+                    List<KeyStorage> device_hostpost = (ArrayList<KeyStorage>)params[0];
+                    SecureOnionTPMSlice obj = (SecureOnionTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doCommunicateAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING THE COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
     }
@@ -210,6 +268,18 @@ public class SecureOnionTPMService extends BaseService {
     private class CommandTargetSink implements Sink {
         @Override
         public void consume(VerticalCommand command) {
+            try{
+                String CommandName = command.getName();
+                if(CommandName.equals(SecureOnionTPMHelper.REQUEST_ADDRESS)){
+                    /**
+                     * AT THIS POINT, I CREATE THE MESSAGE AND SEND TO THE AMS, THEN
+                     * REGISTER THE HOSPOTS AND START THE ONION PROTOCOL.
+                     */
+                }
+            }catch(Exception ex){
+                System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
+                ex.printStackTrace();
+            }
 
         }
     }
@@ -235,6 +305,19 @@ public class SecureOnionTPMService extends BaseService {
         @Override
         public VerticalCommand serve(HorizontalCommand command) {
             GenericCommand commandResponse = null;
+            try{
+                String commandReceived = command.getName();
+                if(commandReceived.equals(SecureOnionTPMSlice.REMOTE_ADDRESS_REQUEST)){
+                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND ONION MD IN THE SERVICE COMPONENT");
+                    List<KeyStorage> device_hostpots = (ArrayList<KeyStorage>) command.getParams()[0];
+                    commandResponse = new GenericCommand(SecureOnionTPMHelper.REQUEST_ADDRESS,
+                                                         SecureOnionTPMHelper.NAME, null);
+                    commandResponse.addParam(device_hostpots);
+                }
+            }catch(Exception e){
+                System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");
+                e.printStackTrace();
+            }
             return commandResponse;
         }
     }

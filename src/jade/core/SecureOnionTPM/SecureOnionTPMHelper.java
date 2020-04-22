@@ -1,9 +1,12 @@
 package jade.core.SecureOnionTPM;
 
 import jade.core.Location;
+import jade.core.SecureTPM.KeyStorage;
 import jade.core.SecureTPM.SecureAgent;
 import jade.core.ServiceHelper;
 import jade.core.mobility.Movable;
+
+import java.util.List;
 
 public interface SecureOnionTPMHelper extends ServiceHelper {
 
@@ -24,5 +27,5 @@ public interface SecureOnionTPMHelper extends ServiceHelper {
      * PUBLIC METHODS
      */
     void registerMovable(Movable movable);
-    void sendBroadcastACL(SecureAgent secureAgent, Location destiny_platform);
+    void sendBroadcastACL(SecureAgent secureAgent, Location destiny_platform, List<KeyStorage> device_list);
 }

@@ -12,6 +12,8 @@ public interface SecureOnionTPMSlice extends Service.Slice {
     static final String REMOTE_ADDRESS_REQUEST = "1";
     static final String REMOTE_ADDRESS_CONFIRM = "2";
 
+    void doCommunicateAMS(VerticalCommand command);
+
     /**
      * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
      */

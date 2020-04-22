@@ -691,6 +691,9 @@ public class Agencia{
     }
 
 
+    public static byte[] InfineonCertificate() {
 
+        //TO-DO
 
+    }
 }
