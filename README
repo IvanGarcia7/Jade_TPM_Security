@@ -49,3 +49,39 @@ public class AgenteSeguro extends SecureAgent{
 		System.out.println("************************");
 	}
 }
+
+
+EXAMPLE INTRA PLATFORM:
+
+java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;
+
+java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 5333 -accept-foreign-agents true -agents SALIDA:testlimpio.Rastreator -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;
+
+EXECUTE THE FOLLOWING CODE:
+
+package vom;
+import java.io.Serializable;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.core.ContainerID;
+import jade.core.PlatformID;
+
+
+public class Rastreator extends Agent implements Serializable{
+	private static final long serialVersionUID = -2241822868465327314L;
+	public void setup() {
+		AID remoteAMS = new AID("ams@192.168.0.100:4333/JADE", AID.ISGUID);
+		remoteAMS.addAddresses("http://192.168.0.100:7778/acc");
+		//this.addBehaviour(new Beh1(this));
+		PlatformID destination = new PlatformID(remoteAMS);
+		doMove(destination);
+	}
+	public void beforeMove() {
+		System.out.println("SECURE SERVICE EXECUTE CORRECTLY ;)");
+	}
+	public void afterMove() {
+		System.out.println("***");
+	}	
+}
+
