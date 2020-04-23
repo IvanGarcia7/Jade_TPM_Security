@@ -5,6 +5,12 @@ To date, both secure migration and agent cloning have been implemented, either i
 Also, I'm developing a kind of Onion-based protocol that can take advantage of agents, 
 making use of some of Infineon's functionalities.
 
+My implementation Services are in the following dirs:
+* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM
+* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureIntraTPM
+* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureInterTPM
+* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureOnionTPM
+
 Here are some **basic examples** to demonstrate how the library works.
 
 ## EXAMPLE INTRA PLATFORM:
