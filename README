@@ -1,7 +1,13 @@
+# WELCOME TO JADE TPM SECURITY LIBRARY!
 
-INTRODUCTION
-============
-EXAMPLE INTRA PLATFORM:
+In this repo, i will try to create a **secure library** using **Jade Framework**.
+To date, both secure migration and agent cloning have been implemented, either intra-platform or cross-platform.
+Also, I'm developing a kind of Onion-based protocol that can take advantage of agents, 
+making use of some of Infineon's functionalities.
+
+Here are some **basic examples** to demonstrate how the library works.
+
+## EXAMPLE INTRA PLATFORM:
 
 java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container-name Pruebas1 -gui -service jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
@@ -9,7 +15,7 @@ java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pru
 
 java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas3  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-EXECUTE THE FOLLOWING CODE:
+### EXECUTE THE FOLLOWING CODE:
 
 package org;
 import java.util.ArrayList;
@@ -50,15 +56,13 @@ public class AgenteSeguro extends SecureAgent{
 	}
 }
 
-INTRODUCTION
-============
-EXAMPLE INTRA PLATFORM:
+## EXAMPLE INTRA PLATFORM:
 
 java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name Pruebas1 -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 5333 -accept-foreign-agents true -agents RASTREADOR:vom.Rastreator -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-EXECUTE THE FOLLOWING CODE:
+### EXECUTE THE FOLLOWING CODE:
 
 package vom;
 import java.io.Serializable;
@@ -90,16 +94,14 @@ public class Rastreator extends SecureAgent implements Serializable{
 	}	
 }
 
-INTRODUCTION
-============
-EXAMPLE ONION PROTOCOL:
+## EXAMPLE ONION PROTOCOL:
 
 java -cp /Users/ivan/Desktop/onion.jar jade.Boot -gui -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService
 
 java -cp /Users/ivan/Desktop/onion.jar jade.Boot -container -container-name PRUEBAS -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService -agents DARK:vom.RASTREATOR
 
 
-EXECUTE THE FOLLOWING CODE:
+### EXECUTE THE FOLLOWING CODE:
 
 package vom;
 import java.io.Serializable;
@@ -151,7 +153,8 @@ public class RASTREATOR extends SecureAgent implements Serializable{
 }
 
 
-WARNING
+# WARNING
 ============
-THE TPM MODULE IS NOT IMPLEMENTED ACTUALLY ON THIS CODE TO SPEED UP THE TEST
-IN THE FOLLOWINGS VERSIONS WILL BE ADDED
+> **Note:** **THE TPM MODULE IS NOT IMPLEMENTED ACTUALLY ON THIS CODE TO SPEED UP THE TEST
+IN THE FOLLOWINGS VERSIONS WILL BE ADDED**.
+
