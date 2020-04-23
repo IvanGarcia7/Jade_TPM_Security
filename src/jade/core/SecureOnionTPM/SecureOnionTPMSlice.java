@@ -10,12 +10,13 @@ public interface SecureOnionTPMSlice extends Service.Slice {
      * HORIZONTAL COMMANDS THAT I DEFINE TO THIS SERVICE.
      */
     static final String REMOTE_ADDRESS_REQUEST = "1";
-    static final String REMOTE_ADDRESS_CONFIRM = "2";
-
-    void doCommunicateAMS(VerticalCommand command);
+    static final String REMOTE_HOPPER_ADDRESS  = "2";
+    static final String REMOTE_ADDRESS_CONFIRM = "3";
 
     /**
      * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
      */
+    void doCommunicateAMS(VerticalCommand command);
+    void doStartOnionAMS(VerticalCommand command);
 
 }

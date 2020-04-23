@@ -21,6 +21,7 @@ public interface SecureOnionTPMHelper extends ServiceHelper {
      * VERTICAL COMMANDS
      */
     static final String REQUEST_ADDRESS = "ADDRESS_REQUEST";
+    static final String HOPPER_ADDRESS = "ADDRESS_HOPPER";
     static final String CONFIRM_ADDRESS = "ADDRESS_CONFIRM";
     public static final boolean DEBUG = true;
 
@@ -29,4 +30,5 @@ public interface SecureOnionTPMHelper extends ServiceHelper {
      */
     void registerMovable(Movable movable);
     void sendAMSHostpots(SecureAgent secureAgent,List<PlatformID> device_list);
+    void sendOnionHostpots(SecureAgent agent,PlatformID destiny);
 }

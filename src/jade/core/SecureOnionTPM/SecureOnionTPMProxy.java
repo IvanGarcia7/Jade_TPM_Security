@@ -23,6 +23,22 @@ public class SecureOnionTPMProxy extends Service.SliceProxy implements SecureOni
         }
     }
 
+    public void doStartOnionAMS(VerticalCommand command){
+        try{
+            System.out.println("PROCEED TO DO THE COMMUNICATION WITH THE AMS OF THE MAIN PLATFORM IN THE PROXY" +
+                               "IN ORDER TO SEND THE MESSAGE");
+            GenericCommand newCommand = new GenericCommand(SecureOnionTPMSlice.REMOTE_HOPPER_ADDRESS,
+                    SecureOnionTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
+            Node n = getNode();
+            System.out.println("-> SENDING THE REQUEST ONION MESSAGE THROUGH A HORIZONTAL COMMAND TO THE AMS NODE "+
+                               n.getName());
+            n.accept(newCommand);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
 
 

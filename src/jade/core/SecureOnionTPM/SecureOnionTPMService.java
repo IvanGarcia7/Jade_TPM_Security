@@ -8,9 +8,12 @@ import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.wrapper.ControllerException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class SecureOnionTPMService extends BaseService {
@@ -50,6 +53,13 @@ public class SecureOnionTPMService extends BaseService {
 
     //KEYSTORAGELIST TO SAVE THE LOCATION AND THE CERTIFICATE OF EVERY HOST THAT THE PLATFORM SCAN
     List<PlatformID> device_list_host = new ArrayList<PlatformID>();
+
+    //HASHMAP TO REGISTER THE ID OF THE NONCE, AND THE CONTAINER TO RESEND THE INFORMATION
+    //THE FIRST VALUE ES THE NONCE AND THE SECOND THE CONTAINER NAME
+    Map<String, String> listRedirects = new HashMap<String, String>();
+
+    String PLATFORM_NAME_NONCE = actualcontainer.getPlatformID();
+    int COUNTER = 0;
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -227,6 +237,36 @@ public class SecureOnionTPMService extends BaseService {
                 e.printStackTrace();
             }
         }
+
+        public synchronized void sendOnionHostpots(SecureAgent agent,PlatformID destiny){
+            StringBuilder sb = new StringBuilder();
+            sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:").append(agent.getAID());
+            System.out.println(sb.toString());
+            Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
+                    Level.INFO, true, this.getClass().getName());
+            System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
+                    "THE SERVICE NEED ");
+            GenericCommand command = new GenericCommand(SecureOnionTPMHelper.HOPPER_ADDRESS,
+                    SecureOnionTPMHelper.NAME, null);
+            String containerName = null;
+            try {
+                containerName = agent.getContainerController().getContainerName();
+            } catch (ControllerException e) {
+                e.printStackTrace();
+            }
+            OnionPacketOrigin newPacketFirst = new OnionPacketOrigin(containerName,destiny);
+            command.addParam(newPacketFirst);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
+                    Level.INFO, true, this.getClass().getName());
+            try {
+                System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
+                SecureOnionTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     /**
@@ -238,13 +278,25 @@ public class SecureOnionTPMService extends BaseService {
             try{
                 String commandName = command.getName();
                 if(commandName.equals(SecureOnionTPMHelper.REQUEST_ADDRESS)){
-                    System.out.println("PROCEED THE COMMANDO TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM");
+                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
+                                       "REGISTER THE HOTSPOTS");
                     Object[] params = command.getParams();
                     SecureOnionTPMSlice obj = (SecureOnionTPMSlice) getSlice(MAIN_SLICE);
                     try{
                         obj.doCommunicateAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING THE COMMAND SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                }else if(commandName.equals(SecureOnionTPMHelper.HOPPER_ADDRESS)){
+                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO SEND" +
+                                       "THE MESSAGE");
+                    Object[] params = command.getParams();
+                    SecureOnionTPMSlice obj = (SecureOnionTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doStartOnionAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING HOPPER ADDRESS IN THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }
@@ -294,6 +346,23 @@ public class SecureOnionTPMService extends BaseService {
                         System.out.println("*********************************");
                     }
                     System.out.println("REGISTER ALL THE PLATFORMS SUCCESFULLY");
+                }else if(CommandName.equals(SecureOnionTPMHelper.HOPPER_ADDRESS)){
+                    //I HAVE RECEIVED THE FIRST PACK THAT CONTAINS THE CONTAINER ORIGIN NAME AND THE DESTINY
+                    //GENERATE THE NONCE
+                    String NonceComplete = PLATFORM_NAME_NONCE+Integer.toString(COUNTER);
+                    //FETCH THE CONTAINER NAME
+                    OnionPacketOrigin receivedPacket = (OnionPacketOrigin) command.getParams()[0];
+                    //SAVE IN THE HASHMAP
+                    listRedirects.put(NonceComplete,receivedPacket.getOriginContainer());
+
+                    //AT THIS POINT, I NEED TO CREATE THE PACKET WITH THE DESTINY IN THE HEADER
+                    //AND PUT IN THE FIRST OF THE LIST MY ACTUAL DIRECTION
+
+
+                    /**
+                     * TO DO
+                     */
+
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -332,8 +401,13 @@ public class SecureOnionTPMService extends BaseService {
                     commandResponse = new GenericCommand(SecureOnionTPMHelper.REQUEST_ADDRESS,
                                                          SecureOnionTPMHelper.NAME, null);
                     commandResponse.addParam(device_hostpots);
-                }else{
-                    System.out.println("SUNEO");
+                }else if(commandReceived.equals(SecureOnionTPMSlice.REMOTE_HOPPER_ADDRESS)){
+                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND ONION HOPPER IN THE SERVICE " +
+                                       "COMPONENT");
+                    OnionPacketOrigin newPack = (OnionPacketOrigin) command.getParams()[0];
+                    commandResponse = new GenericCommand(SecureOnionTPMHelper.HOPPER_ADDRESS,
+                            SecureOnionTPMHelper.NAME, null);
+                    commandResponse.addParam(newPack);
                 }
             }catch(Exception e){
                 System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");

@@ -169,6 +169,12 @@ public class SecureAgent extends Agent {
     }
 
 
+    /**
+     * THIS FUNCTION TRY TO DEFINE A LIST OF HOSTPOTS WELL KNOW BY THE MAIN PLATFORM
+     * PROVIDED BY AN AGENT.
+     * @param devices_list
+     * @throws ServiceException
+     */
     public void doSecureRegisterOnion(List<PlatformID> devices_list) throws ServiceException {
         System.out.println("THERE ARE A ONION SECURE REQUEST:");
         initmobHelperOnion();
@@ -177,6 +183,19 @@ public class SecureAgent extends Agent {
         System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
         mobHelperOnion.sendAMSHostpots(this,devices_list);
     }
+
+
+
+    public void doSecureOnionSender(PlatformID destiny) throws ServiceException {
+        System.out.println("THERE ARE A ONION SENDER MESSAGE REQUEST:");
+        initmobHelperOnion();
+        Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
+                Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
+        System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
+        mobHelperOnion.sendOnionHostpots(this,destiny);
+    }
+
+
 
 
     /**
