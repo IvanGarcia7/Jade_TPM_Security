@@ -23,18 +23,6 @@ Here are some **basic examples** to demonstrate how the library works.
 
 ## INTRA PLATFORM PROTOCOL:
 
-```mermaid
-sequenceDiagram
-Alice ->> Bob: Hello Bob, how are you?
-Bob-->>John: How about you John?
-Bob--x Alice: I am good thanks!
-Bob-x John: I am good thanks!
-Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
-
-Bob-->Alice: Checking with John...
-Alice->John: Yes... John, how are you?
-```
-
 ### EXECUTE THE FOLLOWING CODE:
 
 ```
@@ -118,26 +106,6 @@ public class Rastreator extends SecureAgent implements Serializable{
 		
 	}	
 }
-```
-
-# THE PROTOCOL TO MOVE THE AGENTS IS SIMILAR TO THE FOLLOWING:
-```mermaid
-sequenceDiagram
-TPM -> Agent 1:Initialize()
-Agent 1 ->> ServiceIntraPlatform: VerticalCommand(Time)
-ServiceIntraPlatform ->> Main Container:HorizontalCommand(Time)
-Main Container -> Main Container: GetStatus()
-Main Container -> ServiceIntraPlatform: VerticalCommand(Time)
-ServiceIntraPlatform -> ServiceIntraPlatform: Compare(Time)
-ServiceIntraPlatform -> Main Container:.doMove(Agent)
-Main Container --> TPM: .send(Agent)
-TPM -> TPM: Encrypt(Agent,seal(Key))
-TPM --> Main Container: Send(Encrypt(Agent,seal(Key)))
-Main Container -> TPM2: send(Encrypt(Agent,seal(Key)))
-TPM2 -> TPM2: Decrypt(unseal(Key),Agent)
-TPM2 -> Main Container: send(Agent)
-Main Container -> 
-ServiceIntraPlatform:.Delete(Agent
 ```
 
 *ON A INTRA-PLATFORM MOVE, COMMUNICATION IS POSSIBLE THROUGH HORIZONTAL AND VERTICAL COMMANDS,
