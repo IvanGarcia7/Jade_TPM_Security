@@ -50,7 +50,8 @@ public class AgenteSeguro extends SecureAgent{
 	}
 }
 
-
+INTRODUCTION
+============
 EXAMPLE INTRA PLATFORM:
 
 java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
@@ -87,6 +88,66 @@ public class Rastreator extends SecureAgent implements Serializable{
 		doSecureMove(destination1);
 		
 	}	
+}
+
+INTRODUCTION
+============
+EXAMPLE ONION PROTOCOL:
+
+java -cp /Users/ivan/Desktop/onion.jar jade.Boot -gui -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService
+
+java -cp /Users/ivan/Desktop/onion.jar jade.Boot -container -container-name PRUEBAS -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService -agents DARK:vom.RASTREATOR
+
+
+EXECUTE THE FOLLOWING CODE:
+
+package vom;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.core.ContainerID;
+import jade.core.PlatformID;
+import jade.core.ServiceException;
+import jade.core.SecureTPM.KeyStorage;
+import jade.core.SecureTPM.SecureAgent;
+
+
+public class RASTREATOR extends SecureAgent implements Serializable{
+	private static final long serialVersionUID = -2241822868465327314L;
+	public void setup() {
+		
+		AID remoteAMS1 = new AID("ams@192.168.0.100:4333/JADE", AID.ISGUID);
+		remoteAMS1.addAddresses("http://192.168.0.100:7778/acc");
+		PlatformID destination1 = new PlatformID(remoteAMS1);
+		
+		AID remoteAMS2 = new AID("ams@192.168.0.100:5333/JADE", AID.ISGUID);
+		remoteAMS2.addAddresses("http://192.168.0.100:7778/acc");
+		PlatformID destination2 = new PlatformID(remoteAMS2);
+		
+		AID remoteAMS3 = new AID("ams@192.168.0.100:6333/JADE", AID.ISGUID);
+		remoteAMS3.addAddresses("http://192.168.0.100:7778/acc");
+		PlatformID destination3 = new PlatformID(remoteAMS3);
+
+	
+		List<KeyStorage> list_dir = new ArrayList<KeyStorage>();
+		
+		
+		KeyStorage st1 = new KeyStorage(null,destination1);
+		KeyStorage st2 = new KeyStorage(null, destination2);
+		
+		list_dir.add(st1);
+		list_dir.add(st2);
+		
+		try {
+			doSecureOnionTransfer(destination3,list_dir);
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 
 
