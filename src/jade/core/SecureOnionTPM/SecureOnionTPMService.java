@@ -49,7 +49,7 @@ public class SecureOnionTPMService extends BaseService {
     private byte [] serialized_certificate = null;
 
     //KEYSTORAGELIST TO SAVE THE LOCATION AND THE CERTIFICATE OF EVERY HOST THAT THE PLATFORM SCAN
-    List<KeyStorage> device_list = new ArrayList<KeyStorage>();
+    List<PlatformID> device_list_host = new ArrayList<PlatformID>();
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -205,10 +205,9 @@ public class SecureOnionTPMService extends BaseService {
          * THIS METHOD, TRY TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM, TO DEPLOY
          * THE BROADCAST MESSAGE.
          * @param agent
-         * @param destiny
          * @param devices_list
          */
-        public synchronized void sendBroadcastACL(SecureAgent agent, Location destiny, List<KeyStorage> devices_list){
+        public synchronized void sendAMSHostpots(SecureAgent agent, List<PlatformID> devices_list){
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:").append(agent.getAID());
             System.out.println(sb.toString());
@@ -218,7 +217,6 @@ public class SecureOnionTPMService extends BaseService {
                     "THE SERVICE NEED ");
             GenericCommand command = new GenericCommand(SecureOnionTPMHelper.REQUEST_ADDRESS,
                     SecureOnionTPMHelper.NAME, null);
-            //NEED THE LIST OF THE HOSTPOTS AVAILABLES TO PERFORM THE TEST
             command.addParam(devices_list);
             Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
                     Level.INFO, true, this.getClass().getName());
@@ -242,7 +240,6 @@ public class SecureOnionTPMService extends BaseService {
                 if(commandName.equals(SecureOnionTPMHelper.REQUEST_ADDRESS)){
                     System.out.println("PROCEED THE COMMANDO TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM");
                     Object[] params = command.getParams();
-                    List<KeyStorage> device_hostpost = (ArrayList<KeyStorage>)params[0];
                     SecureOnionTPMSlice obj = (SecureOnionTPMSlice) getSlice(MAIN_SLICE);
                     try{
                         obj.doCommunicateAMS(command);
@@ -250,8 +247,6 @@ public class SecureOnionTPMService extends BaseService {
                         System.out.println("THERE ARE AN ERROR PROCESSING THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
-                }else{
-                    System.out.println("CANELA");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -276,22 +271,29 @@ public class SecureOnionTPMService extends BaseService {
                     System.out.println("PROCESSING THE VERTICAL COMMAND ONION REQUEST INTO THE " +
                                        "AMS DESTINATION CONTAINER");
 
-                    List<KeyStorage> keydir = (ArrayList<KeyStorage>) command.getParams()[0];
+                    System.out.println("CHECKING IF THERE ARE PLATFORMS PASS BY PARAMS:");
+                    ArrayList<PlatformID> hostpots = null;
+                    try{
+                        System.out.println("FETCHING THE PLATFORMS PASSED");
+                        hostpots = (ArrayList<PlatformID>) command.getParams()[0];
+                        device_list_host = hostpots;
+                    }catch(NullPointerException ne){
+                        System.out.println("NO PLATFORMS HAVE BEEN PASSED BY PARAMETER");
+                    }
+
                     System.out.println("I'M IN THE AMS MAIN CONTAINER, AND THE LIST THAT I RECEIVE IS THE " +
                                        "FOLLOWING");
                     System.out.println("NAME OF THE CONAINER: "+actualcontainer.getID().getName());
-                    for(int i=0;i<keydir.size();i++){
-                        KeyStorage security = keydir.get(i);
+                    for(int i=0;i<device_list_host.size();i++){
+                        PlatformID platformhost = device_list_host.get(i);
                         System.out.println("*********************************");
                         System.out.println("LLAVERO NUMERO "+i+" CON EL SIGUIENTE CONTENIDO:");
-                        System.out.println("CERTIFICATE: "+security.getCertificate());
-                        System.out.println("LOCATION: "+security.getLocation());
+                        System.out.println("ADDRESS: "+platformhost.getAddress());
+                        System.out.println("NAME: "+platformhost.getName());
+                        System.out.println("ID: "+platformhost.getID());
                         System.out.println("*********************************");
                     }
-                    System.out.println("");
-                }else{
-                    System.out.println("SIN CHAN");
-                    System.out.println(CommandName);
+                    System.out.println("REGISTER ALL THE PLATFORMS SUCCESFULLY");
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");

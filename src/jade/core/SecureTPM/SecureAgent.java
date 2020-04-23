@@ -169,13 +169,13 @@ public class SecureAgent extends Agent {
     }
 
 
-    public void doSecureOnionTransfer(Location destiny_platform, List<KeyStorage> devices_list) throws ServiceException {
+    public void doSecureRegisterOnion(List<PlatformID> devices_list) throws ServiceException {
         System.out.println("THERE ARE A ONION SECURE REQUEST:");
         initmobHelperOnion();
         Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
                 Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
         System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
-        mobHelperOnion.sendBroadcastACL(this,destiny_platform,devices_list);
+        mobHelperOnion.sendAMSHostpots(this,devices_list);
     }
 
 
