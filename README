@@ -88,3 +88,9 @@ public class Rastreator extends SecureAgent implements Serializable{
 		
 	}	
 }
+
+
+WARNING
+============
+THE TPM MODULE IS NOT IMPLEMENTED ACTUALLY ON THIS CODE TO SPEED UP THE TEST
+IN THE FOLLOWINGS VERSIONS WILL BE ADDED
