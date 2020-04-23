@@ -9,14 +9,15 @@ Here are some **basic examples** to demonstrate how the library works.
 
 ## EXAMPLE INTRA PLATFORM:
 
-java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container-name Pruebas1 -gui -service jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container-name Pruebas1 -gui -service jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas2  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas2  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas3  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas3  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
 ### EXECUTE THE FOLLOWING CODE:
 
+```
 package org;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,15 +56,19 @@ public class AgenteSeguro extends SecureAgent{
 		System.out.println("************************");
 	}
 }
+```
 
 ## EXAMPLE INTRA PLATFORM:
 
-java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
-java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name Pruebas1 -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
-java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 5333 -accept-foreign-agents true -agents RASTREADOR:vom.Rastreator -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+
+* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name Pruebas1 -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+
+* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 5333 -accept-foreign-agents true -agents RASTREADOR:vom.Rastreator -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
 ### EXECUTE THE FOLLOWING CODE:
 
+```
 package vom;
 import java.io.Serializable;
 
@@ -93,16 +98,18 @@ public class Rastreator extends SecureAgent implements Serializable{
 		
 	}	
 }
+```
 
 ## EXAMPLE ONION PROTOCOL:
 
-java -cp /Users/ivan/Desktop/onion.jar jade.Boot -gui -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService
+* java -cp /Users/ivan/Desktop/onion.jar jade.Boot -gui -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService
 
-java -cp /Users/ivan/Desktop/onion.jar jade.Boot -container -container-name PRUEBAS -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService -agents DARK:vom.RASTREATOR
+* java -cp /Users/ivan/Desktop/onion.jar jade.Boot -container -container-name PRUEBAS -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService -agents DARK:vom.RASTREATOR
 
 
 ### EXECUTE THE FOLLOWING CODE:
 
+```
 package vom;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -151,7 +158,7 @@ public class RASTREATOR extends SecureAgent implements Serializable{
 		}
 	}
 }
-
+```
 
 # WARNING
 ============
