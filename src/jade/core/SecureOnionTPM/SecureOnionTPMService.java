@@ -3,9 +3,6 @@ package jade.core.SecureOnionTPM;
 import jade.content.ContentManager;
 import jade.core.*;
 import jade.core.SecureInterTPM.ResponserACL;
-import jade.core.SecureInterTPM.SecureInterTPMHelper;
-import jade.core.SecureInterTPM.SecureInterTPMService;
-import jade.core.SecureInterTPM.SecureInterTPMSlice;
 import jade.core.SecureTPM.*;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
@@ -185,7 +182,6 @@ public class SecureOnionTPMService extends BaseService {
                                 MessageTemplate.MatchOntology(SecureOnionTPMHelper.REQUEST_ADDRESS),
                                 MessageTemplate.MatchOntology(SecureOnionTPMHelper.CONFIRM_ADDRESS)));
         ResponserACL resp = new ResponserACL(ams, mt, SecureOnionTPMService.this);
-        ReceiveOnionKeystorage response = new ReceiveOnionKeystorage();
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
     }
@@ -221,7 +217,7 @@ public class SecureOnionTPMService extends BaseService {
             System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
                     "THE SERVICE NEED ");
             GenericCommand command = new GenericCommand(SecureOnionTPMHelper.REQUEST_ADDRESS,
-                    SecureInterTPMHelper.NAME, null);
+                    SecureOnionTPMHelper.NAME, null);
             //NEED THE LIST OF THE HOSTPOTS AVAILABLES TO PERFORM THE TEST
             command.addParam(devices_list);
             Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
@@ -254,6 +250,8 @@ public class SecureOnionTPMService extends BaseService {
                         System.out.println("THERE ARE AN ERROR PROCESSING THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
+                }else{
+                    System.out.println("CANELA");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -275,6 +273,25 @@ public class SecureOnionTPMService extends BaseService {
                      * AT THIS POINT, I CREATE THE MESSAGE AND SEND TO THE AMS, THEN
                      * REGISTER THE HOSPOTS AND START THE ONION PROTOCOL.
                      */
+                    System.out.println("PROCESSING THE VERTICAL COMMAND ONION REQUEST INTO THE " +
+                                       "AMS DESTINATION CONTAINER");
+
+                    List<KeyStorage> keydir = (ArrayList<KeyStorage>) command.getParams()[0];
+                    System.out.println("I'M IN THE AMS MAIN CONTAINER, AND THE LIST THAT I RECEIVE IS THE " +
+                                       "FOLLOWING");
+                    System.out.println("NAME OF THE CONAINER: "+actualcontainer.getID().getName());
+                    for(int i=0;i<keydir.size();i++){
+                        KeyStorage security = keydir.get(i);
+                        System.out.println("*********************************");
+                        System.out.println("LLAVERO NUMERO "+i+" CON EL SIGUIENTE CONTENIDO:");
+                        System.out.println("CERTIFICATE: "+security.getCertificate());
+                        System.out.println("LOCATION: "+security.getLocation());
+                        System.out.println("*********************************");
+                    }
+                    System.out.println("");
+                }else{
+                    System.out.println("SIN CHAN");
+                    System.out.println(CommandName);
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -313,6 +330,8 @@ public class SecureOnionTPMService extends BaseService {
                     commandResponse = new GenericCommand(SecureOnionTPMHelper.REQUEST_ADDRESS,
                                                          SecureOnionTPMHelper.NAME, null);
                     commandResponse.addParam(device_hostpots);
+                }else{
+                    System.out.println("SUNEO");
                 }
             }catch(Exception e){
                 System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");

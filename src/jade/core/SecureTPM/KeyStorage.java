@@ -2,7 +2,9 @@ package jade.core.SecureTPM;
 
 import jade.core.Location;
 
-public class KeyStorage {
+import java.io.Serializable;
+
+public class KeyStorage implements Serializable {
 
     /**
      * THIS CLASS, REPRESENT AN OBJECT THAT WILL BE SAVE IN THE KEYSTORAGE DIR,
