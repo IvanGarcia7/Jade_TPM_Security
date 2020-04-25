@@ -175,7 +175,7 @@ public class RASTREATOR extends SecureAgent implements Serializable{
 }
 ```
 
-## EXAMPLE ONION PROTOCOL:
+## EXAMPLE SECURE CA PLATFORM PROTOCOL:
 
 * -gui -host localhost -port 3334 -services jade.core.D4rkPr0j3cT.SecureCloudTPMService -agents CA:vom.CAPlatform
 * -gui -host localhost -port 4354 -services jade.core.CloudAgents.SecureAgentTPMService -agents CA:vom.CAAgent
