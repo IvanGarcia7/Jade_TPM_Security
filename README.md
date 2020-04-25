@@ -175,6 +175,66 @@ public class RASTREATOR extends SecureAgent implements Serializable{
 }
 ```
 
+## EXAMPLE ONION PROTOCOL:
+
+* -gui -host localhost -port 3334 -services jade.core.D4rkPr0j3cT.SecureCloudTPMService -agents CA:vom.CAPlatform
+* -gui -host localhost -port 4354 -services jade.core.CloudAgents.SecureAgentTPMService -agents CA:vom.CAAgent
+
+### EXECUTE THE FOLLOWING CODE:
+
+* CA PLATFORM:
+
+```
+package vom;
+
+import jade.core.D4rkPr0j3cT.SecureCAPlatform;
+
+public class CAPlatform extends SecureCAPlatform{
+	public void setup() {
+		doInitializeCA();
+		//doListCA();
+	}
+}
+```
+
+* AGENT EXAMPLE:
+
+```
+package vom;
+import java.io.Serializable;
+
+import jade.core.AID;
+import jade.core.Agent;
+import jade.core.ContainerID;
+import jade.core.PlatformID;
+import jade.core.SecureTPM.SecureAgent;
+
+
+public class Rastreator extends SecureAgent implements Serializable{
+	private static final long serialVersionUID = -2241822868465327314L;
+	public void setup() {
+		AID remoteAMS = new AID("ams@192.168.0.100:4333/JADE", AID.ISGUID);
+		remoteAMS.addAddresses("http://192.168.0.100:7778/acc");
+		//this.addBehaviour(new Beh1(this));
+		PlatformID destination = new PlatformID(remoteAMS);
+		doSecureMove(destination);
+	}
+	public void beforeMove() {
+		System.out.println("SECURE SERVICE EXECUTE CORRECTLY ;)");
+	}
+	public void afterMove() {
+		System.out.println("***");
+		ContainerID destination1 = new ContainerID("Pruebas1",null);
+		doSecureMove(destination1);
+		
+	}	
+}
+```
+
+
+
+
+
 # WARNING
 ============
 > **Note:** **THE TPM MODULE IS NOT IMPLEMENTED ACTUALLY ON THIS CODE TO SPEED UP THE TEST
