@@ -19,8 +19,8 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
     private Agent myAgent = null;
     private BaseService myService;
 
-    public SenderACLCloud(ACLMessage message, KeyPairCloudPlatform requestPairPlatform,
-                          KeyPairCloudPlatform requestPairAgent, Agent amsMainPlatform,
+    public SenderACLCloud(ACLMessage message, KeyPairCloudPlatform requestPairAgent,
+                          KeyPairCloudPlatform requestPairPlatform, Agent amsMainPlatform,
                           SecureAgentTPMService secureAgentTPMService) {
         super(amsMainPlatform,message);
         myMessage=message;
@@ -45,14 +45,13 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
             e.printStackTrace();
         }
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
-        AID receiver = new AID("ams@"+packetPlatform.getLocationPlatform().getName()+":3334/JADE",AID.ISGUID);
-
-        System.out.println(packetPlatform.getLocationPlatform().getAddress());
-        System.out.println(packetPlatform.getLocationPlatform().getID());
+        AID receiver = new AID("ams@"+packetPlatform.getLocationPlatform().getName(),AID.ISGUID);
 
         System.out.println("SALCHICHAS");
         System.out.println(packetPlatform.getLocationPlatform().getName());
         System.out.println(packetPlatform.getLocationPlatform().getAddress());
+        System.out.println(packetPlatform.getLocationPlatform().getID());
+        System.out.println("SALCHICHAS");
 
         receiver.addAddresses(packetPlatform.getLocationPlatform().getAddress());
         System.out.println(receiver+" "+packetPlatform.getLocationPlatform().getAddress());
