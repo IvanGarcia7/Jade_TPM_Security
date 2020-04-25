@@ -1,13 +1,14 @@
 package jade.core.SecureTPM;
 
+import jade.core.Location;
 import jade.core.PlatformID;
 
 public class OnionPacketOrigin {
 
     private String originContainer;
-    private PlatformID destiny;
+    private Location destiny;
 
-    public OnionPacketOrigin(String or, PlatformID dest){
+    public OnionPacketOrigin(String or, Location dest){
         originContainer=or;
         destiny=dest;
     }
@@ -20,7 +21,7 @@ public class OnionPacketOrigin {
         return originContainer;
     }
 
-    public PlatformID getPlatformDestiny(){
+    public Location getPlatformDestiny(){
         return destiny;
     }
 }

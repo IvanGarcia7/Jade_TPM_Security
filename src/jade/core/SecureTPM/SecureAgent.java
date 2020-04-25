@@ -186,7 +186,7 @@ public class SecureAgent extends Agent {
 
 
 
-    public void doSecureOnionSender(PlatformID destiny) throws ServiceException {
+    public void doSecureOnionSender(Location destiny) throws ServiceException {
         System.out.println("THERE ARE A ONION SENDER MESSAGE REQUEST:");
         initmobHelperOnion();
         Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",

@@ -30,5 +30,5 @@ public interface SecureOnionTPMHelper extends ServiceHelper {
      */
     void registerMovable(Movable movable);
     void sendAMSHostpots(SecureAgent secureAgent,List<PlatformID> device_list);
-    void sendOnionHostpots(SecureAgent agent,PlatformID destiny);
+    void sendOnionHostpots(SecureAgent agent,Location destiny);
 }

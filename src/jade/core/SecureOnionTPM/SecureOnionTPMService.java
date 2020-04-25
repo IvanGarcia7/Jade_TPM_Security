@@ -10,10 +10,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.ControllerException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public class SecureOnionTPMService extends BaseService {
@@ -238,7 +235,7 @@ public class SecureOnionTPMService extends BaseService {
             }
         }
 
-        public synchronized void sendOnionHostpots(SecureAgent agent,PlatformID destiny){
+        public synchronized void sendOnionHostpots(SecureAgent agent,Location destiny){
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:").append(agent.getAID());
             System.out.println(sb.toString());
@@ -357,7 +354,14 @@ public class SecureOnionTPMService extends BaseService {
 
                     //AT THIS POINT, I NEED TO CREATE THE PACKET WITH THE DESTINY IN THE HEADER
                     //AND PUT IN THE FIRST OF THE LIST MY ACTUAL DIRECTION
+                    Stack<KeyStorage> list_dir = new Stack<KeyStorage>();
 
+                    //INSERT INTO THE STACK THE ACTUAL DIRECTION
+                    
+
+                    //INSER THE HEADER -> DESTINY LOCATION AND THE BODY THE HEAP
+                    //SecureOnionMessageBroadcast message = new SecureOnionMessageBroadcast(
+                    //        receivedPacket.getPlatformDestiny(),list_dir);
 
                     /**
                      * TO DO
