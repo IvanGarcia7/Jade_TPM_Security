@@ -697,4 +697,7 @@ public class Agencia{
         //TO-DO
 
     }
+
+    public static byte[] getEKPub() {
+    }
 }
