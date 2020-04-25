@@ -11,6 +11,8 @@ My implementation Services are in the following dirs:
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureInterTPM
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureOnionTPM
 
+* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/D4rkPr0j3cT (NEW)
+
 Here are some **basic examples** to demonstrate how the library works.
 
 ## EXAMPLE INTRA PLATFORM:
