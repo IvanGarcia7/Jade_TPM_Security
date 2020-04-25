@@ -1,45 +1,44 @@
-package jade.core.D4rkPr0j3cTPlatforms;
+package jade.core.CloudAgents;
 
 import jade.core.*;
-import jade.core.D4rkPr0j3cT.KeyPairCloud;
 import jade.core.SecureTPM.Agencia;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-import java.security.*;
+
 import java.util.*;
 import java.util.logging.Level;
 
-public class SecureCloudTPMServicePlatform extends BaseService {
+public class SecureAgentTPMService extends BaseService {
 
     //INTERESTING VARIABLES.
-    public static final String NAME = "jade.core.D4rkPr0j3cT.SecureCloudTPM";
-    public static final String VERBOSE = "jade_core_D4rkPr0j3cT_SecureCloudTPMService_verbose";
+    public static final String NAME = "jade.core.CloudAgents.SecureAgentTPM";
+    public static final String VERBOSE = "jade_core_CloudAgents_SecureAgentTPMService_verbose";
 
     //TIME VAR THAT THE AGENCY USE TO SEE THE TIME THAT A REQUEST IT'S TAKEN.
     long startTime = System.nanoTime();
 
     //DEFINE THE SLICER AND THE HELPER TO EXECUTE CORRECTLY THE SERVICE.
-    private Slice actualSlicer = new SecureCloudTPMServicePlatform.ServiceComponent();
-    private ServiceHelper thisHelper = new SecureCloudTPMServicePlatform.SecureCloudTPMServiceHelperImpl();
+    private Slice actualSlicer = new SecureAgentTPMService.ServiceComponent();
+    private ServiceHelper thisHelper = new SecureAgentTPMServiceHelperImpl();
 
     //DEFINE INPUT AND OUTPUT FILTERS.
     private Filter OutFilter = null;
     private Filter InFilter = null;
 
     //DEFINE INPUT AND OUTPUT SINKS.
-    private Sink OutputSink = new SecureCloudTPMServicePlatform.CommandSourceSink();
-    private Sink InputSink = new SecureCloudTPMServicePlatform.CommandTargetSink();
+    private Sink OutputSink = new SecureAgentTPMService.CommandSourceSink();
+    private Sink InputSink = new SecureAgentTPMService.CommandTargetSink();
 
     //REQUEST THE COMMANDS THAT I HAVE IMPLEMENTED AND SAVE INTO A LIST.
     private String[] actualCommands = new String[]{
-            SecureCloudTPMHelperPlatform.REQUEST_INSERT_PLATFORM,
-            SecureCloudTPMHelperPlatform.REQUEST_ACCEPT_PLATFORM,
-            SecureCloudTPMHelperPlatform.REQUEST_PACK_PLATFORM,
-            SecureCloudTPMHelperPlatform.REQUEST_START,
-            SecureCloudTPMHelperPlatform.REQUEST_LIST
+            SecureAgentTPMHelper.REQUEST_INSERT_PLATFORM,
+            SecureAgentTPMHelper.REQUEST_ACCEPT_PLATFORM,
+            SecureAgentTPMHelper.REQUEST_PACK_PLATFORM,
+            SecureAgentTPMHelper.REQUEST_START,
+            SecureAgentTPMHelper.REQUEST_LIST
     };
 
     //PERFORMATIVE PRINTER.
@@ -70,7 +69,7 @@ public class SecureCloudTPMServicePlatform extends BaseService {
      */
     @Override
     public String getName() {
-        return SecureCloudTPMHelperPlatform.NAME;
+        return SecureAgentTPMHelper.NAME;
     }
 
     /**
@@ -106,7 +105,7 @@ public class SecureCloudTPMServicePlatform extends BaseService {
      * @throws ServiceException
      */
     public ServiceHelper getHelper(Agent agent) throws ServiceException {
-        if (agent instanceof SecureCAPlatformAgent) {
+        if (agent instanceof SecureAgentPlatform) {
             return thisHelper;
         } else {
             throw new ServiceException("THIS SERVICE IS NOT ALLOWED TO RUN IN THIS AGENT");
@@ -119,7 +118,7 @@ public class SecureCloudTPMServicePlatform extends BaseService {
      * @return
      */
     public Class getHorizontalInterface() {
-        return SecureCloudTPMSlicePlatform.class;
+        return SecureAgentTPMSlice.class;
     }
 
     /**
@@ -179,15 +178,15 @@ public class SecureCloudTPMServicePlatform extends BaseService {
                 MessageTemplate.and(
                         MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
                         MessageTemplate.or(
-                                MessageTemplate.MatchOntology(SecureCloudTPMHelperPlatform.REQUEST_INSERT_PLATFORM),
-                                MessageTemplate.MatchOntology(SecureCloudTPMHelperPlatform.REQUEST_PACK_PLATFORM)));
-        ResponserCloudACLPlatform resp = new ResponserCloudACLPlatform(ams, mt, SecureCloudTPMServicePlatform.this);
+                                MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_INSERT_PLATFORM),
+                                MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_PACK_PLATFORM)));
+        ResponserAgentACL resp = new ResponserAgentACL(ams, mt, SecureAgentTPMService.this);
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
     }
 
 
-    public class SecureCloudTPMServiceHelperImpl implements SecureCloudTPMHelperPlatform {
+    public class SecureAgentTPMServiceHelperImpl implements SecureAgentTPMHelper {
 
         //REFERENCE MY SECURE AGENT
         private Agent mySecureAgent;
@@ -206,22 +205,22 @@ public class SecureCloudTPMServicePlatform extends BaseService {
          * THIS FUNCTION TRY TO INITIALIZE THE PLATFORMS, ACCORDING TO A KEY PAIR PROVEED
          * BY PARAMS IN ORDER TO SIMULATE IT. FIRST OF ALL, I NEED TO CONTACT WITH THE AMS
          * OF THE MAIN PLATFORM IN MY ENVIRONMENT.
-         * @param secureCAPlatformAgent
+         * @param secureAgentPlatform
          */
         @Override
-        public synchronized void doStartCloudAgent(SecureCAPlatformAgent secureCAPlatformAgent,
+        public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform,
                                                    Location caLocation, byte[] pubKey){
 
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
-                    .append(secureCAPlatformAgent.getAID());
+                    .append(secureAgentPlatform.getAID());
             System.out.println(sb.toString());
             Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
                     Level.INFO, true, this.getClass().getName());
             System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
                     "THE SERVICE NEED ");
-            GenericCommand command = new GenericCommand(SecureCloudTPMHelperPlatform.REQUEST_START,
-                    SecureCloudTPMHelperPlatform.NAME, null);
+            GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_START,
+                    SecureAgentTPMHelper.NAME, null);
 
             //AT THIS POINT FETC PUBLIC KEY TPM
             KeyPairCloudPlatform Generated_Pack = new KeyPairCloudPlatform(pubKey,caLocation);
@@ -230,7 +229,7 @@ public class SecureCloudTPMServicePlatform extends BaseService {
                     Level.INFO, true, this.getClass().getName());
             try {
                 System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
-                SecureCloudTPMServicePlatform.this.submit(command);
+                SecureAgentTPMService.this.submit(command);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -243,11 +242,11 @@ public class SecureCloudTPMServicePlatform extends BaseService {
         public void consume(VerticalCommand command) {
             try{
                 String commandName = command.getName();
-                if(commandName.equals(SecureCloudTPMHelperPlatform.REQUEST_START)){
+                if(commandName.equals(SecureAgentTPMHelper.REQUEST_START)){
                     System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
                             "START THE AGENT");
                     Object[] params = command.getParams();
-                    SecureCloudTPMSlicePlatform obj = (SecureCloudTPMSlicePlatform) getSlice(MAIN_SLICE);
+                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
                     try{
                         obj.doCommunicateAMS(command);
                     }catch(Exception ie){
@@ -268,20 +267,26 @@ public class SecureCloudTPMServicePlatform extends BaseService {
         public void consume(VerticalCommand command) {
             try{
                 String CommandName = command.getName();
-                if(CommandName.equals(SecureCloudTPMHelperPlatform.REQUEST_START)){
+                if(CommandName.equals(SecureAgentTPMHelper.REQUEST_START)){
                     /**
                      * AT THIS POINT, I AM IN THE AMS MAIN PLATFORM, FIRST OF ALL, I COMMUNICATE WITH THE TPM
                      * IN CASE OF THE FIRST AGENT AND FETCH THE PUBLICKEY AND THE LOCATION OF THIS CONTAINER.
                      * THEN, I CIPHER THIS DATA WITH THE PUBLICKEY OF THE CLOUD AND SEND IT WITH AN ACL MESSAGE.
                      */
                     KeyPairCloudPlatform newPair = (KeyPairCloudPlatform)command.getParams()[0];
+
                     byte [] ekPub = Agencia.getEKPub();
                     Location actualLocation = actualcontainer.here();
-                    CloudPackRequest newCloudRequest = new CloudPackRequest(newPair.getPublicPassword(),
-                                                                            newPair.getLocationPlatform(),
-                                                                            ekPub,
-                                                                            actualLocation);
-                    //SEND THE INFORMATION
+                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(ekPub,actualLocation);
+
+                    //SEND THE INFORMATION TO THE PLATFORM
+                    AID amsMain = new AID("ams", false);
+                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                    amsMainPlatform.addBehaviour(
+                            new SenderACLCloud(message, requestPair, newPair, amsMainPlatform, SecureAgentTPMService.this)
+                    );
+                    actualcontainer.releaseLocalAgent(amsMain);
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -294,13 +299,13 @@ public class SecureCloudTPMServicePlatform extends BaseService {
 
         @Override
         public Service getService() {
-            return SecureCloudTPMServicePlatform.this;
+            return SecureAgentTPMService.this;
         }
 
         @Override
         public Node getNode() throws ServiceException {
             try {
-                return SecureCloudTPMServicePlatform.this.getLocalNode();
+                return SecureAgentTPMService.this.getLocalNode();
             } catch (Exception e) {
                 throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE CLOUD SERVICE COMPONENT");
             }
@@ -311,11 +316,11 @@ public class SecureCloudTPMServicePlatform extends BaseService {
             GenericCommand commandResponse = null;
             try{
                 String commandReceived = command.getName();
-                if(commandReceived.equals(SecureCloudTPMSlicePlatform.REMOTE_REQUEST_START)) {
+                if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_START)) {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
                                        "TO START THE HOST");
-                    commandResponse = new GenericCommand(SecureCloudTPMHelperPlatform.REQUEST_START,
-                            SecureCloudTPMHelperPlatform.NAME, null);
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_START,
+                            SecureAgentTPMHelper.NAME, null);
                     KeyPairCloudPlatform keyPack = (KeyPairCloudPlatform) command.getParams()[0];
                     commandResponse.addParam(keyPack);
                 }

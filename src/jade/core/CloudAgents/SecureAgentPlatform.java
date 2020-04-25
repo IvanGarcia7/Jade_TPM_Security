@@ -1,20 +1,19 @@
-package jade.core.D4rkPr0j3cTPlatforms;
+package jade.core.CloudAgents;
 
 import jade.core.Agent;
 import jade.core.Location;
-import jade.core.SecureInterTPM.SecureInterTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
 
 import java.util.logging.Level;
 
-public class SecureCAPlatformAgent extends Agent{
+public class SecureAgentPlatform extends Agent{
     private static final long serialVersionUID = 9058618378207435612L;
 
     /**
      * SERVICE CREATION, INTRA E INTER PLATFORM. SERVICES ARE INSTALLED WHEN THE PROGRAM REQUIRES IT
      */
-    private transient SecureCloudTPMHelperPlatform mobHelperCloudPlatform;
+    private transient SecureAgentTPMHelper mobHelperCloudPlatform;
 
     /**
      * THIS SERVICE, ACCEPT REQUEST FROM ANOTHER PLATFORMS, AND PUT THEM INTO A LIST
@@ -28,7 +27,7 @@ public class SecureCAPlatformAgent extends Agent{
         try {
             initmobHelperCloud();
             Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
-                    Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
+                    Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
             System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
             mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey);
         }
@@ -45,7 +44,7 @@ public class SecureCAPlatformAgent extends Agent{
      */
     private void initmobHelperCloud() throws ServiceException {
         if(mobHelperCloudPlatform == null){
-            mobHelperCloudPlatform = (SecureCloudTPMHelperPlatform) getHelper(SecureCloudTPMHelperPlatform.NAME);
+            mobHelperCloudPlatform = (SecureAgentTPMHelper) getHelper(SecureAgentTPMHelper.NAME);
             System.out.println(mobHelperCloudPlatform);
         }
     }

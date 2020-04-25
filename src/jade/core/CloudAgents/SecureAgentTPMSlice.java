@@ -1,9 +1,9 @@
-package jade.core.D4rkPr0j3cTPlatforms;
+package jade.core.CloudAgents;
 
 import jade.core.Service;
 import jade.core.VerticalCommand;
 
-public interface SecureCloudTPMSlicePlatform extends Service.Slice {
+public interface SecureAgentTPMSlice extends Service.Slice {
 
     /**
      * HORIZONTAL COMMANDS THAT I DEFINE TO THIS SERVICE.

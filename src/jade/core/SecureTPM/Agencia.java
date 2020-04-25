@@ -699,5 +699,6 @@ public class Agencia{
     }
 
     public static byte[] getEKPub() {
+        return "hola".getBytes();
     }
 }

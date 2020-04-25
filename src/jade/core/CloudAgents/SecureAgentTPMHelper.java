@@ -1,14 +1,14 @@
-package jade.core.D4rkPr0j3cTPlatforms;
+package jade.core.CloudAgents;
 
 import jade.core.Location;
 import jade.core.ServiceHelper;
 
-public interface SecureCloudTPMHelperPlatform extends ServiceHelper {
+public interface SecureAgentTPMHelper extends ServiceHelper {
 
     /**
      * THE NAME OF THE SERVICE
      */
-    public static final String NAME = "jade.core.D4rkPr0j3cT.SecureCloudTPM";
+    public static final String NAME = "jade.core.CloudAgents.SecureAgentTPM";
 
     /**
      * VERTICAL COMMANDS
@@ -24,5 +24,5 @@ public interface SecureCloudTPMHelperPlatform extends ServiceHelper {
     /**
      * PUBLIC METHODS
      */
-    void doStartCloudAgent(SecureCAPlatformAgent secureCAPlatformAgent, Location caLocation, byte[] pubKey);
+    void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, Location caLocation, byte[] pubKey);
 }

@@ -1,4 +1,4 @@
-package jade.core.D4rkPr0j3cTPlatforms;
+package jade.core.CloudAgents;
 
 import jade.core.Location;
 
