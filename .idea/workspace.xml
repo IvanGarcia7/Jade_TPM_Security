@@ -3,18 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/KeyPairCloudPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/CloudAgents/KeyPairCloudPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SenderACLCloud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/CloudAgents/SenderACLCloud.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/ResponserCloudACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/ResponserCloudACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCAPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCloudTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCloudTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCloudTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCloudTPMProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cT/SecureCloudTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +54,7 @@
       <updated>1587576422708</updated>
       <workItem from="1587576424678" duration="21780000" />
       <workItem from="1587821900158" duration="15909000" />
-      <workItem from="1587892842390" duration="13487000" />
+      <workItem from="1587892842390" duration="14161000" />
     </task>
     <servers />
   </component>

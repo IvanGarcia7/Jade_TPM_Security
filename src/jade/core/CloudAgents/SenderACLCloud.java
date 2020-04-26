@@ -85,6 +85,9 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
      */
     protected void handleInform(ACLMessage inform){
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM");
+        System.out.println(inform.getContent());
+        
+
         try {
             long endTime = System.nanoTime();
             if((inform.getPostTimeStamp()-endTime)/1000000 <= Agencia.getTimeout()){
