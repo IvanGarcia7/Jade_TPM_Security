@@ -19,4 +19,5 @@ public interface SecureCloudTPMSlice extends Service.Slice {
      */
     void doCommunicateAMS(VerticalCommand command);
     void doRequestListAMS(VerticalCommand command);
+    void doInsertHostpotAMS(VerticalCommand command);
 }

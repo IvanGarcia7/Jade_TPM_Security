@@ -1,5 +1,6 @@
 package jade.core.SecureTPM;
 
+import jade.core.CloudAgents.KeyPairCloudPlatform;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -700,5 +701,15 @@ public class Agencia{
 
     public static byte[] getEKPub() {
         return "hola".getBytes();
+    }
+
+    /**
+     * THIS METHOD IS USED TO DECIPHER TE CONTENT OF A REQUEST IN THE PLATFORM,
+     * THAT HAS BEEN CIPHER WITH THE PUBLIC KEY OF THE CA
+     * @param contentObject
+     * @return
+     */
+    public static KeyPairCloudPlatform decypher(Serializable contentObject) {
+
     }
 }

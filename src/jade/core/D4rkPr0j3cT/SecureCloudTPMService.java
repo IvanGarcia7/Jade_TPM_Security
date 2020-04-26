@@ -1,6 +1,7 @@
 package jade.core.D4rkPr0j3cT;
 
 import jade.core.*;
+import jade.core.CloudAgents.KeyPairCloudPlatform;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.SecureAgent;
 import jade.core.behaviours.Behaviour;
@@ -33,6 +34,9 @@ public class SecureCloudTPMService extends BaseService {
     private Sink OutputSink = new SecureCloudTPMService.CommandSourceSink();
     private Sink InputSink = new SecureCloudTPMService.CommandTargetSink();
 
+    //REQUEST THE HELPERIMPL
+    private SecureCloudTPMServiceHelperImpl myServiceHelperImpl = new SecureCloudTPMServiceHelperImpl();
+
     //REQUEST THE COMMANDS THAT I HAVE IMPLEMENTED AND SAVE INTO A LIST.
     private String[] actualCommands = new String[]{
             SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
@@ -55,13 +59,15 @@ public class SecureCloudTPMService extends BaseService {
     //THE FIRST VALUE ES THE NONCE AND THE SECOND THE CONTAINER NAME
     Map<String, String> listRedirects = new HashMap<String, String>();
 
-
     //SECURE CLOUD KEY PAIR FROM A PLATFORM;
     private byte [] privateKeyCA;
     private byte [] publicKeyCA;
 
     //DICT OF THE HOSTPOTS
     Map<Location,byte []> HostpotsRegister = new HashMap<Location,byte []>();
+
+    //DICT TO REGISTER THE PLATFORMS TO CONFIRM
+    Map<Location, byte []> pendingRedirects = new HashMap<Location, byte []>();
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -155,6 +161,13 @@ public class SecureCloudTPMService extends BaseService {
     }
 
     /**
+     * Retrieve the HelperImpl
+     */
+    public SecureCloudTPMServiceHelperImpl getHelperImpl(){
+        return myServiceHelperImpl;
+    }
+
+    /**
      * RETRIEVE THE SINKS IF IT WAS NECESSARY
      *
      * @param side
@@ -191,6 +204,7 @@ public class SecureCloudTPMService extends BaseService {
         //REFERENCE MY SECURE AGENT
         private Agent mySecureAgent;
         private Movable myMovable;
+
 
         @Override
         public void init(Agent agent) {
@@ -275,7 +289,7 @@ public class SecureCloudTPMService extends BaseService {
 
         @Override
         public void doAcceptCloud(SecureCAPlatform secureCAPlatform, byte[] index) {
-
+            System.out.println("HELLO MY FRIEND");
         }
     }
 
@@ -305,6 +319,17 @@ public class SecureCloudTPMService extends BaseService {
                     }catch(Exception ie){
                         System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
                                            "SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
+                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
+                            "REGISTER ONE HOSTPOT");
+                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doInsertHostpotAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
+                                "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }
@@ -346,6 +371,43 @@ public class SecureCloudTPMService extends BaseService {
                         it.remove();
                     }
                     System.out.println("*********************HOSTPOTS*****************************");
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
+                    KeyPairCloudPlatform pack = (KeyPairCloudPlatform) command.getParams()[0];
+                    System.out.println("*********************NEW REQUEST*****************************");
+                    System.out.println("LOCATION -> "+pack.getLocationPlatform());
+                    System.out.println("PUBLIC PASSWORD -> "+pack.getPublicPassword());
+                    System.out.println("*********************NEW REQUEST*****************************");
+                    if(HostpotsRegister.get(pack.getLocationPlatform())!=null){
+                        System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE CONFIRMED LIST");
+                    }else if(HostpotsRegister.get(pack.getLocationPlatform())!=null){
+                        System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
+                    }else{
+                        System.out.println("DO YOU WANT TO VALIDATE IT NOW Y/N?");
+                        Scanner sc = new Scanner(System.in);
+                        String response = sc.nextLine();
+
+                        KeyPairCloudPlatform packrequest = (KeyPairCloudPlatform) command.getParams()[0];
+                        Iterator it = null;
+                        //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
+                        if(response.toUpperCase().equals("Y")){
+                            System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
+                            HostpotsRegister.put(packrequest.getLocationPlatform(),packrequest.getPublicPassword());
+                            System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST");
+                            it = HostpotsRegister.entrySet().iterator();
+                        }else {
+                            System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
+                            pendingRedirects.put(packrequest.getLocationPlatform(),packrequest.getPublicPassword());
+                            it = pendingRedirects.entrySet().iterator();
+                            System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
+                        }
+                        System.out.println("*********************HOSTPOTS*****************************");
+                        while(it.hasNext()){
+                            Map.Entry pair = (Map.Entry)it.next();
+                            System.out.println(pair.getKey() + " = " + pair.getValue());
+                            it.remove();
+                        }
+                        System.out.println("*********************HOSTPOTS*****************************");
+                    }
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -387,6 +449,13 @@ public class SecureCloudTPMService extends BaseService {
                             "TO REQUEST THE LIST OF THE HOST");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST,
                             SecureCloudTPMHelper.NAME, null);
+                }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_INSERT_PLATFORM)) {
+                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
+                            "TO INSERT A NEW HOSTPOT IN THE SECURE PLATFORM");
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
+                            SecureCloudTPMHelper.NAME, null);
+                    KeyPairCloud pack = (KeyPairCloud) command.getParams()[0];
+                    commandResponse.addParam(pack);
                 }
             }catch(Exception e){
                 System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");
