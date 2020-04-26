@@ -26,13 +26,13 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
      * @return
      */
     protected ACLMessage prepareResponse(ACLMessage request) {
-        System.out.println("PROCESSING THE REQUEST ATTESTATION IN THE DESTINY");
+        System.out.println("PROCESSING THE REQUEST ATTESTATION IN THE DESTINY IN THE RESPONSER AGENT");
         ACLMessage reply = request.createReply();
         return reply;
     }
 
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
-        System.out.println("PREPARING THE RESULT NOTIFICATION");
+        System.out.println("PREPARING THE RESULT NOTIFICATION IN THE RESPONSER AGENT");
         ACLMessage reply = request.createReply();
         return reply;
     }
@@ -42,7 +42,7 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
      * @param inform
      */
     protected void handleInform(ACLMessage inform){
-        System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM");
+        System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM IN THE RESPONSER AGENT");
     }
 
 
