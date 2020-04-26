@@ -3,6 +3,8 @@ package jade.core.CloudAgents;
 import jade.core.Location;
 import jade.core.ServiceHelper;
 
+import java.security.PublicKey;
+
 public interface SecureAgentTPMHelper extends ServiceHelper {
 
     /**
@@ -24,5 +26,5 @@ public interface SecureAgentTPMHelper extends ServiceHelper {
     /**
      * PUBLIC METHODS
      */
-    void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, Location caLocation, byte[] pubKey);
+    void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, Location caLocation, PublicKey pubKey);
 }

@@ -4,6 +4,10 @@ import jade.core.GenericCommand;
 import jade.core.Node;
 import jade.core.Service;
 import jade.core.VerticalCommand;
+import javafx.util.Pair;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureCloudTPMSlice {
 
@@ -13,8 +17,7 @@ public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureClo
             System.out.println("PROCEED TO DO THE COMMUNICATION WITH THE AMS OF THE MAIN PLATFORM IN THE PROXY");
             GenericCommand newCommand = new GenericCommand(SecureCloudTPMSlice.REMOTE_REQUEST_START,
                     SecureCloudTPMHelper.NAME, null);
-            KeyPairCloud keyPack = (KeyPairCloud) command.getParams()[0];
-            newCommand.addParam(keyPack);
+            newCommand.addParam(command.getParams()[0]);
             Node n = getNode();
             System.out.println("-> SENDING THE REQUEST START THROUGH A HORIZONTAL COMMAND TO THE AMS NODE "+
                     n.getName());
@@ -46,6 +49,7 @@ public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureClo
                                "REGISTER A NEW HOSTPOT");
             GenericCommand newCommand = new GenericCommand(SecureCloudTPMSlice.REMOTE_REQUEST_INSERT_PLATFORM,
                     SecureCloudTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
             Node n = getNode();
             System.out.println("-> SENDING THE REQUEST START THROUGH A HORIZONTAL COMMAND TO THE AMS NODE "+
                     n.getName());

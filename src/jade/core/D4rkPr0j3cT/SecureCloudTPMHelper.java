@@ -2,6 +2,9 @@ package jade.core.D4rkPr0j3cT;
 
 import jade.core.ServiceHelper;
 
+import java.security.PrivateKey;
+import java.security.PublicKey;
+
 public interface SecureCloudTPMHelper extends ServiceHelper {
 
     /**
@@ -23,7 +26,7 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
     /**
      * PUBLIC METHODS
      */
-    void doStartCloud(SecureCAPlatform secureCAPlatform);
+    void doStartCloud(SecureCAPlatform secureCAPlatform, PrivateKey priv, PublicKey pub);
     void listPlatforms(SecureCAPlatform secureCAPlatform);
     void doAcceptCloud(SecureCAPlatform secureCAPlatform, byte[] index);
 }

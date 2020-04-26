@@ -5,12 +5,9 @@ import javafx.util.Pair;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.util.ArrayList;
 
-import java.util.Base64;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -699,9 +696,6 @@ public class Agencia{
 
     }
 
-    public static byte[] getEKPub() {
-        return "hola".getBytes();
-    }
 
     /**
      * THIS METHOD IS USED TO DECIPHER TE CONTENT OF A REQUEST IN THE PLATFORM,
@@ -710,6 +704,58 @@ public class Agencia{
      * @return
      */
     public static KeyPairCloudPlatform decypher(Serializable contentObject) {
-
+        KeyPairCloudPlatform pp = null;
+        return pp;
     }
+
+    public static PrivateKey privateKeyPlatform = null;
+    public static PublicKey publicKeyPlatform = null;
+
+    public static void genKeyPair() throws NoSuchAlgorithmException, NoSuchProviderException{
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+        keyGen.initialize(1024, random);
+        KeyPair keyPair = keyGen.generateKeyPair();
+        PrivateKey privateKey = keyPair.getPrivate();
+        PublicKey publicKey = keyPair.getPublic();
+        privateKeyPlatform=privateKey;
+        publicKeyPlatform=publicKey;
+    }
+
+
+    public static Pair<PrivateKey, PublicKey> genKeyPairAgent() throws NoSuchAlgorithmException, NoSuchProviderException{
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
+        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+        keyGen.initialize(1024, random);
+        KeyPair keyPair = keyGen.generateKeyPair();
+        PrivateKey privateKey = keyPair.getPrivate();
+        PublicKey publicKey = keyPair.getPublic();
+        Pair<PrivateKey,PublicKey> sal = new Pair<PrivateKey,PublicKey>(privateKey,publicKey);
+        return sal;
+    }
+
+
+    public static PrivateKey getPrivateKey(){
+        return privateKeyPlatform;
+    }
+
+    public static PublicKey getPublicKey(){
+        return publicKeyPlatform;
+    }
+
+    public static byte[] encrypt(PublicKey key, byte[] plaintext) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+    {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        return cipher.doFinal(plaintext);
+    }
+
+
+    public static byte[] decrypt(PrivateKey key, byte[] ciphertext) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+    {
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, key);
+        return cipher.doFinal(ciphertext);
+    }
+
 }

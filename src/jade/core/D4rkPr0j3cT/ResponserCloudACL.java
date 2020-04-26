@@ -11,11 +11,18 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
+import javafx.util.Pair;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.PrivateKey;
 
 public class ResponserCloudACL extends SimpleAchieveREResponder {
 
     private Logger logger = Logger.getMyLogger(getClass().getName());
     private BaseService myService;
+    private PrivateKey privateKeyCA;
 
 
     public ResponserCloudACL(Agent ams, MessageTemplate mt, SecureCloudTPMService secureCloudTPMService) {
@@ -38,8 +45,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
              * REMEMBER, THE CONTENT OF THE ACL IS CIPHER BY THE PUBLICK KEY OF MY PLATFORM,
              * SO I NEED TO DECRYPT IT FIRST
              */
-            KeyPairCloudPlatform pack = Agencia.decypher(request.getContentObject());
-            command.addParam(pack);
+            command.addParam(request.getContentObject());
             myService.submit(command);
             System.out.println("THE PROCESS HAS BEEN COMPLETED SUCCESSFUL");
             String Response = "200";
@@ -47,6 +53,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
             reply.setPerformative(ACLMessage.INFORM);
             reply.setContent(Response);
         }catch(Exception se){
+            se.printStackTrace();
             System.out.println("THE PLATFORM COULD NOT REGISTER, TRY AGAIN LATER");
             se.printStackTrace();
             String Response = "500";

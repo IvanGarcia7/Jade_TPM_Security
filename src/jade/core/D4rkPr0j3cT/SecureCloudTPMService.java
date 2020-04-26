@@ -8,7 +8,11 @@ import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import javafx.util.Pair;
 
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -60,14 +64,14 @@ public class SecureCloudTPMService extends BaseService {
     Map<String, String> listRedirects = new HashMap<String, String>();
 
     //SECURE CLOUD KEY PAIR FROM A PLATFORM;
-    private byte [] privateKeyCA;
-    private byte [] publicKeyCA;
+    private PrivateKey privateKeyCA;
+    private PublicKey publicKeyCA;
 
     //DICT OF THE HOSTPOTS
-    Map<Location,byte []> HostpotsRegister = new HashMap<Location,byte []>();
+    Map<Location,PublicKey> HostpotsRegister = new HashMap<Location,PublicKey>();
 
     //DICT TO REGISTER THE PLATFORMS TO CONFIRM
-    Map<Location, byte []> pendingRedirects = new HashMap<Location, byte []>();
+    Map<Location, PublicKey> pendingRedirects = new HashMap<Location, PublicKey>();
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -221,8 +225,7 @@ public class SecureCloudTPMService extends BaseService {
          * OF THE MAIN PLATFORM IN MY ENVIRONMENT.
          * @param secureCAPlatform
          */
-        @Override
-        public synchronized void doStartCloud(SecureCAPlatform secureCAPlatform) {
+        public synchronized void doStartCloud(SecureCAPlatform secureCAPlatform,PrivateKey priv, PublicKey pub) {
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
                      .append(secureCAPlatform.getAID());
@@ -233,23 +236,9 @@ public class SecureCloudTPMService extends BaseService {
                     "THE SERVICE NEED ");
             GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_START,
                                                         SecureCloudTPMHelper.NAME, null);
-
+            Pair<PrivateKey,PublicKey> keypairgenerate = new Pair<PrivateKey,PublicKey>(priv,pub);
+            command.addParam(keypairgenerate);
             try{
-                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
-                SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-                keyGen.initialize(1024, random);
-
-                // Generate Key Pairs, a private key and a public key.
-                KeyPair keyPair = keyGen.generateKeyPair();
-                PrivateKey privateKey = keyPair.getPrivate();
-                PublicKey publicKey = keyPair.getPublic();
-
-                Base64.Encoder encoder = Base64.getEncoder();
-                System.out.println("privateKey: " + encoder.encodeToString(privateKey.getEncoded()));
-                System.out.println("publicKey: " + encoder.encodeToString(publicKey.getEncoded()));
-
-                KeyPairCloud Generated_Key = new KeyPairCloud(publicKey.getEncoded(),privateKey.getEncoded());
-                command.addParam(Generated_Key);
                 Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
                         Level.INFO, true, this.getClass().getName());
                 try {
@@ -259,7 +248,7 @@ public class SecureCloudTPMService extends BaseService {
                     e.printStackTrace();
                 }
             }catch(Exception e){
-                System.out.println("THERE ARE AN ERROR GENERATING KEYS");
+                System.out.println("THERE ARE AN ERROR STARTING THE CA");
                 e.printStackTrace();
             }
 
@@ -302,7 +291,6 @@ public class SecureCloudTPMService extends BaseService {
                 if(commandName.equals(SecureCloudTPMHelper.REQUEST_START)){
                     System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
                             "START THE HOTSPOTS");
-                    Object[] params = command.getParams();
                     SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
                     try{
                         obj.doCommunicateAMS(command);
@@ -349,10 +337,10 @@ public class SecureCloudTPMService extends BaseService {
                 if(CommandName.equals(SecureCloudTPMHelper.REQUEST_START)){
                     System.out.println("PROCESSING THE VERTICAL COMMAND START CLOUD REQUEST INTO THE " +
                                        "AMS DESTINATION CONTAINER");
-                    KeyPairCloud keyReceived = (KeyPairCloud) command.getParams()[0];
+                    Pair<PrivateKey,PublicKey> keyPairReceive = (Pair<PrivateKey, PublicKey>)command.getParams()[0];
                     System.out.println("INITIALIZING THE KEY PAIR RECEIVE");
-                    privateKeyCA = keyReceived.getPrivatePassword();
-                    publicKeyCA  = keyReceived.getPublicPassword();
+                    privateKeyCA = keyPairReceive.getKey();
+                    publicKeyCA  = keyPairReceive.getValue();
                     System.out.println("I'M IN THE AMS MAIN CONTAINER, AND THE KEY PAIR IS THE FOLLOWING: ");
                     System.out.println("NAME OF THE CONAINER: "+actualcontainer.getID().getName());
                     System.out.println("*********************SECRET*****************************");
@@ -442,8 +430,7 @@ public class SecureCloudTPMService extends BaseService {
                                        "TO START THE HOST");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_START,
                             SecureCloudTPMHelper.NAME, null);
-                    KeyPairCloud keyPack = (KeyPairCloud) command.getParams()[0];
-                    commandResponse.addParam(keyPack);
+                    commandResponse.addParam(command.getParams()[0]);
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_LIST)) {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
                             "TO REQUEST THE LIST OF THE HOST");
@@ -454,7 +441,20 @@ public class SecureCloudTPMService extends BaseService {
                             "TO INSERT A NEW HOSTPOT IN THE SECURE PLATFORM");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
                             SecureCloudTPMHelper.NAME, null);
-                    KeyPairCloud pack = (KeyPairCloud) command.getParams()[0];
+
+                    Pair<byte [],byte []> pairsender = (Pair<byte [],byte []>)command.getParams()[0];
+
+                    byte [] key = pairsender.getKey();
+                    byte [] object = pairsender.getValue();
+
+
+                    byte[] decryptedKey = Agencia.decrypt(privateKeyCA,key);
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length, "AES");
+
+                    Cipher aesCipher = Cipher.getInstance("AES");
+                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+                    byte[] byteObject = aesCipher.doFinal(object);
+                    KeyPairCloudPlatform pack = (KeyPairCloudPlatform) Agencia.deserialize(byteObject);
                     commandResponse.addParam(pack);
                 }
             }catch(Exception e){

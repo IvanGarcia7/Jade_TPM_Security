@@ -6,8 +6,11 @@ import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import javafx.util.Pair;
 
 
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -61,6 +64,11 @@ public class SecureAgentTPMService extends BaseService {
 
     //DICT OF THE HOSTPOTS
     Map<Location,byte []> HostpotsRegister = new HashMap<Location,byte []>();
+
+
+    private PrivateKey privKeyAgent;
+    private PublicKey pubKeyAgent;
+
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -209,7 +217,7 @@ public class SecureAgentTPMService extends BaseService {
          */
         @Override
         public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform,
-                                                   Location caLocation, byte[] pubKey){
+                                                   Location caLocation, PublicKey pubKey){
 
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
@@ -275,10 +283,12 @@ public class SecureAgentTPMService extends BaseService {
                      */
                     KeyPairCloudPlatform newPair = (KeyPairCloudPlatform)command.getParams()[0];
 
-                    byte [] ekPub = Agencia.getEKPub();
+                    //CREATE KEY PAIR FROM MY PLATFORM AGENT
+                    Pair<PrivateKey,PublicKey> pairAgent = Agencia.genKeyPairAgent();
+                    privKeyAgent=pairAgent.getKey();
+                    pubKeyAgent=pairAgent.getValue();
                     Location actualLocation = actualcontainer.here();
-                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(ekPub,actualLocation);
-
+                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(pubKeyAgent,actualLocation);
                     //SEND THE INFORMATION TO THE PLATFORM
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);

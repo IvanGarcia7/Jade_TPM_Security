@@ -3,6 +3,9 @@ package jade.core.D4rkPr0j3cT;
 import jade.core.*;
 import jade.core.SecureInterTPM.SecureInterTPMHelper;
 import jade.core.SecureTPM.Agencia;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.logging.Level;
 
 public class SecureCAPlatform extends Agent{
@@ -18,7 +21,7 @@ public class SecureCAPlatform extends Agent{
      * THAT IN THE FUTURE, ONE PERSONAL DESIGNED TO ID WILL PROCEED TO ACCEPT
      * SOME OF THESE PLATFORMS.
      */
-    public void doInitializeCA(){
+    public void doInitializeCA(PrivateKey priv, PublicKey pub){
         System.out.println("INITIALIZING THE SECURE CLOUD PLATFORM");
         StringBuilder sb = new StringBuilder();
         System.out.println(sb.toString());
@@ -27,7 +30,7 @@ public class SecureCAPlatform extends Agent{
             Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
                     Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
             System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
-            mobHelperCloud.doStartCloud(this);
+            mobHelperCloud.doStartCloud(this,priv,pub);
         }
         catch(ServiceException se) {
             System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");

@@ -3,18 +3,19 @@ package jade.core.CloudAgents;
 import jade.core.Location;
 
 import java.io.Serializable;
+import java.security.PublicKey;
 
 public class KeyPairCloudPlatform implements Serializable {
 
-    private byte [] publicPassword;
+    private PublicKey publicPassword;
     private Location locationPlatform;
 
-    public KeyPairCloudPlatform(byte [] publicP, Location locationP){
+    public KeyPairCloudPlatform(PublicKey publicP, Location locationP){
         publicPassword  = publicP;
         locationPlatform = locationP;
     }
 
-    public byte [] getPublicPassword(){
+    public PublicKey getPublicPassword(){
         return publicPassword;
     }
 

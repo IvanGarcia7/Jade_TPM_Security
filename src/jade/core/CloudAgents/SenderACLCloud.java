@@ -7,7 +7,12 @@ import jade.core.GenericCommand;
 import jade.core.SecureTPM.Agencia;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
+import javafx.util.Pair;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -39,20 +44,28 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
      */
     public ACLMessage prepareRequest(ACLMessage acl){
         try {
-            myMessage.setContentObject(packetAgent);
+            //Packet Agent need to be cipher with the public Key of the platform
+            PublicKey kpub = packetPlatform.getPublicPassword();
+            //cipher the message
+            //GENERATE OTP KEY
+
+            KeyGenerator generator = KeyGenerator.getInstance("AES");
+            generator.init(256); //INTERESTING TO TEST
+            SecretKey secKey = generator.generateKey();
+
+            Cipher aesCipher = Cipher.getInstance("AES");
+            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(packetAgent));
+
+
+            byte [] encryptedKey = Agencia.encrypt(kpub,secKey.getEncoded());
+            myMessage.setContentObject(new Pair<byte [],byte []>(encryptedKey,byteCipherObject));
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
         AID receiver = new AID("ams@"+packetPlatform.getLocationPlatform().getName(),AID.ISGUID);
-
-        System.out.println("SALCHICHAS");
-        System.out.println(packetPlatform.getLocationPlatform().getName());
-        System.out.println(packetPlatform.getLocationPlatform().getAddress());
-        System.out.println(packetPlatform.getLocationPlatform().getID());
-        System.out.println("SALCHICHAS");
-
         receiver.addAddresses(packetPlatform.getLocationPlatform().getAddress());
         System.out.println(receiver+" "+packetPlatform.getLocationPlatform().getAddress());
         myMessage.addReceiver(receiver);

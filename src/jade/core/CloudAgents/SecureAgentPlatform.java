@@ -5,6 +5,7 @@ import jade.core.Location;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
 
+import java.security.PublicKey;
 import java.util.logging.Level;
 
 public class SecureAgentPlatform extends Agent{
@@ -20,7 +21,7 @@ public class SecureAgentPlatform extends Agent{
      * THAT IN THE FUTURE, ONE PERSONAL DESIGNED TO ID WILL PROCEED TO ACCEPT
      * SOME OF THESE PLATFORMS.
      */
-    public void doInitializeAgent(Location CALocation, byte [] pubKey){
+    public void doInitializeAgent(Location CALocation, PublicKey pubKey){
         System.out.println("INITIALIZING THE SECURE CLOUD PLATFORM AGENT");
         StringBuilder sb = new StringBuilder();
         System.out.println(sb.toString());
