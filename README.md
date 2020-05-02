@@ -6,9 +6,9 @@ Also, I'm developing a kind of Onion-based protocol that can take advantage of a
 making use of some of Infineon's functionalities.
 
 My implementation Services are in the following dirs:
-* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM
+~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureIntraTPM
-* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureInterTPM
+~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureInterTPM
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureOnionTPM
 
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/D4rkPr0j3cT (NEW)
@@ -16,17 +16,17 @@ My implementation Services are in the following dirs:
 
 Here are some **basic examples** to demonstrate how the library works.
 
-## EXAMPLE INTRA PLATFORM:
+~~## EXAMPLE INTRA PLATFORM:
 
-* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container-name Pruebas1 -gui -service jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container-name Pruebas1 -gui -service jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas2  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas2  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas3  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas3  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-## INTRA PLATFORM PROTOCOL:
+~~## INTRA PLATFORM PROTOCOL:
 
-### EXECUTE THE FOLLOWING CODE:
+~~### EXECUTE THE FOLLOWING CODE:
 
 ```
 package org;
@@ -69,15 +69,15 @@ public class AgenteSeguro extends SecureAgent{
 }
 ```
 
-## EXAMPLE INTRA PLATFORM:
+~~## EXAMPLE INTRA PLATFORM:
 
-* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name Pruebas1 -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name Pruebas1 -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 5333 -accept-foreign-agents true -agents RASTREADOR:vom.Rastreator -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 5333 -accept-foreign-agents true -agents RASTREADOR:vom.Rastreator -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;
 
-### EXECUTE THE FOLLOWING CODE:
+~~### EXECUTE THE FOLLOWING CODE:
 
 ```
 package vom;
@@ -111,18 +111,18 @@ public class Rastreator extends SecureAgent implements Serializable{
 }
 ```
 
-*ON A INTRA-PLATFORM MOVE, COMMUNICATION IS POSSIBLE THROUGH HORIZONTAL AND VERTICAL COMMANDS,
+~~*ON A INTRA-PLATFORM MOVE, COMMUNICATION IS POSSIBLE THROUGH HORIZONTAL AND VERTICAL COMMANDS,
 HOWEVER, IN INTERCOMMUNICATION, YOU MUST SEND ACL MESSAGES* 
 
 
-## EXAMPLE ONION PROTOCOL:
+~~## EXAMPLE ONION PROTOCOL:
 
-* java -cp /Users/ivan/Desktop/onion.jar jade.Boot -gui -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService
+~~* java -cp /Users/ivan/Desktop/onion.jar jade.Boot -gui -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService
 
-* java -cp /Users/ivan/Desktop/onion.jar jade.Boot -container -container-name PRUEBAS -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService -agents DARK:vom.RASTREATOR
+~~* java -cp /Users/ivan/Desktop/onion.jar jade.Boot -container -container-name PRUEBAS -host localhost -port 4333 -services jade.core.SecureOnionTPM.SecureOnionTPMService -agents DARK:vom.RASTREATOR
 
 
-### EXECUTE THE FOLLOWING CODE:
+~~### EXECUTE THE FOLLOWING CODE:
 
 ```
 package vom;
