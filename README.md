@@ -18,7 +18,7 @@ Here are some **basic examples** to demonstrate how the library works.
 
 ~~## EXAMPLE INTRA PLATFORM:~~
 
-~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container-name Pruebas1 -gui -service jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;
+~~java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container-name Pruebas1 -gui -service jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;~~
 
 ~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name pruebas2  -services jade.core.mobility.AgentMobilityService;jade.core.SecureIntraTPM.SecureIntraTPMService;~~
 
