@@ -6,10 +6,10 @@ Also, I'm developing a kind of Onion-based protocol that can take advantage of a
 making use of some of Infineon's functionalities.
 
 My implementation Services are in the following dirs:
-~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM~~
-~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureIntraTPM~~
-~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureInterTPM~~
-~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureOnionTPM~~
+~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM~~ (DEPRECATED)
+~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureIntraTPM~~ (DEPRECATED)
+~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureInterTPM~~ (DEPRECATED)
+~~* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureOnionTPM~~ (DEPRECATED)
 
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/D4rkPr0j3cT (NEW)
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/CloudAgents (NEW)
@@ -22,7 +22,7 @@ Here are some **basic examples** to demonstrate how the library works.
 * -gui -host localhost -port 3334 -services jade.core.D4rkPr0j3cT.SecureCloudTPMService -agents CA:vom.CAPlatform
 * -gui -host localhost -port 4354 -services jade.core.CloudAgents.SecureAgentTPMService -agents CA:vom.CAAgent
 
-####RASPBERRY:
+#### RASPBERRY:
 
 * java -cp TPM.jar:test.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.D4rkPr0j3cT.SecureCloudTPMService -agents CA:vom.CAPlatform
 
