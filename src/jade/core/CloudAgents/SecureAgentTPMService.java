@@ -2,13 +2,16 @@ package jade.core.CloudAgents;
 
 import jade.core.*;
 import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
+import jade.core.SecureTPM.TPMHighLevel;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import javafx.util.Pair;
 
 
+
+import java.io.File;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.*;
@@ -68,6 +71,9 @@ public class SecureAgentTPMService extends BaseService {
 
     private PrivateKey privKeyAgent;
     private PublicKey pubKeyAgent;
+
+    private String contextEK="";
+    private String contextAK = "";
 
 
     /**
@@ -217,7 +223,8 @@ public class SecureAgentTPMService extends BaseService {
          */
         @Override
         public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform,
-                                                   Location caLocation, PublicKey pubKey){
+                                                   Location caLocation, PublicKey pubKey,
+                                                   String contextEK, String contextAK){
 
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
@@ -231,7 +238,7 @@ public class SecureAgentTPMService extends BaseService {
                     SecureAgentTPMHelper.NAME, null);
 
             //AT THIS POINT FETC PUBLIC KEY TPM
-            KeyPairCloudPlatform Generated_Pack = new KeyPairCloudPlatform(pubKey,caLocation);
+            KeyPairCloudPlatform Generated_Pack = new KeyPairCloudPlatform(pubKey,caLocation,contextEK,contextAK);
             command.addParam(Generated_Pack);
             Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
                     Level.INFO, true, this.getClass().getName());
@@ -281,20 +288,34 @@ public class SecureAgentTPMService extends BaseService {
                      * IN CASE OF THE FIRST AGENT AND FETCH THE PUBLICKEY AND THE LOCATION OF THIS CONTAINER.
                      * THEN, I CIPHER THIS DATA WITH THE PUBLICKEY OF THE CLOUD AND SEND IT WITH AN ACL MESSAGE.
                      */
-                    KeyPairCloudPlatform newPair = (KeyPairCloudPlatform)command.getParams()[0];
-
+                    KeyPairCloudPlatform PairReceive = (KeyPairCloudPlatform)command.getParams()[0];
+                    //DELETING CONTEXT
+                    KeyPairCloudPlatform newPair = new KeyPairCloudPlatform(PairReceive.getPublicPassword(),
+                                                   PairReceive.getLocationPlatform());
                     //CREATE KEY PAIR FROM MY PLATFORM AGENT
                     Pair<PrivateKey,PublicKey> pairAgent = Agencia.genKeyPairAgent();
                     privKeyAgent=pairAgent.getKey();
                     pubKeyAgent=pairAgent.getValue();
                     Location actualLocation = actualcontainer.here();
-                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(pubKeyAgent,actualLocation);
+                    contextEK = PairReceive.getContextEK();
+                    contextAK = PairReceive.getContextAK();
+                    //SAVE THE CONTEXT INTO THE AMS
+                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(pubKeyAgent,actualLocation,contextEK,
+                                                                                contextAK);
+                    //INITIALIZE THE REPO
+                    System.out.println("CREATING THE REPO: "+contextEK+" "+contextAK);
+                    Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK);
+                    System.out.println("GENERATING THE TEMPORAL DIR TO ATTESTATE:");
+                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"");
+                    //SERIALIZE ALL THREE MESSAGES AND THEM DELETE IT
+                    AttestationSerialized packet_signed = new AttestationSerialized("./"+actualLocation.getName());
                     //SEND THE INFORMATION TO THE PLATFORM
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
-                            new SenderACLCloud(message, requestPair, newPair, amsMainPlatform, SecureAgentTPMService.this)
+                            new SenderACLCloud(message, requestPair, newPair, amsMainPlatform, packet_signed,
+                                               SecureAgentTPMService.this)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
                 }

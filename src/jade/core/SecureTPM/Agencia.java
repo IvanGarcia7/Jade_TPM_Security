@@ -1,7 +1,7 @@
 package jade.core.SecureTPM;
 
 import jade.core.CloudAgents.KeyPairCloudPlatform;
-import javafx.util.Pair;
+
 
 import java.io.*;
 import java.nio.file.Files;
@@ -395,6 +395,8 @@ public class Agencia{
         return output.toByteArray();
     }
 
+
+
     /**
      * Transform array of bytes into an Object
      * @param data
@@ -757,5 +759,179 @@ public class Agencia{
         cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(ciphertext);
     }
+
+
+    public static int init_platform(String path,String contextEK,String contextAK){
+        int valuereturn = 0;
+        System.out.println("EXECUTING THE INIT FUNCTION: ");
+        new File(path).mkdirs();
+        String akpub_path = path+"/akpub.pem";
+
+        //FLUSH TPM NVRAM CONTENT TO SAVE THE NEW EK KEY
+        ProcessBuilder pb0 = new ProcessBuilder(
+                new String[]{
+                        "tpm2_evictcontrol",
+                        "-c", contextEK
+                }
+        );
+
+        //CREATE A NEW EK KEY AND SAVE INTO THE TPM
+        ProcessBuilder pb1 = new ProcessBuilder(
+                new String[]{
+                        "tpm2_createek",
+                        "-c", contextEK
+                }
+        );
+
+        //CREATE A NEW AK KEY AND SAVE INTO A TPM
+        ProcessBuilder pb2 = new ProcessBuilder(
+                new String[]{
+                        "tpm2_createak",
+                        "-C", contextEK,
+                        "-c", contextAK,
+                        "-G", "rsa",
+                        "-s", "rsassa",
+                        "-g", "sha256",
+                        "-u", akpub_path,
+                        "-f", "pem",
+                        "-n", "ak.name"
+                }
+        );
+
+        try{
+            Process p0 = pb0.start();
+            p0.waitFor();
+            pb1.redirectErrorStream(true);
+            pb2.redirectErrorStream(true);
+            Process p1 = pb1.start();
+
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p1.getInputStream()));
+            String line;
+            while((line=reader.readLine())!=null){
+                output.append(line+"\n");
+            }
+            valuereturn = p1.waitFor();
+            System.out.println(output);
+            if(valuereturn==0){
+                Process p2 = pb2.start();
+                reader = new BufferedReader(new InputStreamReader(p1.getInputStream()));
+                while((line=reader.readLine())!=null){
+                    output.append(line+"\n");
+                }
+                valuereturn = p2.waitFor();
+                System.out.println(output);
+            }
+        }catch(Exception e){
+            System.out.println("There are an error in the process");
+            valuereturn = 1;
+        }
+        return valuereturn;
+    }
+
+
+    public static int attestation_files(String path,String context,String nonce){
+        int valuereturn = 0;
+        System.out.println("EXECUTING THE SALIDA FUNCTION: ");
+        new File(path).mkdirs();
+        String sing_path = path+"/sign.out";
+        String pcr_path = path+"/pcr.out";
+        String quote_path = path+"/quote.out";
+        ProcessBuilder pb1 = new ProcessBuilder(
+                new String[]{
+                        "tpm2_quote",
+                        "-c", context,
+                        "-l", "sha256:15,16,22",
+                        "-q", nonce,
+                        "-m", quote_path,
+                        "-s", sing_path,
+                        "-o", pcr_path,
+                        "-g", "sha256"
+                }
+        );
+        try{
+            pb1.redirectErrorStream(true);
+            Process p = pb1.start();
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while((line=reader.readLine())!=null){
+                output.append(line+"\n");
+            }
+            int exitVal = p.waitFor();
+            System.out.println(output);
+            System.out.println(exitVal);
+        }catch(Exception e){
+            System.out.println("There are an error in the process");
+            valuereturn = 1;
+        }
+        return valuereturn;
+    }
+
+    public static int check_attestation_files(String path,String nonce){
+        int valuereturn = 0;
+        String sing_path = path+"/sign.out";
+        String pcr_path = path+"/pcr.out";
+        String quote_path = path+"/quote.out";
+        System.out.println("EXECUTING THE CHECK FUNCTION: ");
+        String akpub_path = path+"/akpub.pem";
+        ProcessBuilder pb1 = new ProcessBuilder(
+                new String[]{
+                        "tpm2_checkquote",
+                        "-u", akpub_path,
+                        "-m", quote_path,
+                        "-s", sing_path,
+                        "-f", pcr_path,
+                        "-g", "sha256",
+                        "-q", nonce
+                }
+        );
+        try{
+            pb1.redirectErrorStream(true);
+            Process p = pb1.start();
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while((line=reader.readLine())!=null){
+                output.append(line+"\n");
+            }
+            int exitVal = p.waitFor();
+            System.out.println(output);
+            System.out.println(exitVal);
+        }catch(Exception e){
+            System.out.println("There are an error in the process");
+            valuereturn = 1;
+        }
+        return valuereturn;
+    }
+
+    public static String computeSHA256(String pathPCRFile) throws Exception{
+        FileInputStream fis = new FileInputStream(pathPCRFile);
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] byteArray = new byte[1024];
+        int bytesCount = 0;
+        while ((bytesCount = fis.read(byteArray)) != -1) {
+            digest.update(byteArray, 0, bytesCount);
+        };
+        fis.close();
+        byte[] bytes = digest.digest();
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< bytes.length ;i++){
+            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        System.out.println(sb.toString());
+        return sb.toString();
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }

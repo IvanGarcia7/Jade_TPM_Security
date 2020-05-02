@@ -1,18 +1,22 @@
 package jade.core.D4rkPr0j3cT;
 
 import jade.core.*;
+import jade.core.CloudAgents.AttestationSerialized;
 import jade.core.CloudAgents.KeyPairCloudPlatform;
+import jade.core.CloudAgents.RequestSecure;
 import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
 import jade.core.SecureTPM.SecureAgent;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import javafx.util.Pair;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.security.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -68,10 +72,10 @@ public class SecureCloudTPMService extends BaseService {
     private PublicKey publicKeyCA;
 
     //DICT OF THE HOSTPOTS
-    Map<Location,PublicKey> HostpotsRegister = new HashMap<Location,PublicKey>();
+    Map<Location,Pair<PublicKey,String>> HostpotsRegister = new HashMap<Location,Pair<PublicKey,String>>();
 
     //DICT TO REGISTER THE PLATFORMS TO CONFIRM
-    Map<Location, PublicKey> pendingRedirects = new HashMap<Location, PublicKey>();
+    Map<Location, Pair<PublicKey,String>> pendingRedirects = new HashMap<Location, Pair<PublicKey,String>>();
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -360,7 +364,8 @@ public class SecureCloudTPMService extends BaseService {
                     }
                     System.out.println("*********************HOSTPOTS*****************************");
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
-                    KeyPairCloudPlatform pack = (KeyPairCloudPlatform) command.getParams()[0];
+                    RequestSecure packSecure = (RequestSecure) command.getParams()[0];
+                    KeyPairCloudPlatform pack = packSecure.getPacketAgent();
                     System.out.println("*********************NEW REQUEST*****************************");
                     System.out.println("LOCATION -> "+pack.getLocationPlatform());
                     System.out.println("PUBLIC PASSWORD -> "+pack.getPublicPassword());
@@ -370,31 +375,68 @@ public class SecureCloudTPMService extends BaseService {
                     }else if(HostpotsRegister.get(pack.getLocationPlatform())!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
                     }else{
-                        System.out.println("DO YOU WANT TO VALIDATE IT NOW Y/N?");
-                        Scanner sc = new Scanner(System.in);
-                        String response = sc.nextLine();
+                        System.out.println("PCRS LIST:");
+                        String temPath = "./temp";
+                        new File(temPath).mkdir();
+                        System.out.println("DESERIALIZE THEIR INFORMATION");
+                        AttestationSerialized packetReceive = packSecure.getPacket_signed();
+                        try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
+                            stream.write(packetReceive.getAIKPub());
+                        }
+                        try (FileOutputStream stream = new FileOutputStream(temPath+"/sign.out")) {
+                            stream.write(packetReceive.getSign());
+                        }
+                        try (FileOutputStream stream = new FileOutputStream(temPath+"/pcr.out")) {
+                            stream.write(packetReceive.getMessage());
+                        }
+                        try (FileOutputStream stream = new FileOutputStream(temPath+"/quote.out")) {
+                            stream.write(packetReceive.getQuoted());
+                        }
+                        int result = Agencia.check_attestation_files(temPath,"");
 
-                        KeyPairCloudPlatform packrequest = (KeyPairCloudPlatform) command.getParams()[0];
-                        Iterator it = null;
-                        //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
-                        if(response.toUpperCase().equals("Y")){
-                            System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
-                            HostpotsRegister.put(packrequest.getLocationPlatform(),packrequest.getPublicPassword());
-                            System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST");
-                            it = HostpotsRegister.entrySet().iterator();
-                        }else {
-                            System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
-                            pendingRedirects.put(packrequest.getLocationPlatform(),packrequest.getPublicPassword());
-                            it = pendingRedirects.entrySet().iterator();
-                            System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
+                        //CREATING THE DIRECTORY FOR THE PLATFORM
+                        new File("./SecurePlatforms").mkdirs();
+                        new File("./SecurePlatforms/"+pack.getLocationPlatform().getName()).mkdirs();
+                        //SAVING THE AIK
+                        try (FileOutputStream stream = new FileOutputStream("./SecurePlatforms/"+
+                                                                             pack.getLocationPlatform().getName()
+                                                                             +"/akpub.pem")) {
+                            stream.write(packetReceive.getAIKPub());
                         }
-                        System.out.println("*********************HOSTPOTS*****************************");
-                        while(it.hasNext()){
-                            Map.Entry pair = (Map.Entry)it.next();
-                            System.out.println(pair.getKey() + " = " + pair.getValue());
-                            it.remove();
+                        if(result==0){
+                            System.out.println("DO YOU WANT TO VALIDATE IT NOW Y/N?");
+                            Scanner sc = new Scanner(System.in);
+                            String response = sc.nextLine();
+                            pack = packSecure.getPacketAgent();
+                            Iterator it = null;
+                            //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
+                            System.out.println("COMPUTING THE HASH");
+                            String hash = Agencia.computeSHA256(temPath+"/pcr.out");
+                            Pair accepted = new Pair(pack.getPublicPassword(),hash);
+                            if(response.toUpperCase().equals("Y")){
+                                System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
+                                HostpotsRegister.put(pack.getLocationPlatform(),accepted);
+                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST");
+                                it = HostpotsRegister.entrySet().iterator();
+                            }else {
+                                System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
+                                pendingRedirects.put(pack.getLocationPlatform(),accepted);
+                                it = pendingRedirects.entrySet().iterator();
+                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
+                            }
+                            System.out.println("*********************HOSTPOTS*****************************");
+                            while(it.hasNext()){
+                                Map.Entry pair = (Map.Entry)it.next();
+                                Pair iteration = (Pair)pair.getValue();
+                                System.out.println(pair.getKey() + " = " + iteration.getValue());
+                                it.remove();
+                            }
+                            System.out.println("*********************HOSTPOTS*****************************");
+                        }else{
+                            System.out.println("ERROR READING THE ATTESTATION DATA.");
                         }
-                        System.out.println("*********************HOSTPOTS*****************************");
+                        //DELETE TEMP FILE
+                        Arrays.stream(new File(temPath).listFiles()).forEach(File::delete);
                     }
                 }
             }catch(Exception ex){
@@ -454,7 +496,7 @@ public class SecureCloudTPMService extends BaseService {
                     Cipher aesCipher = Cipher.getInstance("AES");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
                     byte[] byteObject = aesCipher.doFinal(object);
-                    KeyPairCloudPlatform pack = (KeyPairCloudPlatform) Agencia.deserialize(byteObject);
+                    RequestSecure pack = (RequestSecure) Agencia.deserialize(byteObject);
                     commandResponse.addParam(pack);
                 }
             }catch(Exception e){

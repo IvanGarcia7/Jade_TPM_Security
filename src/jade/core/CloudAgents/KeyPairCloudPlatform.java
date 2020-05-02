@@ -9,6 +9,15 @@ public class KeyPairCloudPlatform implements Serializable {
 
     private PublicKey publicPassword;
     private Location locationPlatform;
+    private String contextEK;
+    private String contextAK;
+
+    public KeyPairCloudPlatform(PublicKey publicP, Location locationP,String contextek, String contextak){
+        publicPassword  = publicP;
+        locationPlatform = locationP;
+        contextEK = contextek;
+        contextAK = contextak;
+    }
 
     public KeyPairCloudPlatform(PublicKey publicP, Location locationP){
         publicPassword  = publicP;
@@ -21,5 +30,13 @@ public class KeyPairCloudPlatform implements Serializable {
 
     public Location getLocationPlatform(){
         return locationPlatform;
+    }
+
+    public String getContextEK(){
+        return contextEK;
+    }
+
+    public String getContextAK(){
+        return contextAK;
     }
 }

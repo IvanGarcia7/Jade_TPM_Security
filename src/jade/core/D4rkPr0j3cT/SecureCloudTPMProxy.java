@@ -4,7 +4,7 @@ import jade.core.GenericCommand;
 import jade.core.Node;
 import jade.core.Service;
 import jade.core.VerticalCommand;
-import javafx.util.Pair;
+
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

@@ -5,9 +5,10 @@ import jade.core.Agent;
 import jade.core.BaseService;
 import jade.core.GenericCommand;
 import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
-import javafx.util.Pair;
+
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -21,18 +22,19 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
     private ACLMessage myMessage = null;
     private KeyPairCloudPlatform packetPlatform = null;
     private KeyPairCloudPlatform packetAgent = null;
-    private Agent myAgent = null;
     private BaseService myService;
+    private AttestationSerialized myAttestation = null;
 
     public SenderACLCloud(ACLMessage message, KeyPairCloudPlatform requestPairAgent,
                           KeyPairCloudPlatform requestPairPlatform, Agent amsMainPlatform,
-                          SecureAgentTPMService secureAgentTPMService) {
+                          AttestationSerialized packet_signed, SecureAgentTPMService secureAgentTPMService) {
         super(amsMainPlatform,message);
         myMessage=message;
         packetPlatform = requestPairPlatform;
         packetAgent = requestPairAgent;
         myAgent = amsMainPlatform;
         myService = secureAgentTPMService;
+        myAttestation=packet_signed;
     }
 
     /**
@@ -48,16 +50,14 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
             PublicKey kpub = packetPlatform.getPublicPassword();
             //cipher the message
             //GENERATE OTP KEY
-
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256); //INTERESTING TO TEST
             SecretKey secKey = generator.generateKey();
-
             Cipher aesCipher = Cipher.getInstance("AES");
             aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(packetAgent));
-
-
+            //PACKEST REQUEST TO SECUREPLATFORM
+            RequestSecure newRequestSecure = new RequestSecure(packetAgent,myAttestation);
+            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(newRequestSecure));
             byte [] encryptedKey = Agencia.encrypt(kpub,secKey.getEncoded());
             myMessage.setContentObject(new Pair<byte [],byte []>(encryptedKey,byteCipherObject));
         }

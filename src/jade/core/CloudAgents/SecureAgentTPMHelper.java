@@ -26,5 +26,6 @@ public interface SecureAgentTPMHelper extends ServiceHelper {
     /**
      * PUBLIC METHODS
      */
-    void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, Location caLocation, PublicKey pubKey);
+    void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, Location caLocation, PublicKey pubKey,
+                           String contextEK, String contextAK);
 }

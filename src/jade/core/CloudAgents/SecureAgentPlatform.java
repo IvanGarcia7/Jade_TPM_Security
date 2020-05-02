@@ -21,7 +21,7 @@ public class SecureAgentPlatform extends Agent{
      * THAT IN THE FUTURE, ONE PERSONAL DESIGNED TO ID WILL PROCEED TO ACCEPT
      * SOME OF THESE PLATFORMS.
      */
-    public void doInitializeAgent(Location CALocation, PublicKey pubKey){
+    public void doInitializeAgent(Location CALocation, PublicKey pubKey,String contextEK, String contextAK){
         System.out.println("INITIALIZING THE SECURE CLOUD PLATFORM AGENT");
         StringBuilder sb = new StringBuilder();
         System.out.println(sb.toString());
@@ -30,7 +30,7 @@ public class SecureAgentPlatform extends Agent{
             Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
                     Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
             System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
-            mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey);
+            mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey, contextEK,  contextAK);
         }
         catch(ServiceException se) {
             System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");
