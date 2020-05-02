@@ -71,7 +71,7 @@ public class AgenteSeguro extends SecureAgent{
 
 ~~## EXAMPLE INTRA PLATFORM:~~
 
-~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;~~
+~~java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -gui -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;~~
 
 ~~* java -cp /Users/ivan/Desktop/D3fc0M.jar jade.Boot -container -container-name Pruebas1 -host localhost -port 4333 -accept-foreign-agents true -services jade.core.migration.InterPlatformMobilityService;jade.core.mobility.AgentMobilityService;jade.core.SecureInterTPM.SecureInterTPMService;jade.core.SecureIntraTPM.SecureIntraTPMService;~~
 
@@ -111,8 +111,8 @@ public class Rastreator extends SecureAgent implements Serializable{
 }
 ```
 
-~~*ON A INTRA-PLATFORM MOVE, COMMUNICATION IS POSSIBLE THROUGH HORIZONTAL AND VERTICAL COMMANDS,
-HOWEVER, IN INTERCOMMUNICATION, YOU MUST SEND ACL MESSAGES* ~~
+~~ON A INTRA-PLATFORM MOVE, COMMUNICATION IS POSSIBLE THROUGH HORIZONTAL AND VERTICAL COMMANDS,
+HOWEVER, IN INTERCOMMUNICATION, YOU MUST SEND ACL MESSAGES~~
 
 
 ~~## EXAMPLE ONION PROTOCOL:~~
