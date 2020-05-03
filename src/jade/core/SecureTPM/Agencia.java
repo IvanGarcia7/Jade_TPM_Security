@@ -924,7 +924,19 @@ public class Agencia{
     }
 
 
-
+    public static void deleteFolder(File dir){
+        if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files != null && files.length > 0) {
+                for (File aFile : files) {
+                    deleteFolder(aFile);
+                }
+            }
+            dir.delete();
+        } else {
+            dir.delete();
+        }
+    }
 
 
 

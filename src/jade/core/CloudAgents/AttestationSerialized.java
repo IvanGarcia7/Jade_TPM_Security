@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Files;
 
+import jade.core.SecureTPM.Agencia;
+
 public class AttestationSerialized implements Serializable {
 
     private byte [] AIKPub;
@@ -19,13 +21,13 @@ public class AttestationSerialized implements Serializable {
         try{
             AIKPub = Files.readAllBytes(aik.toPath());
             Sign = Files.readAllBytes(sign.toPath());
-            sign.delete();
             Quoted = Files.readAllBytes(quoted.toPath());
-            quoted.delete();
             Message = Files.readAllBytes(message.toPath());
-            message.delete();
+            File folderParent = new File(path);
+            Agencia.deleteFolder(folderParent);
         }catch(Exception e){
             System.out.println("ERROR READING THE FILES TO INIT THE ATTESTATION");
+            e.printStackTrace();
         }
     }
 
@@ -44,4 +46,7 @@ public class AttestationSerialized implements Serializable {
     public byte[] getSign() {
         return Sign;
     }
+
+
+
 }

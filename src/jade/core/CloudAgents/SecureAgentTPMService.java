@@ -12,6 +12,7 @@ import jade.lang.acl.MessageTemplate;
 
 
 import java.io.File;
+import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.*;
@@ -74,6 +75,8 @@ public class SecureAgentTPMService extends BaseService {
 
     private String contextEK="";
     private String contextAK = "";
+
+    private byte[] AIKPub;
 
 
     /**
@@ -307,6 +310,8 @@ public class SecureAgentTPMService extends BaseService {
                     Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK);
                     System.out.println("GENERATING THE TEMPORAL DIR TO ATTESTATE:");
                     Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"");
+                    File AIKFile = new File("./"+actualLocation.getName()+"/akpub.pem");
+                    AIKPub = Files.readAllBytes(AIKFile.toPath());
                     //SERIALIZE ALL THREE MESSAGES AND THEM DELETE IT
                     AttestationSerialized packet_signed = new AttestationSerialized("./"+actualLocation.getName());
                     //SEND THE INFORMATION TO THE PLATFORM

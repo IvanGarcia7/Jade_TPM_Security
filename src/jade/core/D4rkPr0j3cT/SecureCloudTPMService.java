@@ -72,10 +72,10 @@ public class SecureCloudTPMService extends BaseService {
     private PublicKey publicKeyCA;
 
     //DICT OF THE HOSTPOTS
-    Map<Location,Pair<PublicKey,String>> HostpotsRegister = new HashMap<Location,Pair<PublicKey,String>>();
+    Map<Location,SecureInformationCloud> HostpotsRegister = new HashMap<Location,SecureInformationCloud>();
 
     //DICT TO REGISTER THE PLATFORMS TO CONFIRM
-    Map<Location, Pair<PublicKey,String>> pendingRedirects = new HashMap<Location, Pair<PublicKey,String>>();
+    Map<Location, SecureInformationCloud> pendingRedirects = new HashMap<Location, SecureInformationCloud>();
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -393,16 +393,6 @@ public class SecureCloudTPMService extends BaseService {
                             stream.write(packetReceive.getQuoted());
                         }
                         int result = Agencia.check_attestation_files(temPath,"");
-
-                        //CREATING THE DIRECTORY FOR THE PLATFORM
-                        new File("./SecurePlatforms").mkdirs();
-                        new File("./SecurePlatforms/"+pack.getLocationPlatform().getName()).mkdirs();
-                        //SAVING THE AIK
-                        try (FileOutputStream stream = new FileOutputStream("./SecurePlatforms/"+
-                                                                             pack.getLocationPlatform().getName()
-                                                                             +"/akpub.pem")) {
-                            stream.write(packetReceive.getAIKPub());
-                        }
                         if(result==0){
                             System.out.println("DO YOU WANT TO VALIDATE IT NOW Y/N?");
                             Scanner sc = new Scanner(System.in);
@@ -412,31 +402,31 @@ public class SecureCloudTPMService extends BaseService {
                             //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath+"/pcr.out");
+                            SecureInformationCloud saveRequest = new SecureInformationCloud(pack.getPublicPassword(),hash,packetReceive.getAIKPub());
+                            Agencia.deleteFolder(new File(temPath));
                             Pair accepted = new Pair(pack.getPublicPassword(),hash);
                             if(response.toUpperCase().equals("Y")){
                                 System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
-                                HostpotsRegister.put(pack.getLocationPlatform(),accepted);
-                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST");
+                                HostpotsRegister.put(pack.getLocationPlatform(),saveRequest);
+                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST "+HostpotsRegister.size());
                                 it = HostpotsRegister.entrySet().iterator();
                             }else {
                                 System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
-                                pendingRedirects.put(pack.getLocationPlatform(),accepted);
+                                pendingRedirects.put(pack.getLocationPlatform(),saveRequest);
                                 it = pendingRedirects.entrySet().iterator();
                                 System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
                             }
                             System.out.println("*********************HOSTPOTS*****************************");
                             while(it.hasNext()){
                                 Map.Entry pair = (Map.Entry)it.next();
-                                Pair iteration = (Pair)pair.getValue();
-                                System.out.println(pair.getKey() + " = " + iteration.getValue());
-                                it.remove();
+                                SecureInformationCloud iteration = (SecureInformationCloud)pair.getValue();
+                                System.out.println(pair.getKey() + " = " + iteration.getSha256());
                             }
                             System.out.println("*********************HOSTPOTS*****************************");
                         }else{
                             System.out.println("ERROR READING THE ATTESTATION DATA.");
                         }
-                        //DELETE TEMP FILE
-                        Arrays.stream(new File(temPath).listFiles()).forEach(File::delete);
+
                     }
                 }
             }catch(Exception ex){
