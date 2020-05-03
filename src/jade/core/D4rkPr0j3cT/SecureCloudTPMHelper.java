@@ -20,6 +20,7 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
     static final String REQUEST_INSERT_PLATFORM = "INSERT_REQUEST";
     static final String REQUEST_ACCEPT_PLATFORM = "ACCEPT_REQUEST";
     static final String REQUEST_PACK_PLATFORM   = "PACK_REQUEST";
+    static final String REQUEST_MIGRATE_PLATFORM   = "MIGRATE_REQUEST";
     public static final boolean DEBUG = true;
 
 

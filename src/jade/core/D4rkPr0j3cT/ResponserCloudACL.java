@@ -31,32 +31,59 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
      * @return
      */
     protected ACLMessage prepareResponse(ACLMessage request) {
-        System.out.println("SAVING THE PLATFORM WITHIN THE DIRECTORY");
-        GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
-                SecureCloudTPMHelper.NAME, null);
         ACLMessage reply = null;
-        try{
-            /**
-             * REMEMBER, THE CONTENT OF THE ACL IS CIPHER BY THE PUBLICK KEY OF MY PLATFORM,
-             * SO I NEED TO DECRYPT IT FIRST
-             */
-            command.addParam(request.getContentObject());
-            myService.submit(command);
-            System.out.println("THE PROCESS HAS BEEN COMPLETED SUCCESSFUL");
-            String Response = "200";
-            reply = request.createReply();
-            reply.setPerformative(ACLMessage.INFORM);
-            reply.setContent(Response);
-        }catch(Exception se){
-            se.printStackTrace();
-            System.out.println("THE PLATFORM COULD NOT REGISTER, TRY AGAIN LATER");
-            se.printStackTrace();
-            String Response = "500";
-            reply = request.createReply();
-            reply.setPerformative(ACLMessage.INFORM);
-            reply.setContent(Response);
-        }
-        return reply;
+       if(request.getOntology().equals("INSERT_REQUEST")){
+           System.out.println("SAVING THE PLATFORM WITHIN THE DIRECTORY");
+           GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
+                   SecureCloudTPMHelper.NAME, null);
+           try{
+               /**
+                * REMEMBER, THE CONTENT OF THE ACL IS CIPHER BY THE PUBLICK KEY OF MY PLATFORM,
+                * SO I NEED TO DECRYPT IT FIRST
+                */
+               command.addParam(request.getContentObject());
+               myService.submit(command);
+               System.out.println("THE PROCESS HAS BEEN COMPLETED SUCCESSFUL");
+               String Response = "200";
+               reply = request.createReply();
+               reply.setPerformative(ACLMessage.INFORM);
+               reply.setContent(Response);
+           }catch(Exception se){
+               se.printStackTrace();
+               System.out.println("THE PLATFORM COULD NOT REGISTER, TRY AGAIN LATER");
+               se.printStackTrace();
+               String Response = "500";
+               reply = request.createReply();
+               reply.setPerformative(ACLMessage.INFORM);
+               reply.setContent(Response);
+           }
+       }else if(request.getOntology().equals("MIGRATE_REQUEST")){
+           System.out.println("ATTEMPT TO MIGRATE THE PLATFORM WITHIN THE DIRECTORY");
+           GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
+                   SecureCloudTPMHelper.NAME, null);
+           try{
+               /**
+                * REMEMBER, THE CONTENT OF THE ACL IS CIPHER BY THE PUBLICK KEY OF MY PLATFORM,
+                * SO I NEED TO DECRYPT IT FIRST
+                */
+               command.addParam(request.getContentObject());
+               myService.submit(command);
+               System.out.println("THE PROCESS HAS BEEN COMPLETED SUCCESSFUL");
+               String Response = "200";
+               reply = request.createReply();
+               reply.setPerformative(ACLMessage.INFORM);
+               reply.setContent(Response);
+           }catch(Exception se){
+               se.printStackTrace();
+               System.out.println("THE PLATFORM COULD NOT REGISTER, TRY AGAIN LATER");
+               se.printStackTrace();
+               String Response = "500";
+               reply = request.createReply();
+               reply.setPerformative(ACLMessage.INFORM);
+               reply.setContent(Response);
+           }
+       }
+       return reply;
     }
 
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {

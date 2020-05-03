@@ -11,6 +11,8 @@ public class KeyPairCloudPlatform implements Serializable {
     private Location locationPlatform;
     private String contextEK;
     private String contextAK;
+    private Location locationDestiny;
+    private Location myLocation;
 
     public KeyPairCloudPlatform(PublicKey publicP, Location locationP,String contextek, String contextak){
         publicPassword  = publicP;
@@ -23,6 +25,20 @@ public class KeyPairCloudPlatform implements Serializable {
         publicPassword  = publicP;
         locationPlatform = locationP;
     }
+
+    public KeyPairCloudPlatform(PublicKey publicP, Location locationP, Location destiny, Location myLoc){
+        publicPassword  = publicP;
+        locationPlatform = locationP;
+        locationDestiny=destiny;
+        myLocation = myLoc;
+    }
+
+    public KeyPairCloudPlatform(Location myLoc, Location destiny){
+        myLocation=myLoc;
+        locationDestiny=destiny;
+    }
+
+
 
     public PublicKey getPublicPassword(){
         return publicPassword;
@@ -38,5 +54,13 @@ public class KeyPairCloudPlatform implements Serializable {
 
     public String getContextAK(){
         return contextAK;
+    }
+
+    public Location getLocationDestiny(){
+        return locationDestiny;
+    }
+
+    public Location getMyLocation(){
+        return myLocation;
     }
 }

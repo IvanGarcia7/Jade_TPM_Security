@@ -39,6 +39,26 @@ public class SecureAgentPlatform extends Agent{
         }
     }
 
+    public void doSecureMigration(Location destiny){
+        System.out.println("EXECUTING THE MIGRATION PROCESS");
+        StringBuilder sb = new StringBuilder();
+        System.out.println(sb.toString());
+        try {
+            initmobHelperCloud();
+            Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
+                    Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
+            System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
+            mobHelperCloudPlatform.doStartMigration(this, destiny);
+        }
+        catch(ServiceException se) {
+            System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");
+            se.printStackTrace();
+            return;
+        }
+    }
+
+
+
     /**
      * CALL THIS FUNCTION TO INICALIZE THE CLOUD SERVICE
      * @throws ServiceException

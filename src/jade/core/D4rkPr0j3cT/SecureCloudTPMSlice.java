@@ -13,6 +13,7 @@ public interface SecureCloudTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_INSERT_PLATFORM = "3";
     static final String REMOTE_REQUEST_ACCEPT_PLATFORM = "4";
     static final String REMOTE_REQUEST_PACK_PLATFORM   = "5";
+    static final String REMOTE_REQUEST_MIGRATE_PLATFORM   = "6";
 
     /**
      * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
@@ -20,4 +21,5 @@ public interface SecureCloudTPMSlice extends Service.Slice {
     void doCommunicateAMS(VerticalCommand command);
     void doRequestListAMS(VerticalCommand command);
     void doInsertHostpotAMS(VerticalCommand command);
+    void doStartAttestationHostpotAMS(VerticalCommand command);
 }

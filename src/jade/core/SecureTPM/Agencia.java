@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.security.*;
 import java.util.ArrayList;
-
+import java.util.UUID;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -936,6 +936,10 @@ public class Agencia{
         } else {
             dir.delete();
         }
+    }
+
+    public static String getRandomChallengue(){
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
 

@@ -78,6 +78,9 @@ public class SecureAgentTPMService extends BaseService {
 
     private byte[] AIKPub;
 
+    public Location CALocation;
+    public PublicKey CAKey;
+
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -194,9 +197,7 @@ public class SecureAgentTPMService extends BaseService {
         MessageTemplate mt =
                 MessageTemplate.and(
                         MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-                        MessageTemplate.or(
-                                MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_INSERT_PLATFORM),
-                                MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_PACK_PLATFORM)));
+                        MessageTemplate.MatchAll());
         ResponserAgentACL resp = new ResponserAgentACL(ams, mt, SecureAgentTPMService.this);
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
@@ -252,6 +253,29 @@ public class SecureAgentTPMService extends BaseService {
                 e.printStackTrace();
             }
         }
+
+        @Override
+        public void doStartMigration(SecureAgentPlatform secureAgentPlatform, Location destiny) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS TO MOVE AN AGENT HAS JUST STARTED NAME AGENT:")
+                    .append(secureAgentPlatform.getAID());
+            System.out.println(sb.toString());
+            Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
+                    Level.INFO, true, this.getClass().getName());
+            System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
+                    "THE SERVICE NEED ");
+            GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
+                    SecureAgentTPMHelper.NAME, null);
+            command.addParam(destiny);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
+                    Level.INFO, true, this.getClass().getName());
+            try {
+                System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
+                SecureAgentTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private class CommandSourceSink implements Sink {
@@ -267,6 +291,16 @@ public class SecureAgentTPMService extends BaseService {
                     SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
                     try{
                         obj.doCommunicateAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM)){
+                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
+                            "MIGRATE THE AGENT");
+                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doMigrateAMS(command);
                     }catch(Exception ie){
                         System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
@@ -292,6 +326,8 @@ public class SecureAgentTPMService extends BaseService {
                      * THEN, I CIPHER THIS DATA WITH THE PUBLICKEY OF THE CLOUD AND SEND IT WITH AN ACL MESSAGE.
                      */
                     KeyPairCloudPlatform PairReceive = (KeyPairCloudPlatform)command.getParams()[0];
+                    CALocation = PairReceive.getLocationPlatform();
+                    CAKey = PairReceive.getPublicPassword();
                     //DELETING CONTEXT
                     KeyPairCloudPlatform newPair = new KeyPairCloudPlatform(PairReceive.getPublicPassword(),
                                                    PairReceive.getLocationPlatform());
@@ -323,6 +359,17 @@ public class SecureAgentTPMService extends BaseService {
                                                SecureAgentTPMService.this)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
+                }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM)){
+                    //Creo un mensaje cifrado con la clave publica de la plataforma segura
+                    AID amsMain = new AID("ams", false);
+                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                    Location destiny = (Location) command.getParams()[0];
+                    KeyPairCloudPlatform newPack = new KeyPairCloudPlatform(CAKey,CALocation,destiny,actualcontainer.here());
+                    amsMainPlatform.addBehaviour(
+                            new SenderACLMigration(message, amsMainPlatform,
+                                    SecureAgentTPMService.this, newPack)
+                    );
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -359,6 +406,12 @@ public class SecureAgentTPMService extends BaseService {
                             SecureAgentTPMHelper.NAME, null);
                     KeyPairCloudPlatform keyPack = (KeyPairCloudPlatform) command.getParams()[0];
                     commandResponse.addParam(keyPack);
+                }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_MIGRATE_PLATFORM)){
+                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
+                            "TO MIGRATE THE HOST");
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
+                            SecureAgentTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
                 }
             }catch(Exception e){
                 System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");

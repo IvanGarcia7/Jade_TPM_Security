@@ -1,9 +1,7 @@
 package jade.core.D4rkPr0j3cT;
 
 import jade.core.*;
-import jade.core.CloudAgents.AttestationSerialized;
-import jade.core.CloudAgents.KeyPairCloudPlatform;
-import jade.core.CloudAgents.RequestSecure;
+import jade.core.CloudAgents.*;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.SecureTPM.SecureAgent;
@@ -199,9 +197,7 @@ public class SecureCloudTPMService extends BaseService {
         MessageTemplate mt =
                 MessageTemplate.and(
                         MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-                        MessageTemplate.or(
-                                MessageTemplate.MatchOntology(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM),
-                                MessageTemplate.MatchOntology(SecureCloudTPMHelper.REQUEST_PACK_PLATFORM)));
+                        MessageTemplate.MatchAll());
         ResponserCloudACL resp = new ResponserCloudACL(ams, mt, SecureCloudTPMService.this);
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
@@ -324,6 +320,17 @@ public class SecureCloudTPMService extends BaseService {
                                 "SOURCE SINK");
                         ie.printStackTrace();
                     }
+                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM)){
+                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
+                            "INITIALIZE THE ATTESTATION PROCESS");
+                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doStartAttestationHostpotAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
+                                "SOURCE SINK");
+                        ie.printStackTrace();
+                    }
                 }
             }catch (Exception e) {
                 e.printStackTrace();
@@ -428,6 +435,44 @@ public class SecureCloudTPMService extends BaseService {
                         }
 
                     }
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM)){
+                    /**
+                     * AT THIS POINT, I AM IN THE AMS OF THE SECURE PLATFORM, AND IN THE PACKET, I
+                     * HAVE ONE DESTINY, SO FIRST I NEED TO VIEW IF THE PLATFORM ARE SAVE IN THE REPO,
+                     * THEM, CREATE A CHALLENGUE AND SEND IT, THEN VERIFIE THE CHALLENGUE, CREATE A NEW CHALLENGUE
+                     * TO THE SECODN PLATFORM, ATTESTATE THE INFORMATION, COMPARE, AND START OR DENIED THE PROCESS
+                     *
+                     * IF ONE INFORMATION IS NOT VALID, MOVE THE ACEPTED TO PENDIENTS AND CREARE A COUNTER
+                     * TO EVIT REPETITION ATTACKS
+                     */
+                    KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform)command.getParams()[0];
+
+                    Location originPlatform = packetReceived.getLocationPlatform();
+                    Location destiny = packetReceived.getLocationDestiny();
+
+
+                    //FIRST SEE IF THE PLATFORM IS ACCEPTED
+                    if(HostpotsRegister.containsKey(originPlatform) && HostpotsRegister.containsKey(destiny)){
+                        System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE");
+
+                        String challengue = Agencia.getRandomChallengue();
+                        //Send the challengue to the origin platform to attestate
+
+                        //RANDOM ID
+                        String uniqueID = UUID.randomUUID().toString();
+                        Date date= new Date();
+                        long time = date.getTime();
+
+                        AID amsMain = new AID("ams", false);
+                        Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                        ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                        amsMainPlatform.addBehaviour(
+                                new SenderACLChallengue(message, amsMainPlatform,
+                                        SecureCloudTPMService.this, originPlatform, destiny ,challengue, uniqueID,time)
+                        );
+                    }else{
+                        System.out.println("REJECTED REQUEST, PLATFORM IS NOT FOUND WITHIN THE ACCEPTED DESTINATIONS DIRECTORY");
+                    }
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -488,6 +533,16 @@ public class SecureCloudTPMService extends BaseService {
                     byte[] byteObject = aesCipher.doFinal(object);
                     RequestSecure pack = (RequestSecure) Agencia.deserialize(byteObject);
                     commandResponse.addParam(pack);
+                }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_MIGRATE_PLATFORM)){
+                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
+                            "TO MIGRATE A NEW HOSTPOT IN THE SECURE PLATFORM");
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
+                            SecureCloudTPMHelper.NAME, null);
+
+                    byte [] encryptedContent = (byte [])command.getParams()[0];
+                    byte [] decryptedInformation = Agencia.decrypt(privateKeyCA,encryptedContent);
+                    KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform) Agencia.deserialize(decryptedInformation);
+                    commandResponse.addParam(packetReceived);
                 }
             }catch(Exception e){
                 System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");
