@@ -4,6 +4,8 @@ import jade.core.*;
 import jade.core.D4rkPr0j3cT.SecureCloudTPMHelper;
 import jade.core.D4rkPr0j3cT.SecureCloudTPMService;
 import jade.core.D4rkPr0j3cT.SenderACLChallengue;
+import jade.core.SecureInterTPM.SecureInterTPMHelper;
+import jade.core.SecureInterTPM.SecureInterTPMSlice;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.SecureTPM.TPMHighLevel;
@@ -285,7 +287,7 @@ public class SecureAgentTPMService extends BaseService {
     private class CommandSourceSink implements Sink {
 
         @Override
-        public void consume(VerticalCommand command) {
+        public void consume(VerticalCommand command) throws ServiceException {
             try{
                 String commandName = command.getName();
                 if(commandName.equals(SecureAgentTPMHelper.REQUEST_START)){
@@ -315,6 +317,25 @@ public class SecureAgentTPMService extends BaseService {
                     SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
                     try{
                         obj.doAttestateOrginAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
+                    System.out.println("PROCEED THE COMMAND TO MIGRATE THE AGENT WITH THE AMS OF THE MAIN PLATFORM TO " +
+                            "ATTESTATE ZONE 2 THE AGENT");
+                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doMigrateHostpotAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MOVE)){
+                    System.out.println("PROCEED THE MOVE THE AGENT");
+                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doMigrateHostpotAMS(command);
                     }catch(Exception ie){
                         System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
@@ -407,6 +428,22 @@ public class SecureAgentTPMService extends BaseService {
                                     SecureAgentTPMService.this, CAKey, PacketChallengue.getValue(),CALocation)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
+                }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
+                    //VERIFY THE SIGNED
+                    byte [] designed = Agencia.deSigned(CAKey,(byte [])command.getParams()[0]);
+                    try{
+                        Pair<Pair<Location,Location>,PublicKey> informationSecure = (Pair<Pair<Location,Location>, PublicKey>)Agencia.deserialize(designed);
+                        //Comunicate with the agent
+                        //REVIEW IF NEMA OR ADDRESS
+                        AID amsDestiny = new AID(informationSecure.getKey().getKey().getName(), false);
+                        Agent agent = actualcontainer.acquireLocalAgent(amsDestiny);
+
+                        //to-do
+                        agent.doMove(informationSecure.getKey().getValue());
+                    }catch(Exception e){
+                        System.out.println("MENSAJE DESDE PLATAFORMA NO VALIDA");
+                        e.printStackTrace();
+                    }
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -453,6 +490,12 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
                             "TO ATTESTATE THE HOST");
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
+                            SecureAgentTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
+                }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
+                    System.out.println("+*-> I HAVE RECEIVED A CONFIRMATION A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
+                            "TO ATTESTATE THE HOST");
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                             SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }

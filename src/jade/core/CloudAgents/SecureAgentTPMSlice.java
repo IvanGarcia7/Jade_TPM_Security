@@ -1,5 +1,7 @@
 package jade.core.CloudAgents;
 
+import jade.core.D4rkPr0j3cT.SecureCloudTPMHelper;
+import jade.core.GenericCommand;
 import jade.core.Service;
 import jade.core.VerticalCommand;
 
@@ -17,6 +19,7 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM   = "7";
     static final String REMOTE_REQUEST_MIGRATE_ZONE2_PLATFORM   = "8";
     static final String REMOTE_REQUEST_ERROR   = "9";
+    static final String REMOTE_REQUEST_MOVE = "10";
 
     /**
      * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
@@ -26,4 +29,8 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     void doMigrateAMS(VerticalCommand command);
 
     void doAttestateOrginAMS(VerticalCommand command);
+
+    void doMigrateHostpotAMS(VerticalCommand command);
+
+    void doMoveFinal(GenericCommand newCommand);
 }

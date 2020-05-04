@@ -8,9 +8,10 @@ import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import javax.crypto.*;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Calendar;
@@ -48,23 +49,15 @@ public class SenderACLConfirmation extends SimpleAchieveREInitiator {
      * @param acl
      * @return
      */
-    public ACLMessage prepareRequest(ACLMessage acl){
+    public ACLMessage prepareRequest(ACLMessage acl) throws IOException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
 
         //destiny keypubdestiny
-        Pair<Location,PublicKey> information = new Pair<Location,PublicKey>(destiny,destinyKey);
-        //byte [] signed = Agencia.encrypt(CAKey,information);
-
-
-
-        //TO -DO
-
-
-
-
-
+        Pair<Pair<Location,Location>,PublicKey> information = new Pair<Pair<Location,Location>,PublicKey>(new Pair<Location,Location>(origin,destiny),destinyKey);
+        byte [] informationSerial = Agencia.serialize(information);
+        byte [] signed = Agencia.Signed(CAKey,Agencia.serialize(informationSerial));
 
         try {
-            byte [] encryptedKey = Agencia.encrypt(originKey,);
+            byte [] encryptedKey = Agencia.encrypt(originKey,signed);
             myMessage.setContentObject(encryptedKey);
         }
         catch (Exception e) {

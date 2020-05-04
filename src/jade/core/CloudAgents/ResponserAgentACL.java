@@ -49,6 +49,17 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
                 System.out.println("ERROR IN THE PREPARE RESPONSE OF THE ZONE 1");
                 e.printStackTrace();
             }
+        }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
+            try{
+                System.out.println("PLATFORM RECEIVE A CONFIRMATION SECURE MOVE");
+                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
+                        SecureCloudTPMHelper.NAME, null);
+                command.addParam(request.getContentObject());
+                myService.submit(command);
+            }catch(Exception e){
+                System.out.println("ERROR IN THE CONFIRMATION RESPONSE OF THE ZONE 1");
+                e.printStackTrace();
+            }
         }else{
             reply = request.createReply();
         }
