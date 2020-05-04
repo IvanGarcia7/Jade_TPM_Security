@@ -14,6 +14,9 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_ACCEPT_PLATFORM = "4";
     static final String REMOTE_REQUEST_PACK_PLATFORM   = "5";
     static final String REMOTE_REQUEST_MIGRATE_PLATFORM   = "6";
+    static final String REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM   = "7";
+    static final String REMOTE_REQUEST_MIGRATE_ZONE2_PLATFORM   = "8";
+    static final String REMOTE_REQUEST_ERROR   = "9";
 
     /**
      * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
@@ -21,4 +24,6 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     void doCommunicateAMS(VerticalCommand command);
 
     void doMigrateAMS(VerticalCommand command);
+
+    void doAttestateOrginAMS(VerticalCommand command);
 }

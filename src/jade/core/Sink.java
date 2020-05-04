@@ -24,6 +24,9 @@ Boston, MA  02111-1307, USA.
 package jade.core;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
    The <code>Sink</code> interface has to be implemented by all the
    components that process JADE kernel-level commands in an exclusive
@@ -52,6 +55,6 @@ public interface Sink {
        the actual prime source of the command or members of the filter
        chain).
     */
-    void consume(VerticalCommand cmd);
+    void consume(VerticalCommand cmd) throws Exception;
 
 }

@@ -21,6 +21,9 @@ public interface SecureAgentTPMHelper extends ServiceHelper {
     static final String REQUEST_ACCEPT_PLATFORM = "ACCEPT_REQUEST";
     static final String REQUEST_PACK_PLATFORM   = "PACK_REQUEST";
     static final String REQUEST_MIGRATE_PLATFORM   = "MIGRATE_REQUEST";
+    static final String REQUEST_MIGRATE_ZONE1_PLATFORM   = "MIGRATE_ZONE1_REQUEST";
+    static final String REQUEST_MIGRATE_ZONE2_PLATFORM   = "MIGRATE_ZONE2_REQUEST";
+    static final String REQUEST_ERROR   = "REQUEST_ERROR";
     public static final boolean DEBUG = true;
 
 

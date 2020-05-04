@@ -830,7 +830,7 @@ public class Agencia{
     }
 
 
-    public static int attestation_files(String path,String context,String nonce){
+    public static int attestation_files(String path,String context,String nonce,boolean debug){
         int valuereturn = 0;
         System.out.println("EXECUTING THE SALIDA FUNCTION: ");
         new File(path).mkdirs();
@@ -852,14 +852,16 @@ public class Agencia{
         try{
             pb1.redirectErrorStream(true);
             Process p = pb1.start();
-            StringBuilder output = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while((line=reader.readLine())!=null){
-                output.append(line+"\n");
+            if(debug){
+                StringBuilder output = new StringBuilder();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line;
+                while((line=reader.readLine())!=null){
+                    output.append(line+"\n");
+                }
+                System.out.println(output);
             }
             int exitVal = p.waitFor();
-            System.out.println(output);
             System.out.println(exitVal);
         }catch(Exception e){
             System.out.println("There are an error in the process");
@@ -868,7 +870,7 @@ public class Agencia{
         return valuereturn;
     }
 
-    public static int check_attestation_files(String path,String nonce){
+    public static int check_attestation_files(String path,String nonce,boolean debug){
         int valuereturn = 0;
         String sing_path = path+"/sign.out";
         String pcr_path = path+"/pcr.out";
@@ -889,14 +891,16 @@ public class Agencia{
         try{
             pb1.redirectErrorStream(true);
             Process p = pb1.start();
-            StringBuilder output = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while((line=reader.readLine())!=null){
-                output.append(line+"\n");
+            if(debug){
+                StringBuilder output = new StringBuilder();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                String line;
+                while((line=reader.readLine())!=null){
+                    output.append(line+"\n");
+                }
+                System.out.println(output);
             }
             int exitVal = p.waitFor();
-            System.out.println(output);
             System.out.println(exitVal);
         }catch(Exception e){
             System.out.println("There are an error in the process");

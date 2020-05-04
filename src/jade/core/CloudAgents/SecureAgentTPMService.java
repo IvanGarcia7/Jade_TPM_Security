@@ -1,6 +1,9 @@
 package jade.core.CloudAgents;
 
 import jade.core.*;
+import jade.core.D4rkPr0j3cT.SecureCloudTPMHelper;
+import jade.core.D4rkPr0j3cT.SecureCloudTPMService;
+import jade.core.D4rkPr0j3cT.SenderACLChallengue;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.SecureTPM.TPMHighLevel;
@@ -12,6 +15,7 @@ import jade.lang.acl.MessageTemplate;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -305,6 +309,16 @@ public class SecureAgentTPMService extends BaseService {
                         System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
+                }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
+                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
+                            "ATTESTATE ZONE 1 THE AGENT");
+                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doAttestateOrginAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
                 }
             }catch (Exception e) {
                 e.printStackTrace();
@@ -345,7 +359,7 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("CREATING THE REPO: "+contextEK+" "+contextAK);
                     Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK);
                     System.out.println("GENERATING THE TEMPORAL DIR TO ATTESTATE:");
-                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"");
+                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true);
                     File AIKFile = new File("./"+actualLocation.getName()+"/akpub.pem");
                     AIKPub = Files.readAllBytes(AIKFile.toPath());
                     //SERIALIZE ALL THREE MESSAGES AND THEM DELETE IT
@@ -370,6 +384,29 @@ public class SecureAgentTPMService extends BaseService {
                             new SenderACLMigration(message, amsMainPlatform,
                                     SecureAgentTPMService.this, newPack)
                     );
+                }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
+                    //DECIPHER THE INFORMATION
+                    byte [] encryptedInformation = (byte [])command.getParams()[0];
+                    byte [] decryptPairChallenguer = Agencia.decrypt(privKeyAgent,encryptedInformation);
+                    Pair<String,byte []> PacketChallengue = (Pair<String, byte []>)Agencia.deserialize(decryptPairChallenguer);
+                    String challengue = PacketChallengue.getKey();
+                    Location actualLocation = actualcontainer.here();
+                    //Deserialize the AIK
+                    try (FileOutputStream fos = new FileOutputStream("./"+actualLocation.getName()+"/akpub.pem")) {
+                        fos.write(AIKPub);
+                    }
+                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,challengue,false);
+                    //SERIALIZE ALL THREE MESSAGES AND THEM DELETE IT
+                    AttestationSerialized packet_signed = new AttestationSerialized("./"+actualLocation.getName());
+                    //SEND THE INFORMATION TO THE PLATFORM
+                    AID amsMain = new AID("ams", false);
+                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                    amsMainPlatform.addBehaviour(
+                            new SenderACLChallengueAgent(message, amsMainPlatform, packet_signed,
+                                    SecureAgentTPMService.this, CAKey, PacketChallengue.getValue(),CALocation)
+                    );
+                    actualcontainer.releaseLocalAgent(amsMain);
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -410,6 +447,12 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
                             "TO MIGRATE THE HOST");
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
+                            SecureAgentTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
+                }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
+                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
+                            "TO ATTESTATE THE HOST");
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                             SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }

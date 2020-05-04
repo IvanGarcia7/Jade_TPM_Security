@@ -2,6 +2,8 @@ package jade.core.CloudAgents;
 
 import jade.core.Agent;
 import jade.core.BaseService;
+import jade.core.D4rkPr0j3cT.SecureCloudTPMHelper;
+import jade.core.GenericCommand;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -27,7 +29,29 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
      */
     protected ACLMessage prepareResponse(ACLMessage request) {
         System.out.println("PROCESSING THE REQUEST ATTESTATION IN THE DESTINY IN THE RESPONSER AGENT");
-        ACLMessage reply = request.createReply();
+        ACLMessage reply = null;
+        if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
+            try{
+                System.out.println("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN");
+                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
+                        SecureCloudTPMHelper.NAME, null);
+                command.addParam(request.getContentObject());
+                myService.submit(command);
+            }catch(Exception e){
+                System.out.println("ERROR IN THE PREPARE RESPONSE OF THE ZONE 1");
+                e.printStackTrace();
+            }
+        }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){
+            try{
+                System.out.println("PLATFORM RECEIVE A ERROR REQUEST TO ATTESTATE THE ORIGIN");
+                System.out.println(request.getContent());
+            }catch(Exception e){
+                System.out.println("ERROR IN THE PREPARE RESPONSE OF THE ZONE 1");
+                e.printStackTrace();
+            }
+        }else{
+            reply = request.createReply();
+        }
         return reply;
     }
 
