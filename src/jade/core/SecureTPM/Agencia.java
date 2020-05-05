@@ -714,9 +714,9 @@ public class Agencia{
     public static PublicKey publicKeyPlatform = null;
 
     public static void genKeyPair() throws NoSuchAlgorithmException, NoSuchProviderException{
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA", "SUN");
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        keyGen.initialize(1024, random);
+        keyGen.initialize(2048, random);
         KeyPair keyPair = keyGen.generateKeyPair();
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
@@ -726,9 +726,9 @@ public class Agencia{
 
 
     public static Pair<PrivateKey, PublicKey> genKeyPairAgent() throws NoSuchAlgorithmException, NoSuchProviderException{
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        keyGen.initialize(1024, random);
+        keyGen.initialize(2048, random);
         KeyPair keyPair = keyGen.generateKeyPair();
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();

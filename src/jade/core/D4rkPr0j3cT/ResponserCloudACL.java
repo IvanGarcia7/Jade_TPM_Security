@@ -125,5 +125,28 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
      */
     protected void handleInform(ACLMessage inform){
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM IN THE RESPONSER PLATFORM");
+        if(inform.getOntology().equals("MIGRATE_ZONE1_REQUEST")) {
+            System.out.println("ATTEMPT TO ATTESTATE THE ORIGIN THE PLATFORM WITHIN THE DIRECTORY");
+            try {
+                /**
+                 * REMEMBER, THE CONTENT OF THE ACL IS CIPHER BY THE PUBLICK KEY OF MY PLATFORM,
+                 * SO I NEED TO DECRYPT IT FIRST
+                 */
+                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
+                        SecureCloudTPMHelper.NAME, null);
+                command.addParam(inform.getContentObject());
+                command.addParam(inform.getPostTimeStamp());
+                myService.submit(command);
+                System.out.println("THE PROCESS HAS BEEN COMPLETED SUCCESSFUL");
+                String Response = "WAIT WHILE ATTESTATE YOUR PLATFORM";
+
+            } catch (Exception se) {
+                se.printStackTrace();
+                System.out.println("THE PLATFORM COULD NOT REGISTER, TRY AGAIN LATER");
+                se.printStackTrace();
+                String Response = "500";
+
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package jade.core.D4rkPr0j3cT;
 
 import jade.core.*;
+import jade.core.CloudAgents.AttestationSerialized;
 import jade.core.CloudAgents.SecureAgentTPMService;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
@@ -27,10 +28,11 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
     private PublicKey destinyKey;
     private PublicKey pubCA;
     private int validation;
+    private PlatformID mypt;
 
 
     public SenderACLChallengue(ACLMessage message, Agent amsMainPlatform, SecureCloudTPMService secureCloudTPMService,
-                               Location origin,Location destiny, String challen, String onto, PublicKey pub, PublicKey publicSec, int val) {
+                               Location origin,Location destiny, String challen, String onto, PublicKey pub, PublicKey publicSec, int val,PlatformID pt) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;
@@ -42,6 +44,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
         destinyKey = pub;
         pubCA = publicSec;
         validation = val;
+        mypt = pt;
     }
 
     /**
@@ -53,6 +56,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
      */
     public ACLMessage prepareRequest(ACLMessage acl){
         try {
+
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256);
             SecretKey secKey = generator.generateKey();
@@ -61,28 +65,45 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             Date date = new Date();
             long timeMilli = date.getTime();
             SecretInformation secretInfo = new SecretInformation(Destiny,timeMilli,Challengue,Origin,validation);
-            byte [] secretInforPair = Agencia.serialize(secretInfo);
             //Cipher with the pubKeySec
-            byte [] encryptedKey = Agencia.encrypt(pubCA,secretInforPair);
-            Pair<String,byte []> contentSender = new Pair<String,byte []>(Challengue,encryptedKey);
-            byte [] encryptedPacket = Agencia.encrypt(destinyKey,Agencia.serialize(contentSender));
-            myMessage.setContentObject(encryptedPacket);
+            byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(secretInfo));
+            System.out.println("********");
+            System.out.println(pubCA);
+            byte [] encryptedKeySecret = Agencia.encrypt(pubCA,secKey.getEncoded());
+            Pair<byte [],byte []> SecretPack = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
+
+
+
+            KeyGenerator generator2 = KeyGenerator.getInstance("AES");
+            generator2.init(256);
+            SecretKey secKey2 = generator.generateKey();
+            Cipher aesCipher2 = Cipher.getInstance("AES");
+            aesCipher2.init(Cipher.ENCRYPT_MODE, secKey2);
+            Pair<String, Pair<byte [],byte []>> publico = new Pair<String,Pair<byte [],byte []>>(Challengue,SecretPack);
+            byte[] byteCipherObjectPublic = aesCipher.doFinal(Agencia.serialize(publico));
+            System.out.println("********");
+            System.out.println(destinyKey);
+            byte [] encryptedKeyPublic = Agencia.encrypt(destinyKey,secKey2.getEncoded());
+
+            Pair<byte[],byte[]> packetFinal = new Pair<byte[],byte[]>(encryptedKeyPublic,byteCipherObjectPublic);
+            myMessage.setContentObject(packetFinal);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
-        AID receiver = new AID("ams@"+Destiny.getName(),AID.ISGUID);
-        receiver.addAddresses(Destiny.getAddress());
-        System.out.println(receiver+" "+Destiny.getAddress());
+        AID receiver = new AID("ams@"+mypt.getName(),AID.ISGUID);
+        receiver.addAddresses(mypt.getAddress());
+        System.out.println(receiver+" "+mypt.getAddress());
         myMessage.addReceiver(receiver);
         myMessage.setOntology(Ontology);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, Agencia.getTimeout());
         //SETTING THE TIMEOUT IN THE ACL MESSAGE
         Date t = new Date(c.getTimeInMillis());
+
         myMessage.setReplyByDate(t);
-        System.out.println("MESSAGE CREATE SUCCESFULLY");
+        System.out.println("MESSAGE CREATE SUCCESFULLYd");
         return myMessage;
     }
 

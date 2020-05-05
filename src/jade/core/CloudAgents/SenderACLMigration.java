@@ -48,7 +48,7 @@ public class SenderACLMigration extends SimpleAchieveREInitiator {
         catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("GALLETITAS SALADAS "+myPack.getLocationPlatform());
+        
 
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
         AID receiver = new AID("ams@"+myPack.getLocationPlatform().getName(),AID.ISGUID);

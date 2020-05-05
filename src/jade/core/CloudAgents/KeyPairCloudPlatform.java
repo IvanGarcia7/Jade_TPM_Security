@@ -1,6 +1,8 @@
 package jade.core.CloudAgents;
 
 import jade.core.Location;
+import jade.core.PlatformID;
+import jade.core.event.MTPListener;
 
 import java.io.Serializable;
 import java.security.PublicKey;
@@ -13,6 +15,7 @@ public class KeyPairCloudPlatform implements Serializable {
     private String contextAK;
     private Location locationDestiny;
     private Location myLocation;
+    private PlatformID myPlatform;
 
     public KeyPairCloudPlatform(PublicKey publicP, Location locationP,String contextek, String contextak){
         publicPassword  = publicP;
@@ -21,9 +24,23 @@ public class KeyPairCloudPlatform implements Serializable {
         contextAK = contextak;
     }
 
+    public KeyPairCloudPlatform(PublicKey publicP, Location locationP,PlatformID plat){
+        publicPassword  = publicP;
+        locationPlatform = locationP;
+        myPlatform = plat;
+    }
+
     public KeyPairCloudPlatform(PublicKey publicP, Location locationP){
         publicPassword  = publicP;
         locationPlatform = locationP;
+    }
+
+    public KeyPairCloudPlatform(PublicKey publicP, Location locationP, Location destiny, Location myLoc, PlatformID myplat){
+        publicPassword  = publicP;
+        locationPlatform = locationP;
+        locationDestiny=destiny;
+        myLocation = myLoc;
+        myPlatform = myplat;
     }
 
     public KeyPairCloudPlatform(PublicKey publicP, Location locationP, Location destiny, Location myLoc){
@@ -62,5 +79,9 @@ public class KeyPairCloudPlatform implements Serializable {
 
     public Location getMyLocation(){
         return myLocation;
+    }
+
+    public PlatformID getMyPlatform() {
+        return myPlatform;
     }
 }

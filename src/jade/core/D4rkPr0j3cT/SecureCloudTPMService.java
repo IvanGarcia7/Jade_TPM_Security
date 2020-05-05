@@ -425,7 +425,7 @@ public class SecureCloudTPMService extends BaseService {
                             //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath+"/pcr.out");
-                            SecureInformationCloud saveRequest = new SecureInformationCloud(pack.getPublicPassword(),hash,packetReceive.getAIKPub(),pack.getLocationPlatform());
+                            SecureInformationCloud saveRequest = new SecureInformationCloud(pack.getPublicPassword(),hash,packetReceive.getAIKPub(),pack.getMyPlatform());
                             Agencia.deleteFolder(new File(temPath));
                             Pair accepted = new Pair(pack.getPublicPassword(),hash);
                             if(response.toUpperCase().equals("Y")){
@@ -461,21 +461,26 @@ public class SecureCloudTPMService extends BaseService {
                      * IF ONE INFORMATION IS NOT VALID, MOVE THE ACEPTED TO PENDIENTS AND CREARE A COUNTER
                      * TO EVIT REPETITION ATTACKS
                      */
+
                     KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform)command.getParams()[0];
                     Location originPlatform = packetReceived.getMyLocation();
                     Location destiny = packetReceived.getLocationDestiny();
 
                     if(HostpotsRegister.containsKey(originPlatform.getID()) && HostpotsRegister.containsKey(packetReceived.getLocationDestiny().getID())){
                         System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE");
+                        Location newDestiny = HostpotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
+                        System.out.println("PIKACHU");
+                        System.out.println(newDestiny);
                         String challengue = Agencia.getRandomChallengue();
                         //Send the challengue to the origin platform to attestate
                         AID amsMain = new AID("ams", false);
                         Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                         PublicKey destinypub = HostpotsRegister.get(originPlatform.getID()).getKeyPub();
+                        PlatformID destinyPT = HostpotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
                         amsMainPlatform.addBehaviour(
                                 new SenderACLChallengue(message, amsMainPlatform,
-                                        SecureCloudTPMService.this,originPlatform,destiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0)
+                                        SecureCloudTPMService.this,originPlatform,newDestiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0,destinyPT)
                         );
                     }else{
                         System.out.println("REJECTED REQUEST, PLATFORM IS NOT FOUND WITHIN THE ACCEPTED DESTINATIONS DIRECTORY");
@@ -548,9 +553,10 @@ public class SecureCloudTPMService extends BaseService {
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                                     PublicKey destinypub = HostpotsRegister.get(destiny).getKeyPub();
+                                    PlatformID destinyPT = HostpotsRegister.get(destiny).getPlatformLocation();
                                     amsMainPlatform.addBehaviour(
                                             new SenderACLChallengue(message, amsMainPlatform,
-                                                    SecureCloudTPMService.this,origin,destiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,1)
+                                                    SecureCloudTPMService.this,origin,destiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,1,destinyPT)
                                     );
                                 }
                             }

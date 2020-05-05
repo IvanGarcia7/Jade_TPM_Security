@@ -23,6 +23,7 @@ public class SecureAgentPlatform extends Agent{
      */
     public void doInitializeAgent(Location CALocation, PublicKey pubKey,String contextEK, String contextAK){
         System.out.println("INITIALIZING THE SECURE CLOUD PLATFORM AGENT");
+        System.out.println("hihihihih "+CALocation);
         StringBuilder sb = new StringBuilder();
         System.out.println(sb.toString());
         try {

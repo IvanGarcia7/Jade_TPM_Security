@@ -240,6 +240,7 @@ public class SecureAgentTPMService extends BaseService {
         public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform,
                                                    Location caLocation, PublicKey pubKey,
                                                    String contextEK, String contextAK){
+            System.out.println("DUA LIPA "+caLocation);
 
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
@@ -370,6 +371,7 @@ public class SecureAgentTPMService extends BaseService {
                     CALocation = PairReceive.getLocationPlatform();
                     CAKey = PairReceive.getPublicPassword();
                     //DELETING CONTEXT
+
                     KeyPairCloudPlatform newPair = new KeyPairCloudPlatform(PairReceive.getPublicPassword(),
                                                    PairReceive.getLocationPlatform());
                     //CREATE KEY PAIR FROM MY PLATFORM AGENT
@@ -380,8 +382,9 @@ public class SecureAgentTPMService extends BaseService {
                     contextEK = PairReceive.getContextEK();
                     contextAK = PairReceive.getContextAK();
                     //SAVE THE CONTEXT INTO THE AMS
-                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(pubKeyAgent,actualLocation,contextEK,
-                                                                                contextAK);
+                    AID MYams =  actualcontainer.getAMS();
+                    PlatformID myPlatform = new PlatformID(MYams);
+                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(pubKeyAgent,actualLocation,myPlatform);
                     //INITIALIZE THE REPO
                     System.out.println("CREATING THE REPO: "+contextEK+" "+contextAK);
                     Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK);
@@ -404,13 +407,9 @@ public class SecureAgentTPMService extends BaseService {
                     //Creo un mensaje cifrado con la clave publica de la plataforma segura
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
-                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                    ACLMessage message = new ACLMessage(ACLMessage.INFORM);
                     Location destiny = (Location) command.getParams()[0];
                     KeyPairCloudPlatform newPack = new KeyPairCloudPlatform(CAKey,CALocation,destiny,actualcontainer.here());
-
-                    System.out.println("TOCION "+actualcontainer.getID());
-                    System.out.println("TOCION "+actualcontainer.getPlatformID());
-
 
 
                     amsMainPlatform.addBehaviour(

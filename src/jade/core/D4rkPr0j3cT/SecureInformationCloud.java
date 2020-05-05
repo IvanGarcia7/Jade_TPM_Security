@@ -1,6 +1,7 @@
 package jade.core.D4rkPr0j3cT;
 
 import jade.core.Location;
+import jade.core.PlatformID;
 
 import java.security.PublicKey;
 
@@ -9,9 +10,9 @@ public class SecureInformationCloud {
     private PublicKey KeyPub;
     private String sha256;
     private byte [] AIK;
-    private Location platformLocation;
+    private PlatformID platformLocation;
 
-    public SecureInformationCloud(PublicKey key, String hash,byte [] serialAIK, Location destiny){
+    public SecureInformationCloud(PublicKey key, String hash,byte [] serialAIK, PlatformID destiny){
         KeyPub=key;
         sha256=hash;
         AIK=serialAIK;
@@ -30,7 +31,7 @@ public class SecureInformationCloud {
         return AIK;
     }
 
-    public Location getPlatformLocation() {
+    public PlatformID getPlatformLocation() {
         return platformLocation;
     }
 }
