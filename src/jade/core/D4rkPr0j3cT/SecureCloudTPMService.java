@@ -46,11 +46,15 @@ public class SecureCloudTPMService extends BaseService {
 
     //REQUEST THE COMMANDS THAT I HAVE IMPLEMENTED AND SAVE INTO A LIST.
     private String[] actualCommands = new String[]{
+            SecureCloudTPMHelper.REQUEST_START,
+            SecureCloudTPMHelper.REQUEST_LIST,
             SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
             SecureCloudTPMHelper.REQUEST_ACCEPT_PLATFORM,
             SecureCloudTPMHelper.REQUEST_PACK_PLATFORM,
-            SecureCloudTPMHelper.REQUEST_START,
-            SecureCloudTPMHelper.REQUEST_LIST
+            SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
+            SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
+            SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
+            SecureCloudTPMHelper.REQUEST_ERROR
     };
 
     //PERFORMATIVE PRINTER.
@@ -71,10 +75,10 @@ public class SecureCloudTPMService extends BaseService {
     private PublicKey publicKeyCA;
 
     //DICT OF THE HOSTPOTS
-    Map<Location,SecureInformationCloud> HostpotsRegister = new HashMap<Location,SecureInformationCloud>();
+    Map<String,SecureInformationCloud> HostpotsRegister = new HashMap<String,SecureInformationCloud>();
 
     //DICT TO REGISTER THE PLATFORMS TO CONFIRM
-    Map<Location, SecureInformationCloud> pendingRedirects = new HashMap<Location, SecureInformationCloud>();
+    Map<String, SecureInformationCloud> pendingRedirects = new HashMap<String, SecureInformationCloud>();
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
@@ -354,7 +358,7 @@ public class SecureCloudTPMService extends BaseService {
     private class CommandTargetSink implements Sink {
 
         @Override
-        public void consume(VerticalCommand command) throws Exception {
+        public void consume(VerticalCommand command) {
             try{
                 String CommandName = command.getName();
                 if(CommandName.equals(SecureCloudTPMHelper.REQUEST_START)){
@@ -401,29 +405,15 @@ public class SecureCloudTPMService extends BaseService {
                         AttestationSerialized packetReceive = packSecure.getPacket_signed();
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
                             stream.write(packetReceive.getAIKPub());
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/sign.out")) {
                             stream.write(packetReceive.getSign());
-                        }catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/pcr.out")) {
                             stream.write(packetReceive.getMessage());
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/quote.out")) {
                             stream.write(packetReceive.getQuoted());
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         int result = Agencia.check_attestation_files(temPath,"",true);
                         if(result==0){
@@ -435,17 +425,17 @@ public class SecureCloudTPMService extends BaseService {
                             //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath+"/pcr.out");
-                            SecureInformationCloud saveRequest = new SecureInformationCloud(pack.getPublicPassword(),hash,packetReceive.getAIKPub());
+                            SecureInformationCloud saveRequest = new SecureInformationCloud(pack.getPublicPassword(),hash,packetReceive.getAIKPub(),pack.getLocationPlatform());
                             Agencia.deleteFolder(new File(temPath));
                             Pair accepted = new Pair(pack.getPublicPassword(),hash);
                             if(response.toUpperCase().equals("Y")){
                                 System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
-                                HostpotsRegister.put(pack.getLocationPlatform(),saveRequest);
+                                HostpotsRegister.put(pack.getLocationPlatform().getID(),saveRequest);
                                 System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST "+HostpotsRegister.size());
                                 it = HostpotsRegister.entrySet().iterator();
                             }else {
                                 System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
-                                pendingRedirects.put(pack.getLocationPlatform(),saveRequest);
+                                pendingRedirects.put(pack.getLocationPlatform().getID(),saveRequest);
                                 it = pendingRedirects.entrySet().iterator();
                                 System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
                             }
@@ -472,17 +462,17 @@ public class SecureCloudTPMService extends BaseService {
                      * TO EVIT REPETITION ATTACKS
                      */
                     KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform)command.getParams()[0];
-                    Location originPlatform = packetReceived.getLocationPlatform();
+                    Location originPlatform = packetReceived.getMyLocation();
                     Location destiny = packetReceived.getLocationDestiny();
-                    //FIRST SEE IF THE PLATFORM IS ACCEPTED
-                    if(HostpotsRegister.containsKey(originPlatform) && HostpotsRegister.containsKey(destiny)){
+
+                    if(HostpotsRegister.containsKey(originPlatform.getID()) && HostpotsRegister.containsKey(packetReceived.getLocationDestiny().getID())){
                         System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE");
                         String challengue = Agencia.getRandomChallengue();
                         //Send the challengue to the origin platform to attestate
                         AID amsMain = new AID("ams", false);
                         Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                        PublicKey destinypub = HostpotsRegister.get(originPlatform).getKeyPub();
+                        PublicKey destinypub = HostpotsRegister.get(originPlatform.getID()).getKeyPub();
                         amsMainPlatform.addBehaviour(
                                 new SenderACLChallengue(message, amsMainPlatform,
                                         SecureCloudTPMService.this,originPlatform,destiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0)
@@ -505,31 +495,15 @@ public class SecureCloudTPMService extends BaseService {
                         AttestationSerialized packetReceive = sendAtt.getKey();
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
                             stream.write(HostpotsRegister.get(origin).getAIK());
-                        }catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/sign.out")) {
                             stream.write(packetReceive.getSign());
-                        }catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/pcr.out")) {
                             stream.write(packetReceive.getMessage());
-                        }catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/quote.out")) {
                             stream.write(packetReceive.getQuoted());
-                        }catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
                         int result = Agencia.check_attestation_files(temPath,newSecretDecrypt.getChallengue(),false);
                         if(result==0) {
@@ -550,7 +524,7 @@ public class SecureCloudTPMService extends BaseService {
                                 );
                                 //REMOVE
                                 SecureInformationCloud malware = HostpotsRegister.get(origin);
-                                pendingRedirects.put(origin,malware);
+                                pendingRedirects.put(origin.getID(),malware);
                                 HostpotsRegister.remove(origin);
                             }else{
 
@@ -655,9 +629,15 @@ public class SecureCloudTPMService extends BaseService {
                             "TO MIGRATE A NEW HOSTPOT IN THE SECURE PLATFORM");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
                             SecureCloudTPMHelper.NAME, null);
-                    byte [] encryptedContent = (byte [])command.getParams()[0];
-                    byte [] decryptedInformation = Agencia.decrypt(privateKeyCA,encryptedContent);
-                    KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform) Agencia.deserialize(decryptedInformation);
+                    Pair<byte [],byte []> pairsender = (Pair<byte [],byte []>)command.getParams()[0];
+                    byte [] key = pairsender.getKey();
+                    byte [] object = pairsender.getValue();
+                    byte[] decryptedKey = Agencia.decrypt(privateKeyCA,key);
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length, "AES");
+                    Cipher aesCipher = Cipher.getInstance("AES");
+                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+                    byte[] byteObject = aesCipher.doFinal(object);
+                    KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform) Agencia.deserialize(byteObject);
                     commandResponse.addParam(packetReceived);
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM)){
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
@@ -693,8 +673,5 @@ public class SecureCloudTPMService extends BaseService {
             return commandResponse;
         }
     }
-
-
-
 
 }

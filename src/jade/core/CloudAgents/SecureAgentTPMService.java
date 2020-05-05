@@ -8,6 +8,7 @@ import jade.core.SecureInterTPM.SecureInterTPMHelper;
 import jade.core.SecureInterTPM.SecureInterTPMSlice;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
+import jade.core.SecureTPM.SecureAgent;
 import jade.core.SecureTPM.TPMHighLevel;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
@@ -47,11 +48,15 @@ public class SecureAgentTPMService extends BaseService {
 
     //REQUEST THE COMMANDS THAT I HAVE IMPLEMENTED AND SAVE INTO A LIST.
     private String[] actualCommands = new String[]{
+            SecureAgentTPMHelper.REQUEST_START,
+            SecureAgentTPMHelper.REQUEST_LIST,
             SecureAgentTPMHelper.REQUEST_INSERT_PLATFORM,
             SecureAgentTPMHelper.REQUEST_ACCEPT_PLATFORM,
             SecureAgentTPMHelper.REQUEST_PACK_PLATFORM,
-            SecureAgentTPMHelper.REQUEST_START,
-            SecureAgentTPMHelper.REQUEST_LIST
+            SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
+            SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
+            SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
+            SecureAgentTPMHelper.REQUEST_ERROR
     };
 
     //PERFORMATIVE PRINTER.
@@ -287,7 +292,8 @@ public class SecureAgentTPMService extends BaseService {
     private class CommandSourceSink implements Sink {
 
         @Override
-        public void consume(VerticalCommand command) throws ServiceException {
+        public void consume(VerticalCommand command) {
+            System.out.println("AAAAA");
             try{
                 String commandName = command.getName();
                 if(commandName.equals(SecureAgentTPMHelper.REQUEST_START)){
@@ -401,6 +407,12 @@ public class SecureAgentTPMService extends BaseService {
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     Location destiny = (Location) command.getParams()[0];
                     KeyPairCloudPlatform newPack = new KeyPairCloudPlatform(CAKey,CALocation,destiny,actualcontainer.here());
+
+                    System.out.println("TOCION "+actualcontainer.getID());
+                    System.out.println("TOCION "+actualcontainer.getPlatformID());
+
+
+
                     amsMainPlatform.addBehaviour(
                             new SenderACLMigration(message, amsMainPlatform,
                                     SecureAgentTPMService.this, newPack)

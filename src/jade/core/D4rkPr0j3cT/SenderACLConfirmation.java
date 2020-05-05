@@ -49,12 +49,19 @@ public class SenderACLConfirmation extends SimpleAchieveREInitiator {
      * @param acl
      * @return
      */
-    public ACLMessage prepareRequest(ACLMessage acl) throws IOException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+    public ACLMessage prepareRequest(ACLMessage acl) {
 
         //destiny keypubdestiny
         Pair<Pair<Location,Location>,PublicKey> information = new Pair<Pair<Location,Location>,PublicKey>(new Pair<Location,Location>(origin,destiny),destinyKey);
-        byte [] informationSerial = Agencia.serialize(information);
-        byte [] signed = Agencia.Signed(CAKey,Agencia.serialize(informationSerial));
+        byte [] informationSerial = null;
+        byte [] signed = null;
+
+        try{
+            informationSerial = Agencia.serialize(information);
+            signed = Agencia.Signed(CAKey,Agencia.serialize(informationSerial));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         try {
             byte [] encryptedKey = Agencia.encrypt(originKey,signed);

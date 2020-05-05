@@ -34,13 +34,22 @@ public class SenderACLMigration extends SimpleAchieveREInitiator {
 
     public ACLMessage prepareRequest(ACLMessage acl){
         try {
+            KeyGenerator generator = KeyGenerator.getInstance("AES");
+            generator.init(256); //INTERESTING TO TEST
+            SecretKey secKey = generator.generateKey();
+            Cipher aesCipher = Cipher.getInstance("AES");
+            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+            //PACKEST REQUEST TO SECUREPLATFORM
             KeyPairCloudPlatform newPacket = new KeyPairCloudPlatform(myPack.getMyLocation(),myPack.getLocationDestiny());
-            byte [] encryptedLocation = Agencia.encrypt(myPack.getPublicPassword(),Agencia.serialize(newPacket));
-            myMessage.setContentObject(encryptedLocation);
+            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(newPacket));
+            byte [] encryptedKey = Agencia.encrypt(myPack.getPublicPassword(),secKey.getEncoded());
+            myMessage.setContentObject(new Pair<byte [],byte []>(encryptedKey,byteCipherObject));
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("GALLETITAS SALADAS "+myPack.getLocationPlatform());
+
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
         AID receiver = new AID("ams@"+myPack.getLocationPlatform().getName(),AID.ISGUID);
         receiver.addAddresses(myPack.getLocationPlatform().getAddress());

@@ -25,9 +25,6 @@ package jade.proto;
 
 //#CUSTOM_EXCLUDE_FILE
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Vector;
 import java.util.Date;
 
@@ -39,10 +36,6 @@ import jade.util.leap.Iterator;
 import jade.core.Agent;
 import jade.core.AID;
 import jade.util.Logger;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 
 /**
  * This is  simple implementation of the AchieveREInitiator.
@@ -367,7 +360,7 @@ public class SimpleAchieveREInitiator extends SimpleBehaviour{
      * @param msg the ACLMessage object passed in the constructor.
      * @return a ACLMessage.
      **/
-    protected ACLMessage prepareRequest(ACLMessage msg) throws IOException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException {
+    protected ACLMessage prepareRequest(ACLMessage msg){
 	return msg;
     }
 
