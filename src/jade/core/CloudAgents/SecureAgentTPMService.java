@@ -1,6 +1,7 @@
 package jade.core.CloudAgents;
 
 import jade.core.*;
+import jade.core.D4rkPr0j3cT.SecureChallenguerPacket;
 import jade.core.D4rkPr0j3cT.SecureCloudTPMHelper;
 import jade.core.D4rkPr0j3cT.SecureCloudTPMService;
 import jade.core.D4rkPr0j3cT.SenderACLChallengue;
@@ -16,7 +17,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 
-
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
@@ -421,17 +424,37 @@ public class SecureAgentTPMService extends BaseService {
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
                     //DECIPHER THE INFORMATION
                     System.out.println("HOSLS HFUERSMHI");
-                    byte [] encryptedInformation = (byte [])command.getParams()[0];
-                    byte [] decryptPairChallenguer = Agencia.decrypt(privKeyAgent,encryptedInformation);
+                    byte [] packetRecSeri = (byte [])command.getParams()[0];
+                    SecureChallenguerPacket pSenderDone = (SecureChallenguerPacket) Agencia.deserialize(packetRecSeri);
 
-
-
+                    byte [] OTP_Pub = pSenderDone.getOTPPub();
+                    byte [] contentPub = pSenderDone.getPartPublic();
                     //challenguer
 
+                    System.out.println("MI CLAVE EN EL P1 PRIVADA ES LA SIGUIENTE:");
+                    System.out.println(privKeyAgent);
+
+                    System.out.println("MI CLAVE EN EL P1 PUBLICA ES LA SIGUIENTE:");
+                    System.out.println(pubKeyAgent);
 
 
-                    Pair<String,byte []> PacketChallengue = (Pair<String, byte []>)Agencia.deserialize(decryptPairChallenguer);
-                    String challengue = PacketChallengue.getKey();
+                    System.out.println("ESTOY AL COMIENZO");
+                    byte [] decryptedKey = Agencia.decrypt(privKeyAgent,OTP_Pub);
+                    System.out.println("ESTOY EN EL SEGUNDO");
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length, "AES");
+                    System.out.println("ESTOY EN EL TERCERO");
+                    Cipher aesCipher = Cipher.getInstance("AES");
+                    System.out.println("ESTOY EN EL CUARTO");
+                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+                    System.out.println("ESTOY EN EL QUINTO");
+                    byte[] byteObject = aesCipher.doFinal(contentPub);
+                    System.out.println("ESTOY EN EL SEXTO");
+                    String challengue = (String)Agencia.deserialize(byteObject);
+                    System.out.println("*************************************************");
+                    System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challengue);
+                    System.out.println("*************************************************");
+
+
                     Location actualLocation = actualcontainer.here();
                     //Deserialize the AIK
                     try (FileOutputStream fos = new FileOutputStream("./"+actualLocation.getName()+"/akpub.pem")) {
@@ -444,10 +467,10 @@ public class SecureAgentTPMService extends BaseService {
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                    amsMainPlatform.addBehaviour(
-                            new SenderACLChallengueAgent(message, amsMainPlatform, packet_signed,
-                                    SecureAgentTPMService.this, CAKey, PacketChallengue.getValue(),CALocation)
-                    );
+                    //amsMainPlatform.addBehaviour(
+                    //        new SenderACLChallengueAgent(message, amsMainPlatform, packet_signed,
+                    //                SecureAgentTPMService.this, CAKey, PacketChallengue.getValue(),CALocation)
+                    //);
                     actualcontainer.releaseLocalAgent(amsMain);
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
                     //VERIFY THE SIGNED

@@ -233,14 +233,14 @@ public class SecureCloudTPMService extends BaseService {
         public synchronized void doStartCloud(SecureCAPlatform secureCAPlatform,PrivateKey priv, PublicKey pub) {
             StringBuilder sb = new StringBuilder();
             sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
-                     .append(secureCAPlatform.getAID());
+                    .append(secureCAPlatform.getAID());
             System.out.println(sb.toString());
             Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
-                              Level.INFO, true, this.getClass().getName());
+                    Level.INFO, true, this.getClass().getName());
             System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
                     "THE SERVICE NEED ");
             GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_START,
-                                                        SecureCloudTPMHelper.NAME, null);
+                    SecureCloudTPMHelper.NAME, null);
             Pair<PrivateKey,PublicKey> keypairgenerate = new Pair<PrivateKey,PublicKey>(priv,pub);
             command.addParam(keypairgenerate);
             try{
@@ -311,7 +311,7 @@ public class SecureCloudTPMService extends BaseService {
                         obj.doRequestListAMS(command);
                     }catch(Exception ie){
                         System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
-                                           "SOURCE SINK");
+                                "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
@@ -363,7 +363,7 @@ public class SecureCloudTPMService extends BaseService {
                 String CommandName = command.getName();
                 if(CommandName.equals(SecureCloudTPMHelper.REQUEST_START)){
                     System.out.println("PROCESSING THE VERTICAL COMMAND START CLOUD REQUEST INTO THE " +
-                                       "AMS DESTINATION CONTAINER");
+                            "AMS DESTINATION CONTAINER");
                     Pair<PrivateKey,PublicKey> keyPairReceive = (Pair<PrivateKey, PublicKey>)command.getParams()[0];
                     System.out.println("INITIALIZING THE KEY PAIR RECEIVE");
                     privateKeyCA = keyPairReceive.getKey();
@@ -611,7 +611,7 @@ public class SecureCloudTPMService extends BaseService {
                 String commandReceived = command.getName();
                 if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_START)) {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                                       "TO START THE HOST");
+                            "TO START THE HOST");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_START,
                             SecureCloudTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);

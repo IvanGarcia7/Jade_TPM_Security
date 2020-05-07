@@ -2,6 +2,7 @@ package jade.core.D4rkPr0j3cT;
 
 import jade.core.*;
 import jade.core.CloudAgents.AttestationSerialized;
+import jade.core.CloudAgents.RequestSecure;
 import jade.core.CloudAgents.SecureAgentTPMHelper;
 import jade.core.CloudAgents.SecureAgentTPMService;
 import jade.core.SecureTPM.Agencia;
@@ -79,11 +80,27 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             Cipher aesCipher2 = Cipher.getInstance("AES");
             aesCipher2.init(Cipher.ENCRYPT_MODE, secKey2);
             Pair<String, Pair<byte [],byte []>> publico = new Pair<String,Pair<byte [],byte []>>(Challengue,SecretPack);
-            byte[] byteCipherObjectPublic = aesCipher.doFinal(Agencia.serialize(publico));
+            byte[] byteCipherObjectPublic = aesCipher2.doFinal(Agencia.serialize(Challengue));
             byte [] encryptedKeyPublic = Agencia.encrypt(destinyKey,secKey2.getEncoded());
 
             Pair<byte[],byte[]> packetFinal = new Pair<byte[],byte[]>(encryptedKeyPublic,byteCipherObjectPublic);
-            myMessage.setContentObject(packetFinal);
+            //myMessage.setContentObject(packetFinal);
+
+
+
+            System.out.println("MI CLAVE EN EL SEC PLAT PARA LA PARTE PUBLICA ES LA SIGUIENTE:");
+            System.out.println(destinyKey);
+
+
+
+            SecureChallenguerPacket pSender = new SecureChallenguerPacket(encryptedKeySecret,encryptedKeyPublic,byteCipherObjectPublic,byteCipherObjectSecret);
+            myMessage.setContentObject(Agencia.serialize(pSender));
+
+
+
+
+
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -91,30 +108,10 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
 
 
-        System.out.println("********PRIMERO*********");
-        System.out.println(Origin.getName());
-        System.out.println(Origin.getAddress());
-        System.out.println("********PRIMERO*********");
-
-        System.out.println("********SEGUNDO*********");
-        System.out.println(Destiny.getName());
-        System.out.println(Destiny.getAddress());
-        System.out.println("********SEGUNDO*********");
-
-        System.out.println("********TERCERO*********");
-        System.out.println(mypt.getName());
-        System.out.println(mypt.getAddress());
-        System.out.println(mypt.getAmsAID());
-        System.out.println("********TERCERO*********");
-
-
-
         AID receiver = new AID("ams@"+mypt.getName(),AID.ISGUID);
         receiver.addAddresses(mypt.getAddress());
         System.out.println(receiver+" "+mypt.getAddress());
 
-
-        System.out.println("YOGUR");
         System.out.println(mypt.getAmsAID());
 
         myMessage.addReceiver(mypt.getAmsAID());
