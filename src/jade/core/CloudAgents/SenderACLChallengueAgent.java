@@ -11,6 +11,7 @@ package jade.core.CloudAgents;
         import java.security.PublicKey;
         import java.util.Calendar;
         import java.util.Date;
+        import java.util.Vector;
 
 public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
 
@@ -66,7 +67,7 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
         //SETTING THE TIMEOUT IN THE ACL MESSAGE
         Date t = new Date(c.getTimeInMillis());
         myMessage.setReplyByDate(t);
-        System.out.println("MESSAGE CREATE SUCCESFULLY");
+        System.out.println("MESSAGE CREATE SUCCESFULLY IN THE SENDERACLCHALLENGUEAGENT");
         return myMessage;
     }
 
@@ -78,7 +79,7 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM");
         System.out.println(inform.getContent());
 
-
+/*
         try {
             long endTime = System.nanoTime();
             if((inform.getPostTimeStamp()-endTime)/1000000 <= Agencia.getTimeout()){
@@ -92,7 +93,7 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
         catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
     }
 
     protected void handleRefuse(ACLMessage inform){
@@ -113,7 +114,27 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
 
 
 
+    protected void handleAgree(ACLMessage agree){
+        System.out.println("hrvewrevwe");
+    }
 
+
+
+    protected void handleAllResponses(Vector responses) {
+        System.out.println("hrr");
+    }
+
+    protected void handleNotUnderstood(ACLMessage notUnderstood){
+        System.out.println("hrr");
+    }
+
+    protected void handleOutOfSequence(ACLMessage outOfSequence) {
+        System.out.println("hr");
+    }
+
+    protected void handleFailure(ACLMessage failure){
+        System.out.println("h");
+    }
 
 
 

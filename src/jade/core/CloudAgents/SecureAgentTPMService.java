@@ -403,23 +403,33 @@ public class SecureAgentTPMService extends BaseService {
                                                SecureAgentTPMService.this)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
+
+
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM)){
-                    //Creo un mensaje cifrado con la clave publica de la plataforma segura
-                    AID amsMain = new AID("ams", false);
-                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
-                    ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                    //Creo un mensaje cifrado con la clave publica de la plataforma seguro
+                    System.out.println("I AM INTO THE REQUEST MIGRATE PLATFORM");
                     Location destiny = (Location) command.getParams()[0];
                     KeyPairCloudPlatform newPack = new KeyPairCloudPlatform(CAKey,CALocation,destiny,actualcontainer.here());
-
-
+                    AID amsMain = new AID("ams", false);
+                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
                             new SenderACLMigration(message, amsMainPlatform,
                                     SecureAgentTPMService.this, newPack)
                     );
+                    actualcontainer.releaseLocalAgent(amsMain);
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
                     //DECIPHER THE INFORMATION
+                    System.out.println("HOSLS HFUERSMHI");
                     byte [] encryptedInformation = (byte [])command.getParams()[0];
                     byte [] decryptPairChallenguer = Agencia.decrypt(privKeyAgent,encryptedInformation);
+
+
+
+                    //challenguer
+
+
+
                     Pair<String,byte []> PacketChallengue = (Pair<String, byte []>)Agencia.deserialize(decryptPairChallenguer);
                     String challengue = PacketChallengue.getKey();
                     Location actualLocation = actualcontainer.here();
@@ -448,7 +458,7 @@ public class SecureAgentTPMService extends BaseService {
                         //REVIEW IF NEMA OR ADDRESS
                         AID amsDestiny = new AID(informationSecure.getKey().getKey().getName(), false);
                         Agent agent = actualcontainer.acquireLocalAgent(amsDestiny);
-
+                        actualcontainer.releaseLocalAgent(amsDestiny);
                         //to-do
                         agent.doMove(informationSecure.getKey().getValue());
                     }catch(Exception e){
@@ -497,9 +507,9 @@ public class SecureAgentTPMService extends BaseService {
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
                             SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
-                }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
+                }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM)){
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO ATTESTATE THE HOST");
+                            "TO ATTESTATE THE HOSTJJ");
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                             SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);

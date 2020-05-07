@@ -3,6 +3,7 @@ package jade.core.D4rkPr0j3cT;
 import jade.core.Agent;
 import jade.core.BaseService;
 import jade.core.CloudAgents.KeyPairCloudPlatform;
+import jade.core.CloudAgents.SecureAgentTPMHelper;
 import jade.core.GenericCommand;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
@@ -14,6 +15,7 @@ import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 import java.security.PrivateKey;
 import java.util.Date;
+import java.util.Vector;
 
 public class ResponserCloudACL extends SimpleAchieveREResponder {
 
@@ -45,7 +47,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                command.addParam(request.getContentObject());
                myService.submit(command);
                System.out.println("THE PROCESS HAS BEEN COMPLETED SUCCESSFUL");
-               String Response = "200";
+               String Response = "200A";
                reply = request.createReply();
                reply.setPerformative(ACLMessage.INFORM);
                reply.setContent(Response);
@@ -59,7 +61,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                reply.setContent(Response);
            }
        }else if(request.getOntology().equals("MIGRATE_REQUEST")){
-           System.out.println("ATTEMPT TO MIGRATE THE PLATFORM WITHIN THE DIRECTORY");
+           System.out.println("ME QUEDO BLOQUEADO AQUI");
            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
                    SecureCloudTPMHelper.NAME, null);
            try{
@@ -69,8 +71,9 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                 */
                command.addParam(request.getContentObject());
                myService.submit(command);
-               System.out.println("THE PROCESS HAS BEEN COMPLETED SUCCESSFUL");
-               String Response = "200";
+               Thread.sleep(2000);
+               System.out.println("THE PROCESS HAS hack COMPLETED SUCCESSFUL");
+               String Response = "200B";
                reply = request.createReply();
                reply.setPerformative(ACLMessage.INFORM);
                reply.setContent(Response);
@@ -109,14 +112,17 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                reply.setPerformative(ACLMessage.INFORM);
                reply.setContent(Response);
            }
+       }else{
+           System.out.println("hunifgaurigbueibgueai");
        }
        return reply;
     }
 
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         System.out.println("PREPARING THE RESULT NOTIFICATION IN THE RESPONSER PLATFORM");
-        ACLMessage reply = request.createReply();
-        return reply;
+        //ACLMessage reply = request.createReply();
+        //return reply;
+        return null;
     }
 
     /**
@@ -125,6 +131,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
      */
     protected void handleInform(ACLMessage inform){
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM IN THE RESPONSER PLATFORM");
+        /*
         if(inform.getOntology().equals("MIGRATE_ZONE1_REQUEST")) {
             System.out.println("ATTEMPT TO ATTESTATE THE ORIGIN THE PLATFORM WITHIN THE DIRECTORY");
             try {
@@ -132,6 +139,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                  * REMEMBER, THE CONTENT OF THE ACL IS CIPHER BY THE PUBLICK KEY OF MY PLATFORM,
                  * SO I NEED TO DECRYPT IT FIRST
                  */
+        /*
                 GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                         SecureCloudTPMHelper.NAME, null);
                 command.addParam(inform.getContentObject());
@@ -148,5 +156,32 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
 
             }
         }
+        */
+
     }
+
+    protected void handleAgree(ACLMessage agree){
+        System.out.println("hrvewrevwe");
+    }
+
+    protected void handleRefuse(ACLMessage refuse){
+        System.out.println("hwevew");
+    }
+
+    protected void handleAllResponses(Vector responses) {
+        System.out.println("hrr");
+    }
+
+    protected void handleNotUnderstood(ACLMessage notUnderstood){
+        System.out.println("hrr");
+    }
+
+    protected void handleOutOfSequence(ACLMessage outOfSequence) {
+        System.out.println("hr");
+    }
+
+    protected void handleFailure(ACLMessage failure){
+        System.out.println("h");
+    }
+
 }

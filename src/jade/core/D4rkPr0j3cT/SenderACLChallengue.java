@@ -2,6 +2,7 @@ package jade.core.D4rkPr0j3cT;
 
 import jade.core.*;
 import jade.core.CloudAgents.AttestationSerialized;
+import jade.core.CloudAgents.SecureAgentTPMHelper;
 import jade.core.CloudAgents.SecureAgentTPMService;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
@@ -16,6 +17,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
 public class SenderACLChallengue extends SimpleAchieveREInitiator {
 
@@ -67,12 +69,9 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             SecretInformation secretInfo = new SecretInformation(Destiny,timeMilli,Challengue,Origin,validation);
             //Cipher with the pubKeySec
             byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(secretInfo));
-            System.out.println("********");
-            System.out.println(pubCA);
+
             byte [] encryptedKeySecret = Agencia.encrypt(pubCA,secKey.getEncoded());
             Pair<byte [],byte []> SecretPack = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
-
-
 
             KeyGenerator generator2 = KeyGenerator.getInstance("AES");
             generator2.init(256);
@@ -81,8 +80,6 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             aesCipher2.init(Cipher.ENCRYPT_MODE, secKey2);
             Pair<String, Pair<byte [],byte []>> publico = new Pair<String,Pair<byte [],byte []>>(Challengue,SecretPack);
             byte[] byteCipherObjectPublic = aesCipher.doFinal(Agencia.serialize(publico));
-            System.out.println("********");
-            System.out.println(destinyKey);
             byte [] encryptedKeyPublic = Agencia.encrypt(destinyKey,secKey2.getEncoded());
 
             Pair<byte[],byte[]> packetFinal = new Pair<byte[],byte[]>(encryptedKeyPublic,byteCipherObjectPublic);
@@ -92,18 +89,45 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             e.printStackTrace();
         }
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
+
+
+        System.out.println("********PRIMERO*********");
+        System.out.println(Origin.getName());
+        System.out.println(Origin.getAddress());
+        System.out.println("********PRIMERO*********");
+
+        System.out.println("********SEGUNDO*********");
+        System.out.println(Destiny.getName());
+        System.out.println(Destiny.getAddress());
+        System.out.println("********SEGUNDO*********");
+
+        System.out.println("********TERCERO*********");
+        System.out.println(mypt.getName());
+        System.out.println(mypt.getAddress());
+        System.out.println(mypt.getAmsAID());
+        System.out.println("********TERCERO*********");
+
+
+
         AID receiver = new AID("ams@"+mypt.getName(),AID.ISGUID);
         receiver.addAddresses(mypt.getAddress());
         System.out.println(receiver+" "+mypt.getAddress());
-        myMessage.addReceiver(receiver);
-        myMessage.setOntology(Ontology);
+
+
+        System.out.println("YOGUR");
+        System.out.println(mypt.getAmsAID());
+
+        myMessage.addReceiver(mypt.getAmsAID());
+        myMessage.setOntology(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, Agencia.getTimeout());
         //SETTING THE TIMEOUT IN THE ACL MESSAGE
         Date t = new Date(c.getTimeInMillis());
 
         myMessage.setReplyByDate(t);
-        System.out.println("MESSAGE CREATE SUCCESFULLYd");
+        System.out.println("MESSAGE CREATE SUCCESFULLY INTO THE SENDER ACL CHALLENGUE");
+
+
         return myMessage;
     }
 
@@ -114,6 +138,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
     protected void handleInform(ACLMessage inform){
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM");
         System.out.println(inform.getContent());
+        /*
         try {
             long endTime = System.nanoTime();
             if((inform.getPostTimeStamp()-endTime)/1000000 <= Agencia.getTimeout()){
@@ -127,6 +152,8 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
         catch (Exception e) {
             e.printStackTrace();
         }
+
+         */
 
     }
 
@@ -147,7 +174,26 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
 
 
 
+    protected void handleAgree(ACLMessage agree){
+        System.out.println("hrvewrevwe");
+    }
 
+
+    protected void handleAllResponses(Vector responses) {
+        System.out.println("hrr");
+    }
+
+    protected void handleNotUnderstood(ACLMessage notUnderstood){
+        System.out.println("hrr");
+    }
+
+    protected void handleOutOfSequence(ACLMessage outOfSequence) {
+        System.out.println("hr");
+    }
+
+    protected void handleFailure(ACLMessage failure){
+        System.out.println("h");
+    }
 
 
 

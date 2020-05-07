@@ -16,6 +16,7 @@ import javax.crypto.SecretKey;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
 public class SenderACLCloud extends SimpleAchieveREInitiator {
 
@@ -75,7 +76,7 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
         //SETTING THE TIMEOUT IN THE ACL MESSAGE
         Date t = new Date(c.getTimeInMillis());
         myMessage.setReplyByDate(t);
-        System.out.println("MESSAGE CREATE SUCCESFULLY");
+        System.out.println("MESSAGE CREATE SUCCESFULLY INTO THE ACLCLOUD");
         return myMessage;
     }
 
@@ -86,8 +87,8 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
     protected void handleInform(ACLMessage inform){
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM");
         System.out.println(inform.getContent());
-        
-
+       
+/*
         try {
             long endTime = System.nanoTime();
             if((inform.getPostTimeStamp()-endTime)/1000000 <= Agencia.getTimeout()){
@@ -101,6 +102,8 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
         catch (Exception e) {
             e.printStackTrace();
         }
+
+ */
 
     }
 
@@ -122,7 +125,27 @@ public class SenderACLCloud extends SimpleAchieveREInitiator {
 
 
 
+    protected void handleAgree(ACLMessage agree){
+        System.out.println("hrvewrevwe");
+    }
 
+
+
+    protected void handleAllResponses(Vector responses) {
+        System.out.println("hrr");
+    }
+
+    protected void handleNotUnderstood(ACLMessage notUnderstood){
+        System.out.println("hrr");
+    }
+
+    protected void handleOutOfSequence(ACLMessage outOfSequence) {
+        System.out.println("hr");
+    }
+
+    protected void handleFailure(ACLMessage failure){
+        System.out.println("h");
+    }
 
 
 

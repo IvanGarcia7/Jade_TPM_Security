@@ -13,6 +13,7 @@ import javax.crypto.SecretKey;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
 public class SenderACLMigration extends SimpleAchieveREInitiator {
 
@@ -61,7 +62,7 @@ public class SenderACLMigration extends SimpleAchieveREInitiator {
         //SETTING THE TIMEOUT IN THE ACL MESSAGE
         Date t = new Date(c.getTimeInMillis());
         myMessage.setReplyByDate(t);
-        System.out.println("MESSAGE CREATE SUCCESFULLY");
+        System.out.println("MESSAGE CREATE SUCCESFULLY INTO THE ACLMIGRATION");
         return myMessage;
     }
 
@@ -69,11 +70,11 @@ public class SenderACLMigration extends SimpleAchieveREInitiator {
      * THIS FUNCTION PROCEED WITH THE SECURE MOVE OR CLONATION, IF THE MAXIMUM WAITING TIME IS NOT EXPIRED.
      * @param inform
      */
-    protected void handleInform(ACLMessage inform){
+    protected void handleInform(ACLMessage inform) {
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM");
         System.out.println(inform.getContent());
 
-
+    /*
         try {
             long endTime = System.nanoTime();
             if((inform.getPostTimeStamp()-endTime)/1000000 <= Agencia.getTimeout()){
@@ -88,6 +89,9 @@ public class SenderACLMigration extends SimpleAchieveREInitiator {
             e.printStackTrace();
         }
 
+
+
+     */
     }
 
     protected void handleRefuse(ACLMessage inform){
@@ -107,7 +111,27 @@ public class SenderACLMigration extends SimpleAchieveREInitiator {
 
 
 
+    protected void handleAgree(ACLMessage agree){
+        System.out.println("hrvewrevwe");
+    }
 
+
+
+    protected void handleAllResponses(Vector responses) {
+        System.out.println("hrr");
+    }
+
+    protected void handleNotUnderstood(ACLMessage notUnderstood){
+        System.out.println("hrr");
+    }
+
+    protected void handleOutOfSequence(ACLMessage outOfSequence) {
+        System.out.println("hr");
+    }
+
+    protected void handleFailure(ACLMessage failure){
+        System.out.println("h");
+    }
 
 
 

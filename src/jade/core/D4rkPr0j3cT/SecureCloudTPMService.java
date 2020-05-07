@@ -469,19 +469,20 @@ public class SecureCloudTPMService extends BaseService {
                     if(HostpotsRegister.containsKey(originPlatform.getID()) && HostpotsRegister.containsKey(packetReceived.getLocationDestiny().getID())){
                         System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE");
                         Location newDestiny = HostpotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
-                        System.out.println("PIKACHU");
                         System.out.println(newDestiny);
                         String challengue = Agencia.getRandomChallengue();
+                        System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challengue);
                         //Send the challengue to the origin platform to attestate
                         AID amsMain = new AID("ams", false);
-                        Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
-                        ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                         PublicKey destinypub = HostpotsRegister.get(originPlatform.getID()).getKeyPub();
                         PlatformID destinyPT = HostpotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
+                        ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+                        Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                         amsMainPlatform.addBehaviour(
                                 new SenderACLChallengue(message, amsMainPlatform,
                                         SecureCloudTPMService.this,originPlatform,newDestiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0,destinyPT)
                         );
+                        actualcontainer.releaseLocalAgent(amsMain);
                     }else{
                         System.out.println("REJECTED REQUEST, PLATFORM IS NOT FOUND WITHIN THE ACCEPTED DESTINATIONS DIRECTORY");
                     }
@@ -527,6 +528,7 @@ public class SecureCloudTPMService extends BaseService {
                                         new SenderACLChallengueError(message, amsMainPlatform,
                                                 SecureCloudTPMHelper.REQUEST_ERROR,destinypub,ms,origin)
                                 );
+                                actualcontainer.releaseLocalAgent(amsMain);
                                 //REMOVE
                                 SecureInformationCloud malware = HostpotsRegister.get(origin);
                                 pendingRedirects.put(origin.getID(),malware);
@@ -544,6 +546,7 @@ public class SecureCloudTPMService extends BaseService {
                                             new SenderACLConfirmation(message, amsMainPlatform,
                                                     origin,destiny ,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,destinypub,destinyremotepub,privateKeyCA)
                                     );
+                                    actualcontainer.releaseLocalAgent(amsMain);
                                 }else{
                                     //SEND ATT REQUEST TO THE SECONF PLATFROM
                                     System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE");
@@ -558,6 +561,7 @@ public class SecureCloudTPMService extends BaseService {
                                             new SenderACLChallengue(message, amsMainPlatform,
                                                     SecureCloudTPMService.this,origin,destiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,1,destinyPT)
                                     );
+                                    actualcontainer.releaseLocalAgent(amsMain);
                                 }
                             }
                         }else{
@@ -571,6 +575,7 @@ public class SecureCloudTPMService extends BaseService {
                                     new SenderACLChallengueError(message, amsMainPlatform,
                                             SecureCloudTPMHelper.REQUEST_ERROR,destinypub,ms,origin)
                             );
+                            actualcontainer.releaseLocalAgent(amsMain);
                         }
                     }else{
                         System.out.println("ERROR TIMEOUT IGNORIGN ");

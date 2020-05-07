@@ -2,7 +2,6 @@ package jade.core.CloudAgents;
 
 import jade.core.Agent;
 import jade.core.BaseService;
-import jade.core.D4rkPr0j3cT.SecureCloudTPMHelper;
 import jade.core.GenericCommand;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
@@ -10,15 +9,17 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 
+import java.util.Vector;
+
 public class ResponserAgentACL extends SimpleAchieveREResponder {
 
     private Logger logger = Logger.getMyLogger(getClass().getName());
     private BaseService myService;
 
 
-    public ResponserAgentACL(Agent ams, MessageTemplate mt, SecureAgentTPMService secureCloudTPMService) {
+    public ResponserAgentACL(Agent ams, MessageTemplate mt, SecureAgentTPMService secureAgentTPMService) {
         super(ams, mt);
-        myService = secureCloudTPMService;
+        myService = secureAgentTPMService;
     }
 
 
@@ -33,10 +34,11 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
         if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
             try{
                 System.out.println("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN");
-                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
-                        SecureCloudTPMHelper.NAME, null);
+                GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
+                        SecureAgentTPMHelper.NAME, null);
                 command.addParam(request.getContentObject());
                 myService.submit(command);
+                System.out.println("ADIUSSSSSSSSS");
             }catch(Exception e){
                 System.out.println("ERROR IN THE PREPARE RESPONSE OF THE ZONE 1");
                 e.printStackTrace();
@@ -52,8 +54,8 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
             try{
                 System.out.println("PLATFORM RECEIVE A CONFIRMATION SECURE MOVE");
-                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
-                        SecureCloudTPMHelper.NAME, null);
+                GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
+                        SecureAgentTPMHelper.NAME, null);
                 command.addParam(request.getContentObject());
                 myService.submit(command);
             }catch(Exception e){
@@ -61,6 +63,7 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
                 e.printStackTrace();
             }
         }else{
+            System.out.println("AAAAAhuihnuhnuhuionhuiunA");
             reply = request.createReply();
         }
         return reply;
@@ -68,8 +71,9 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
 
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
         System.out.println("PREPARING THE RESULT NOTIFICATION IN THE RESPONSER AGENT");
-        ACLMessage reply = request.createReply();
-        return reply;
+        //ACLMessage reply = request.createReply();
+        //return reply;
+        return null;
     }
 
     /**
@@ -78,9 +82,33 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
      */
     protected void handleInform(ACLMessage inform){
         System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM IN THE RESPONSER AGENT");
+        System.out.println("**********************************************************");
     }
 
 
+    protected void handleAgree(ACLMessage agree){
+        System.out.println("hrvewrevwe");
+    }
+
+    protected void handleRefuse(ACLMessage refuse){
+        System.out.println("hwevew");
+    }
+
+    protected void handleAllResponses(Vector responses) {
+        System.out.println("hrr");
+    }
+
+    protected void handleNotUnderstood(ACLMessage notUnderstood){
+        System.out.println("hrr");
+    }
+
+    protected void handleOutOfSequence(ACLMessage outOfSequence) {
+        System.out.println("hr");
+    }
+
+    protected void handleFailure(ACLMessage failure){
+        System.out.println("h");
+    }
 
 
 
