@@ -1,6 +1,7 @@
 package jade.core.CloudAgents;
 
         import jade.core.*;
+        import jade.core.D4rkPr0j3cT.SecureChallenguerPacket;
         import jade.core.SecureTPM.Agencia;
         import jade.core.SecureTPM.Pair;
         import jade.lang.acl.ACLMessage;
@@ -22,14 +23,14 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
     private byte [] secretInformation;
     private Location CAlocation;
 
-    public SenderACLChallengueAgent(ACLMessage message, Agent amsMainPlatform, AttestationSerialized packet_signed, SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, byte [] secretInfo, Location CAloc) {
+    public SenderACLChallengueAgent(ACLMessage message, Agent amsMainPlatform, AttestationSerialized packet_signed, SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, byte [] PackOriginal, Location CAloc) {
         super(amsMainPlatform,message);
         myMessage = message;
         myAgent = amsMainPlatform;
         myService = secureAgentTPMService;
         myAttestation = packet_signed;
         pubCA = pubSEC;
-        secretInformation = secretInfo;
+        secretInformation = PackOriginal;
         CAlocation = CAloc;
     }
 
@@ -48,10 +49,11 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
             Cipher aesCipher = Cipher.getInstance("AES");
             aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
             //PACKEST REQUEST TO SECUREPLATFORM
-            Pair<AttestationSerialized ,byte []> packetComplete = new Pair<AttestationSerialized, byte []>(myAttestation,secretInformation);
-            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(packetComplete));
+            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(myAttestation));
             byte [] encryptedKey = Agencia.encrypt(pubCA,secKey.getEncoded());
-            myMessage.setContentObject(new Pair<byte [],byte []>(encryptedKey,byteCipherObject));
+            SecureChallenguerPacket secOld = (SecureChallenguerPacket) Agencia.deserialize(secretInformation);
+            SecureChallenguerPacket secnew = new SecureChallenguerPacket(secOld.getOTPPriv(),encryptedKey,byteCipherObject,secOld.getPartPriv());
+            myMessage.setContentObject(Agencia.serialize(secnew));
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -456,21 +456,25 @@ public class SecureAgentTPMService extends BaseService {
 
 
                     Location actualLocation = actualcontainer.here();
+                    String temPath = "./temp_agent";
+                    new File(temPath).mkdir();
                     //Deserialize the AIK
-                    try (FileOutputStream fos = new FileOutputStream("./"+actualLocation.getName()+"/akpub.pem")) {
+                    try (FileOutputStream fos = new FileOutputStream(temPath+"/akpub.pem")) {
                         fos.write(AIKPub);
                     }
-                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,challengue,false);
+                    Agencia.attestation_files(temPath,contextAK,challengue,false);
                     //SERIALIZE ALL THREE MESSAGES AND THEM DELETE IT
-                    AttestationSerialized packet_signed = new AttestationSerialized("./"+actualLocation.getName());
+                    AttestationSerialized packet_signed = new AttestationSerialized(temPath);
                     //SEND THE INFORMATION TO THE PLATFORM
+                    Agencia.deleteFolder(new File(temPath));
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                    //amsMainPlatform.addBehaviour(
-                    //        new SenderACLChallengueAgent(message, amsMainPlatform, packet_signed,
-                    //                SecureAgentTPMService.this, CAKey, PacketChallengue.getValue(),CALocation)
-                    //);
+                    byte [] PacketOrigin = (byte [])command.getParams()[0];
+                    amsMainPlatform.addBehaviour(
+                            new SenderACLChallengueAgent(message, amsMainPlatform, packet_signed,
+                                    SecureAgentTPMService.this, CAKey, PacketOrigin,CALocation)
+                    );
                     actualcontainer.releaseLocalAgent(amsMain);
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
                     //VERIFY THE SIGNED
