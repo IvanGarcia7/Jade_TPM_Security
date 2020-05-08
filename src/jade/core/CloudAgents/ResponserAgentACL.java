@@ -53,6 +53,7 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
             }
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
             try{
+                System.out.println("HELLO DESDE LA PLATAFORMA NUUMEOR 2");
                 System.out.println("PLATFORM RECEIVE A CONFIRMATION SECURE MOVE");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                         SecureAgentTPMHelper.NAME, null);

@@ -539,11 +539,24 @@ public class SecureCloudTPMService extends BaseService {
                             }else{
                                 if(packet_privative.getValidation()==1){
                                     System.out.println("BOTH PLATFORMS CONFIRMED");
+
                                     AID amsMain = new AID("ams", false);
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                                    PublicKey destinypub = HostpotsRegister.get(origin).getKeyPub();
-                                    PublicKey destinyremotepub = HostpotsRegister.get(destiny).getKeyPub();
+
+
+
+
+                                    PublicKey destinypub = HostpotsRegister.get(origin.getID()).getKeyPub();
+                                    System.out.println("*************************************");
+                                    System.out.println("A    "+origin.getID());
+                                    System.out.println("*************************************");
+                                    System.out.println("B    "+destiny.getID());
+
+                                    PublicKey destinyremotepub = HostpotsRegister.get(destiny.getID()).getKeyPub();
+                                    System.out.println("*************************************");
+
+                                    System.out.println("HE LLEGADO ANTES DEL BEHAVIOUR");
                                     amsMainPlatform.addBehaviour(
                                             new SenderACLConfirmation(message, amsMainPlatform,
                                                     origin,destiny ,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,destinypub,destinyremotepub,privateKeyCA)
@@ -554,7 +567,7 @@ public class SecureCloudTPMService extends BaseService {
 
                                     //SEND ATT REQUEST TO THE SECONF PLATFROM
                                     System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE TO THE DESTINY");
-                                    
+
 
                                     Location newDestiny = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
                                     System.out.println(newDestiny);

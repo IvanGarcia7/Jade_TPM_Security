@@ -51,7 +51,8 @@ public class SenderACLConfirmation extends SimpleAchieveREInitiator {
      * @return
      */
     public ACLMessage prepareRequest(ACLMessage acl) {
-
+        System.out.println("HOLA");
+        /*
         //destiny keypubdestiny
         Pair<Pair<Location,Location>,PublicKey> information = new Pair<Pair<Location,Location>,PublicKey>(new Pair<Location,Location>(origin,destiny),destinyKey);
         byte [] informationSerial = null;
@@ -71,6 +72,8 @@ public class SenderACLConfirmation extends SimpleAchieveREInitiator {
         catch (Exception e) {
             e.printStackTrace();
         }
+        */
+
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
         AID receiver = new AID("ams@"+origin.getName(),AID.ISGUID);
         receiver.addAddresses(origin.getAddress());
