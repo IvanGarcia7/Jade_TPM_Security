@@ -488,19 +488,22 @@ public class SecureCloudTPMService extends BaseService {
                     }
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
                     if(command.getParams()[0]!=null){
-                        //I need to check the data
-                        Pair<AttestationSerialized, SecretInformation> sendAtt = (Pair<AttestationSerialized, SecretInformation>)command.getParams()[0];
-                        SecretInformation newSecretDecrypt = sendAtt.getValue();
 
-                        Location origin = newSecretDecrypt.getOrigin();
-                        Location destiny = newSecretDecrypt.getDestiny();
+                        byte [] rec = (byte [])command.getParams()[0];
+                        Pair<byte [],byte []> pairsenderro = (Pair<byte[],byte[]>)Agencia.deserialize(rec);
+
+                        AttestationSerialized packetReceive = (AttestationSerialized) Agencia.deserialize(pairsenderro.getKey());
+                        SecretInformation packet_privative = (SecretInformation) Agencia.deserialize(pairsenderro.getValue());
+
+                        //I need to check the data
+                        Location origin = packet_privative.getOrigin();
+                        Location destiny = packet_privative.getDestiny();
 
                         String temPath = "./temp";
                         new File(temPath).mkdir();
                         System.out.println("DESERIALIZE THEIR INFORMATION");
-                        AttestationSerialized packetReceive = sendAtt.getKey();
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
-                            stream.write(HostpotsRegister.get(origin).getAIK());
+                            stream.write(HostpotsRegister.get(origin.getID()).getAIK());
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/sign.out")) {
                             stream.write(packetReceive.getSign());
@@ -511,18 +514,18 @@ public class SecureCloudTPMService extends BaseService {
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/quote.out")) {
                             stream.write(packetReceive.getQuoted());
                         }
-                        int result = Agencia.check_attestation_files(temPath,newSecretDecrypt.getChallengue(),false);
+                        int result = Agencia.check_attestation_files(temPath,packet_privative.getChallengue(),false);
                         if(result==0) {
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath + "/pcr.out");
                             System.out.println("CHEKING TH SAH256");
-                            String hashSaved = HostpotsRegister.get(origin).getSha256();
+                            String hashSaved = HostpotsRegister.get(origin.getID()).getSha256();
                             if(!hashSaved.equals(hash)){
                                 System.out.println("THE PLATFORM IS CORRUPTED BY A MALWARE");
                                 AID amsMain = new AID("ams", false);
                                 Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                 ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                                PublicKey destinypub = HostpotsRegister.get(origin).getKeyPub();
+                                PublicKey destinypub = HostpotsRegister.get(origin.getID()).getKeyPub();
                                 String ms = "THE PLATFORM IS CORRUPTED BY A MALWARE";
                                 amsMainPlatform.addBehaviour(
                                         new SenderACLChallengueError(message, amsMainPlatform,
@@ -534,8 +537,7 @@ public class SecureCloudTPMService extends BaseService {
                                 pendingRedirects.put(origin.getID(),malware);
                                 HostpotsRegister.remove(origin);
                             }else{
-
-                                if(newSecretDecrypt.getValidation()==1){
+                                if(packet_privative.getValidation()==1){
                                     System.out.println("BOTH PLATFORMS CONFIRMED");
                                     AID amsMain = new AID("ams", false);
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
@@ -548,9 +550,38 @@ public class SecureCloudTPMService extends BaseService {
                                     );
                                     actualcontainer.releaseLocalAgent(amsMain);
                                 }else{
+
+
                                     //SEND ATT REQUEST TO THE SECONF PLATFROM
-                                    System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE");
+                                    System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE TO THE DESTINY");
+
+
+                                    Location newDestiny = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
+                                    System.out.println(newDestiny);
                                     String challengue = Agencia.getRandomChallengue();
+                                    System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challengue);
+                                    //Send the challengue to the origin platform to attestate
+                                    AID amsMain = new AID("ams", false);
+                                    PublicKey destinypub = HostpotsRegister.get(packet_privative.getDestiny().getID()).getKeyPub();
+                                    PlatformID destinyPT = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
+                                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+
+                                    
+                                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                                    amsMainPlatform.addBehaviour(
+                                            new SenderACLChallengue(message, amsMainPlatform,
+                                                    SecureCloudTPMService.this,originPlatform,newDestiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0,destinyPT)
+                                    );
+                                    actualcontainer.releaseLocalAgent(amsMain);
+
+
+
+
+
+
+
+
+
                                     //Send the challengue to the origin platform to attestate
                                     AID amsMain = new AID("ams", false);
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
@@ -655,23 +686,56 @@ public class SecureCloudTPMService extends BaseService {
                             "TO CHECK ORIGIN A NEW HOSTPOT IN THE SECURE PLATFORM");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                             SecureCloudTPMHelper.NAME, null);
-                    Pair<byte [],byte []> pairsender = (Pair<byte [],byte []>)command.getParams()[0];
-                    byte [] key = pairsender.getKey();
-                    byte [] object = pairsender.getValue();
-                    byte[] decryptedKey = Agencia.decrypt(privateKeyCA,key);
-                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length, "AES");
+
+
+                    System.out.println("LEAVE THE WORLD BEHIND YOU");
+
+                    SecureChallenguerPacket secrec = (SecureChallenguerPacket) Agencia.deserialize((byte [])command.getParams()[0]);
+
+
+                    System.out.println("LEAVE THE WORLD AFTER YOU");
+
+
+
+
+                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: ");
+                    byte [] OTP_PUB = secrec.getOTPPub();
+                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+OTP_PUB);
+                    byte [] OTP_PRIV = secrec.getOTPPriv();
+                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+OTP_PRIV);
+                    byte [] public_Part = secrec.getPartPublic();
+                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+public_Part);
+                    byte [] private_part = secrec.getPartPriv();
+                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+private_part);
+
+                    byte[] decryptedKeyPublic = Agencia.decrypt(privateKeyCA,OTP_PUB);
+                    SecretKey originalKey = new SecretKeySpec(decryptedKeyPublic , 0, decryptedKeyPublic .length, "AES");
                     Cipher aesCipher = Cipher.getInstance("AES");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    byte[] byteObject = aesCipher.doFinal(object);
-                    Pair<AttestationSerialized ,byte []> packetComplete = (Pair<AttestationSerialized ,byte []>)Agencia.deserialize(byteObject);
-                    byte [] SecretInformation = packetComplete.getValue();
-                    byte [] decriptInformation = Agencia.decrypt(privateKeyCA,SecretInformation);
-                    SecretInformation newSecretDecrypt = (SecretInformation) Agencia.deserialize(decriptInformation);
-                    if(((Long)command.getParams()[1]-newSecretDecrypt.getTimestamp())<=Agencia.getTimeout()){
+                    byte[] byteObject = aesCipher.doFinal(public_Part);
+
+                    System.out.println("LLEGUE AQUI");
+
+                    byte[] decryptedKeyPrivate = Agencia.decrypt(privateKeyCA,OTP_PRIV);
+                    SecretKey originalKeyPrivate = new SecretKeySpec(decryptedKeyPrivate , 0, decryptedKeyPrivate .length, "AES");
+                    Cipher aesCipherPrivate = Cipher.getInstance("AES");
+                    aesCipherPrivate.init(Cipher.DECRYPT_MODE, originalKeyPrivate);
+                    byte[] byteObjectPrivatesender = aesCipherPrivate.doFinal(private_part);
+
+                    System.out.println("LLEGUE a1uip");
+
+                    //I NEED TO DECRYPT THE PUBLIC KEY AND THE ATTESTATTE THE SIGN WITH THE NONCE
+                    Pair<byte [],byte []> pairsenderro = new Pair<byte[],byte[]>(byteObject,byteObjectPrivatesender);
+
+                    System.out.println("LLEGUE fewafwa");
+
+                    SecretInformation packet_privative = (SecretInformation) Agencia.deserialize(byteObjectPrivatesender);
+
+                    System.out.println("LLEGUE gregerwgew");
+                    if(((Long)command.getParams()[1]-packet_privative.getTimestamp())<=Agencia.getTimeout()){
                         System.out.println("Checking the values");
-                        AttestationSerialized checkAtt = packetComplete.getKey();
-                        Pair<AttestationSerialized, SecretInformation> sendAtt = new Pair<AttestationSerialized, SecretInformation>(checkAtt,newSecretDecrypt);
-                        commandResponse.addParam(sendAtt);
+                        System.out.println("I receive the following time "+packet_privative.getTimestamp());
+                        commandResponse.addParam(Agencia.serialize(pairsenderro));
                     }else{
                         System.out.println("THE AGENCIA IS TIMEOUT");
                         commandResponse.addParam(null);

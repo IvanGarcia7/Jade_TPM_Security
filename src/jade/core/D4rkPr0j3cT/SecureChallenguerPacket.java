@@ -31,4 +31,20 @@ public class SecureChallenguerPacket implements Serializable {
     public byte[] getPartPublic() {
         return partPublic;
     }
+
+    public void setOTPPriv(byte[] OTPPriv) {
+        this.OTPPriv = OTPPriv;
+    }
+
+    public void setOTPPub(byte[] OTPPub) {
+        this.OTPPub = OTPPub;
+    }
+
+    public void setPartPriv(byte[] partPriv) {
+        this.partPriv = partPriv;
+    }
+
+    public void setPartPublic(byte[] partPublic) {
+        this.partPublic = partPublic;
+    }
 }

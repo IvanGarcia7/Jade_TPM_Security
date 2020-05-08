@@ -468,12 +468,17 @@ public class SecureAgentTPMService extends BaseService {
                     //SEND THE INFORMATION TO THE PLATFORM
                     Agencia.deleteFolder(new File(temPath));
                     AID amsMain = new AID("ams", false);
+
+
+
+                    SecureChallenguerPacket pSenderD2 = new SecureChallenguerPacket(pSenderDone.getOTPPriv(),null,null,pSenderDone.getPartPriv());
+
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                    byte [] PacketOrigin = (byte [])command.getParams()[0];
+                    //byte [] PacketOrigin = (byte [])command.getParams()[0];
                     amsMainPlatform.addBehaviour(
                             new SenderACLChallengueAgent(message, amsMainPlatform, packet_signed,
-                                    SecureAgentTPMService.this, CAKey, PacketOrigin,CALocation)
+                                    SecureAgentTPMService.this, CAKey,CALocation,pSenderD2)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){

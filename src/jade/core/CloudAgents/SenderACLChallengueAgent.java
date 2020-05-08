@@ -22,16 +22,17 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
     private PublicKey pubCA;
     private byte [] secretInformation;
     private Location CAlocation;
+    private SecureChallenguerPacket p1;
 
-    public SenderACLChallengueAgent(ACLMessage message, Agent amsMainPlatform, AttestationSerialized packet_signed, SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, byte [] PackOriginal, Location CAloc) {
+    public SenderACLChallengueAgent(ACLMessage message, Agent amsMainPlatform, AttestationSerialized packet_signed, SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, Location CAloc, SecureChallenguerPacket pp) {
         super(amsMainPlatform,message);
         myMessage = message;
         myAgent = amsMainPlatform;
         myService = secureAgentTPMService;
         myAttestation = packet_signed;
         pubCA = pubSEC;
-        secretInformation = PackOriginal;
         CAlocation = CAloc;
+        p1 = pp;
     }
 
     /**
@@ -51,9 +52,9 @@ public class SenderACLChallengueAgent extends SimpleAchieveREInitiator {
             //PACKEST REQUEST TO SECUREPLATFORM
             byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(myAttestation));
             byte [] encryptedKey = Agencia.encrypt(pubCA,secKey.getEncoded());
-            SecureChallenguerPacket secOld = (SecureChallenguerPacket) Agencia.deserialize(secretInformation);
-            SecureChallenguerPacket secnew = new SecureChallenguerPacket(secOld.getOTPPriv(),encryptedKey,byteCipherObject,secOld.getPartPriv());
-            myMessage.setContentObject(Agencia.serialize(secnew));
+            p1.setOTPPub(encryptedKey);
+            p1.setPartPublic(byteCipherObject);
+            myMessage.setContentObject(Agencia.serialize(p1));
         }
         catch (Exception e) {
             e.printStackTrace();
