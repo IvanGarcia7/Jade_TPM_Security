@@ -480,7 +480,7 @@ public class SecureCloudTPMService extends BaseService {
                         Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                         amsMainPlatform.addBehaviour(
                                 new SenderACLChallengue(message, amsMainPlatform,
-                                        SecureCloudTPMService.this,originPlatform,newDestiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0,destinyPT)
+                                        SecureCloudTPMService.this,originPlatform,destiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0,destinyPT)
                         );
                         actualcontainer.releaseLocalAgent(amsMain);
                     }else{
@@ -554,7 +554,7 @@ public class SecureCloudTPMService extends BaseService {
 
                                     //SEND ATT REQUEST TO THE SECONF PLATFROM
                                     System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE TO THE DESTINY");
-
+                                    
 
                                     Location newDestiny = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
                                     System.out.println(newDestiny);
@@ -566,31 +566,16 @@ public class SecureCloudTPMService extends BaseService {
                                     PlatformID destinyPT = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
                                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 
-                                    
+                                    Location originPlatform = packet_privative.getOrigin();
+
+
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                     amsMainPlatform.addBehaviour(
                                             new SenderACLChallengue(message, amsMainPlatform,
-                                                    SecureCloudTPMService.this,originPlatform,newDestiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0,destinyPT)
-                                    );
-                                    actualcontainer.releaseLocalAgent(amsMain);
-
-
-
-
-
-
-
-
-
-                                    //Send the challengue to the origin platform to attestate
-                                    AID amsMain = new AID("ams", false);
-                                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
-                                    ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                                    PublicKey destinypub = HostpotsRegister.get(destiny).getKeyPub();
-                                    PlatformID destinyPT = HostpotsRegister.get(destiny).getPlatformLocation();
-                                    amsMainPlatform.addBehaviour(
-                                            new SenderACLChallengue(message, amsMainPlatform,
-                                                    SecureCloudTPMService.this,origin,destiny ,challengue,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,1,destinyPT)
+                                                    SecureCloudTPMService.this,originPlatform,
+                                                    newDestiny ,challengue,
+                                                    SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
+                                                    destinypub,publicKeyCA,1,destinyPT)
                                     );
                                     actualcontainer.releaseLocalAgent(amsMain);
                                 }
