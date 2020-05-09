@@ -1,16 +1,10 @@
 package jade.core.CloudAgents;
 
 import jade.core.*;
-import jade.core.D4rkPr0j3cT.SecureChallenguerPacket;
-import jade.core.D4rkPr0j3cT.SecureCloudTPMHelper;
-import jade.core.D4rkPr0j3cT.SecureCloudTPMService;
-import jade.core.D4rkPr0j3cT.SenderACLChallengue;
-import jade.core.SecureInterTPM.SecureInterTPMHelper;
-import jade.core.SecureInterTPM.SecureInterTPMSlice;
+import jade.core.SecureCloud.SecureChallenguerPacket;
+import jade.core.SecureCloud.SecureCloudTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
-import jade.core.SecureTPM.SecureAgent;
-import jade.core.SecureTPM.TPMHighLevel;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;

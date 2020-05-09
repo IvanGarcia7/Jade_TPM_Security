@@ -1,10 +1,9 @@
-package jade.core.D4rkPr0j3cT;
+package jade.core.SecureCloud;
 
 import jade.core.*;
 import jade.core.CloudAgents.*;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
-import jade.core.SecureTPM.SecureAgent;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
@@ -13,9 +12,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -23,8 +20,8 @@ import java.util.logging.Level;
 public class SecureCloudTPMService extends BaseService {
 
     //INTERESTING VARIABLES.
-    public static final String NAME = "jade.core.D4rkPr0j3cT.SecureCloudTPM";
-    public static final String VERBOSE = "jade_core_D4rkPr0j3cT_SecureCloudTPMService_verbose";
+    public static final String NAME = "jade.core.SecureCloud.SecureCloudTPM";
+    public static final String VERBOSE = "SecureCloud";
 
     //TIME VAR THAT THE AGENCY USE TO SEE THE TIME THAT A REQUEST IT'S TAKEN.
     long startTime = System.nanoTime();

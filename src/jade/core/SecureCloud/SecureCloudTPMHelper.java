@@ -1,4 +1,4 @@
-package jade.core.D4rkPr0j3cT;
+package jade.core.SecureCloud;
 
 import jade.core.ServiceHelper;
 
@@ -10,7 +10,7 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
     /**
      * THE NAME OF THE SERVICE
      */
-    public static final String NAME = "jade.core.D4rkPr0j3cT.SecureCloudTPM";
+    public static final String NAME = "jade.core.SecureCloud.SecureCloudTPM";
 
     /**
      * VERTICAL COMMANDS

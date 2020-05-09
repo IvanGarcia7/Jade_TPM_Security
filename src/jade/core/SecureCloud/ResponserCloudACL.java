@@ -1,20 +1,14 @@
-package jade.core.D4rkPr0j3cT;
+package jade.core.SecureCloud;
 
 import jade.core.Agent;
 import jade.core.BaseService;
-import jade.core.CloudAgents.KeyPairCloudPlatform;
-import jade.core.CloudAgents.SecureAgentTPMHelper;
 import jade.core.GenericCommand;
-import jade.core.SecureTPM.Agencia;
-import jade.core.SecureTPM.Pair;
-import jade.core.ServiceException;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
-import java.security.PrivateKey;
-import java.util.Date;
+
 import java.util.Vector;
 
 public class ResponserCloudACL extends SimpleAchieveREResponder {

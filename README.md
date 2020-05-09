@@ -19,12 +19,12 @@ Here are some **basic examples** to demonstrate how the library works.
 
 ## EXAMPLE SECURE CA PLATFORM PROTOCOL:
 
-* -gui -host localhost -port 3334 -services jade.core.D4rkPr0j3cT.SecureCloudTPMService -agents CA:vom.CAPlatform
+* -gui -host localhost -port 3334 -services jade.core.SecureCloud.SecureCloudTPMService -agents CA:vom.CAPlatform
 * -gui -host localhost -port 4354 -services jade.core.CloudAgents.SecureAgentTPMService -agents CA:vom.CAAgent
 
 #### RASPBERRY:
 
-* java -cp TPM.jar:test.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.D4rkPr0j3cT.SecureCloudTPMService -agents CA:vom.CAPlatform
+* java -cp TPM.jar:test.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService -agents CA:vom.CAPlatform
 
 * java -cp TPM.jar:test.jar jade.Boot -gui -host localhost -port 1334 -services jade.core.CloudAgents.SecureAgentTPMService -agents A1:vom.CAAgent
 
@@ -43,7 +43,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-import jade.core.D4rkPr0j3cT.SecureCAPlatform;
+import jade.core.SecureCloud.SecureCAPlatform;
 
 public class CAPlatform extends SecureCAPlatform{
 	public void setup() {

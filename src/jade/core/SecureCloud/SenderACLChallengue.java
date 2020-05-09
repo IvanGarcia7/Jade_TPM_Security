@@ -1,10 +1,7 @@
-package jade.core.D4rkPr0j3cT;
+package jade.core.SecureCloud;
 
 import jade.core.*;
-import jade.core.CloudAgents.AttestationSerialized;
-import jade.core.CloudAgents.RequestSecure;
 import jade.core.CloudAgents.SecureAgentTPMHelper;
-import jade.core.CloudAgents.SecureAgentTPMService;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.lang.acl.ACLMessage;
@@ -14,7 +11,6 @@ import jade.proto.SimpleAchieveREInitiator;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;

@@ -1,9 +1,8 @@
-package jade.core.D4rkPr0j3cT;
+package jade.core.SecureCloud;
 
 import jade.core.Location;
 
 import java.io.Serializable;
-import java.sql.Time;
 
 public class SecretInformation implements Serializable {
 

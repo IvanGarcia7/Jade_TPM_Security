@@ -1,11 +1,16 @@
 package jade.core.CloudAgents;
 
+
+import jade.core.SecureTPM.Agencia;
 import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Files;
 
-import jade.core.SecureTPM.Agencia;
 
+/**
+ * THIS IS AN OBJECT THAT SAVE ALL THE TEMP FILES RELATED TO THE ATTESTATION. SERIALIZE ALL THE INFORMATION THAT
+ * THE SECURE PLATFORM NEED IN ORDER TO CHECK IF THE PLATFORM IS RELIABLE ACCORDING TO ITS PCR VALUES.
+ */
 public class AttestationSerialized implements Serializable {
 
     private byte [] AIKPub;
@@ -13,6 +18,15 @@ public class AttestationSerialized implements Serializable {
     private byte [] Quoted;
     private byte [] Message;
 
+
+    /**
+     * THIS FUNCTION RECEIVES A PATH AS A PARAM, AND THEM SERIALIZE:
+     * - THE AIK PUB OF THE PLATFORM (KEY USE TO SIGN THE FILES) AKPUB.PEM
+     * - THE SIGNATURE OF THE PCR VALUES SIGN.OUT
+     * - THE QUOTE GENERATED WITH THE TPM QUOTE.OUT
+     * - THE PLATDOEM PCR VALUES THAT HAVE BEEN VERIFIED.
+     * @param path
+     */
     public AttestationSerialized(String path){
         File aik = new File(path+"/akpub.pem");
         File sign = new File(path+"/sign.out");
@@ -31,6 +45,9 @@ public class AttestationSerialized implements Serializable {
         }
     }
 
+
+    //GETTER METHODS
+
     public byte[] getAIKPub() {
         return AIKPub;
     }
@@ -46,7 +63,5 @@ public class AttestationSerialized implements Serializable {
     public byte[] getSign() {
         return Sign;
     }
-
-
 
 }

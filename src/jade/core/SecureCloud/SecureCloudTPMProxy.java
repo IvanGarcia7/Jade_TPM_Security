@@ -1,13 +1,9 @@
-package jade.core.D4rkPr0j3cT;
+package jade.core.SecureCloud;
 
 import jade.core.GenericCommand;
 import jade.core.Node;
 import jade.core.Service;
 import jade.core.VerticalCommand;
-
-
-import java.security.PrivateKey;
-import java.security.PublicKey;
 
 public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureCloudTPMSlice {
 

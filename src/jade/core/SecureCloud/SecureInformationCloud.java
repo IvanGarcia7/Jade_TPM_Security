@@ -1,6 +1,5 @@
-package jade.core.D4rkPr0j3cT;
+package jade.core.SecureCloud;
 
-import jade.core.Location;
 import jade.core.PlatformID;
 
 import java.security.PublicKey;
