@@ -20,10 +20,10 @@ Here are some **basic examples** to demonstrate how the library works.
 * START SECURE PLATFORM:
 java -cp TPM.jar:test.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService -agents CA:vom.CAPlatform
 
-*START AGENT 2
+* START AGENT 2
 java -cp TPM.jar:test.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -services jade.core.CloudAgents.SecureAgentTPMService -agents A2:vom.CAAgent2
 
-*START AGENT 1
+* START AGENT 1
 java -cp TPM.jar:test.jar jade.Boot -container-name P1 -gui -host localhost -port 1394 -services jade.core.CloudAgents.SecureAgentTPMService -agents A1:vom.CAAgent
 
 
