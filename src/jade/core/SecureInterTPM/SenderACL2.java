@@ -4,7 +4,6 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.BaseService;
 import jade.core.GenericCommand;
-import jade.core.SecureIntraTPM.SecureIntraTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.RequestConfirmation;
 import jade.lang.acl.ACLMessage;
@@ -54,7 +53,7 @@ public class SenderACL2 extends SimpleAchieveREInitiator {
         AID receiver = new AID("ams@"+packet.getDestinyLocation().getName(),AID.ISGUID);
         receiver.addAddresses(packet.getDestinyLocation().getAddress());
         myMessage.addReceiver(receiver);
-        myMessage.setOntology(SecureIntraTPMHelper.REQUEST_ATTESTATION);
+        myMessage.setOntology(SecureInterTPMHelper.REQUEST_ATTESTATION);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, Agencia.getTimeout());
         Date t = new Date(c.getTimeInMillis());

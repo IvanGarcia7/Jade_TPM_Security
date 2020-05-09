@@ -1,7 +1,7 @@
 package jade.core.SecureCloud;
 
 import jade.core.*;
-import jade.core.CloudAgents.SecureAgentTPMHelper;
+import jade.core.SecureAgent.SecureAgentTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.lang.acl.ACLMessage;

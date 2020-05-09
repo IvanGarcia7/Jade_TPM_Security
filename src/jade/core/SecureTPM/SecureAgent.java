@@ -2,8 +2,6 @@ package jade.core.SecureTPM;
 
 import jade.core.*;
 import jade.core.SecureInterTPM.SecureInterTPMHelper;
-import jade.core.SecureIntraTPM.SecureIntraTPMHelper;
-import jade.core.SecureOnionTPM.SecureOnionTPMHelper;
 import jade.core.mobility.Movable;
 import jade.domain.AMSService;
 import jade.domain.FIPAAgentManagement.AMSAgentDescription;
@@ -21,9 +19,10 @@ public class SecureAgent extends Agent {
     /**
      * SERVICE CREATION, INTRA E INTER PLATFORM. SERVICES ARE INSTALLED WHEN THE PROGRAM REQUIRES IT
      */
-    private transient SecureIntraTPMHelper mobHelperIntra;
+    
     private transient SecureInterTPMHelper mobHelperInter;
-    private transient SecureOnionTPMHelper mobHelperOnion;
+    
+    
 
 
     /**
@@ -33,6 +32,7 @@ public class SecureAgent extends Agent {
      * TAKES ONLY THE LOCATION AS A PARAM TO KNOW THE SERVICE THAT HAS TO INSTANTIATE.
      * @param destiny
      */
+    /*
     public void doSecureMove(Location destiny) {
         System.out.println("THE SECURE MOVE PROCESS HAS JUST STARTED CORRECTLY");
         StringBuilder sb = new StringBuilder();
@@ -63,7 +63,7 @@ public class SecureAgent extends Agent {
             return;
         }
     }
-
+*/
 
     /**
      * THIS FUNCTION EXECUTE THE MOVE SERVICE, THAT HAS BEEN MODIFIED TO IMPLEMENT SECURITY
@@ -83,6 +83,7 @@ public class SecureAgent extends Agent {
      * TAKES ONLY THE LOCATION AS A PARAM TO KNOW THE SERVICE THAT HAS TO INSTANTIATE.
      * @param destiny
      */
+    /*
     public void doSecureClone(Location destiny, String new_name_agent) {
         try {
             StringBuilder sb = new StringBuilder();
@@ -112,6 +113,7 @@ public class SecureAgent extends Agent {
             return;
         }
     }
+    */
 
     /**
      * THIS FUNCTION EXECUTE THE CLONE SERVICE, THAT HAS BEEN MODIFIED TO IMPLEMENT SECURITY
@@ -175,6 +177,7 @@ public class SecureAgent extends Agent {
      * @param devices_list
      * @throws ServiceException
      */
+    /*
     public void doSecureRegisterOnion(List<PlatformID> devices_list) throws ServiceException {
         System.out.println("THERE ARE A ONION SECURE REQUEST:");
         initmobHelperOnion();
@@ -195,7 +198,7 @@ public class SecureAgent extends Agent {
         mobHelperOnion.sendOnionHostpots(this,destiny);
     }
 
-
+*/
 
 
     /**
@@ -220,6 +223,7 @@ public class SecureAgent extends Agent {
      * CALL THIS FUNCTION TO INICALIZE THE INTRA-PLATFORM SERVICE
      * @throws ServiceException
      */
+    /*
     private void initmobHelperIntra() throws ServiceException {
         if(mobHelperIntra == null){
             mobHelperIntra = (SecureIntraTPMHelper) getHelper(SecureIntraTPMHelper.NAME);
@@ -245,7 +249,7 @@ public class SecureAgent extends Agent {
         }
     }
 
-
+*/
     /**
      * CALL THIS FUNCTION TO INICALIZE THE INTER-PLATFORM SERVICE
      * @throws ServiceException
@@ -280,6 +284,7 @@ public class SecureAgent extends Agent {
      * CALL THIS FUNCTION TO INICALIZE THE ONION SERVICE
      * @throws ServiceException
      */
+    /*
     private void initmobHelperOnion() throws ServiceException {
         if(mobHelperOnion == null){
             mobHelperOnion = (SecureOnionTPMHelper) getHelper(SecureOnionTPMHelper.NAME);
@@ -290,5 +295,5 @@ public class SecureAgent extends Agent {
                 public void afterClone() { SecureAgent.this.afterClone(); }
             } );
         }
-    }
+    }*/
 }

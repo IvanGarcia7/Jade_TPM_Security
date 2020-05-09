@@ -1,4 +1,4 @@
-package jade.core.CloudAgents;
+package jade.core.SecureAgent;
 
 
 import jade.core.PlatformID;
@@ -9,7 +9,7 @@ import java.security.PublicKey;
 public interface SecureAgentTPMHelper extends ServiceHelper {
 
     //NAME OF THE SERVICE
-    public static final String NAME = "jade.core.CloudAgents.SecureAgentTPM";
+    public static final String NAME = "jade.core.SecureAgent.SecureAgentTPM";
 
     //VERTICAL COMMANDS
 

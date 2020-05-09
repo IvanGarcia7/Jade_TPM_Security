@@ -20,7 +20,7 @@ public class Rastreador extends SecureAgent{
 		//this.addBehaviour(new Beh1(this));
 		PlatformID destination = new PlatformID(remoteAMS);
 		
-		doSecureMove(destination);
+		//doSecureMove(destination);
 	}
 	
 	

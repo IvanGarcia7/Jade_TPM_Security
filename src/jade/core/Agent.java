@@ -26,7 +26,6 @@ package jade.core;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 
-import jade.core.SecureIntraTPM.SecureIntraTPMService;
 import jade.util.Logger;
 import jade.util.leap.Serializable;
 import jade.util.leap.Iterator;

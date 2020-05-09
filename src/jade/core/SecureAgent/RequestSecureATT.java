@@ -1,4 +1,4 @@
-package jade.core.CloudAgents;
+package jade.core.SecureAgent;
 
 
 import jade.core.Location;

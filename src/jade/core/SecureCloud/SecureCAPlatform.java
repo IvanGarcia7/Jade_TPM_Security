@@ -1,7 +1,6 @@
 package jade.core.SecureCloud;
 
 import jade.core.*;
-import jade.core.SecureInterTPM.SecureInterTPMHelper;
 import jade.core.SecureTPM.Agencia;
 
 import java.security.PrivateKey;
@@ -28,7 +27,7 @@ public class SecureCAPlatform extends Agent{
         try {
             initmobHelperCloud();
             Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
-                    Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
+                    Level.INFO,SecureCloudTPMHelper.DEBUG,this.getClass().getName());
             System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
             mobHelperCloud.doStartCloud(this,priv,pub);
         }
@@ -46,7 +45,7 @@ public class SecureCAPlatform extends Agent{
         try {
             initmobHelperCloud();
             Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
-                    Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
+                    Level.INFO,SecureCloudTPMHelper.DEBUG,this.getClass().getName());
             System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
             mobHelperCloud.listPlatforms(this);
         }

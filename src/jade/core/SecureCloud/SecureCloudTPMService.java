@@ -1,7 +1,7 @@
 package jade.core.SecureCloud;
 
 import jade.core.*;
-import jade.core.CloudAgents.*;
+import jade.core.SecureAgent.*;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.behaviours.Behaviour;
@@ -424,7 +424,11 @@ public class SecureCloudTPMService extends BaseService {
                             //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath+"/pcr.out");
-                            SecureInformationCloud saveRequest = new SecureInformationCloud(packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),packSecure.getMyPlatform());
+                            //SecureInformationCloud saveRequest = new SecureInformationCloud(packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),packSecure.getMyPlatform());
+
+                            //BAD
+
+                            SecureInformationCloud saveRequest = new SecureInformationCloud(packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),packSecure.getPlatformCALocation());
                             Agencia.deleteFolder(new File(temPath));
                             Pair accepted = new Pair(packSecure.getPublicPassword(),hash);
                             if(response.toUpperCase().equals("Y")){

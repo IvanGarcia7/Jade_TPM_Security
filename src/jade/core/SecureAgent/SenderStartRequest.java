@@ -1,9 +1,7 @@
-package jade.core.CloudAgents;
+package jade.core.SecureAgent;
 
-import jade.core.AID;
 import jade.core.Agent;
 import jade.core.BaseService;
-import jade.core.GenericCommand;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.lang.acl.ACLMessage;

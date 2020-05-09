@@ -1,7 +1,6 @@
 package jade.core.SecureInterTPM;
 
 import jade.core.*;
-import jade.core.SecureIntraTPM.SecureIntraTPMSlice;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.RequestAttestation;
 import jade.core.SecureTPM.RequestConfirmation;

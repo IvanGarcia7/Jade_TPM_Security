@@ -1,4 +1,4 @@
-package jade.core.CloudAgents;
+package jade.core.SecureAgent;
 
 import jade.core.*;
 import jade.core.SecureCloud.SecureChallenguerPacket;
@@ -22,8 +22,8 @@ import java.util.logging.Level;
 
 public class SecureAgentTPMService extends BaseService {
 
-    public static final String NAME = "jade.core.CloudAgents.SecureAgentTPM";
-    public static final String VERBOSE = "jade_core_CloudAgents_SecureAgentTPMService_verbose";
+    public static final String NAME = "jade.core.SecureAgent.SecureAgentTPM";
+    public static final String VERBOSE = "jade_core_SecureAgent_SecureAgentTPMService_verbose";
 
     //TIME VAR THAT THE AGENCY USE TO SEE THE TIME THAT A REQUEST IT'S TAKEN.
     long startTime = System.nanoTime();

@@ -21,10 +21,10 @@ Here are some **basic examples** to demonstrate how the library works.
 java -cp TPM.jar:test.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService -agents CA:vom.CAPlatform
 
 * START AGENT 2
-java -cp TPM.jar:test.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -services jade.core.CloudAgents.SecureAgentTPMService -agents A2:vom.CAAgent2
+java -cp TPM.jar:test.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -services jade.core.SecureAgent.SecureAgentTPMService -agents A2:vom.CAAgent2
 
 * START AGENT 1
-java -cp TPM.jar:test.jar jade.Boot -container-name P1 -gui -host localhost -port 1394 -services jade.core.CloudAgents.SecureAgentTPMService -agents A1:vom.CAAgent
+java -cp TPM.jar:test.jar jade.Boot -container-name P1 -gui -host localhost -port 1394 -services jade.core.SecureAgent.SecureAgentTPMService -agents A1:vom.CAAgent
 
 
 ### EXECUTE THE FOLLOWING CODE:
@@ -82,7 +82,7 @@ import java.util.Base64;
 
 import jade.core.AID;
 import jade.core.PlatformID;
-import jade.core.CloudAgents.SecureAgentPlatform;
+import jade.core.SecureAgent.SecureAgentPlatform;
 
 public class CAAgent extends SecureAgentPlatform {
 	public void setup() {
@@ -135,7 +135,7 @@ import java.util.Base64;
 
 import jade.core.AID;
 import jade.core.PlatformID;
-import jade.core.CloudAgents.SecureAgentPlatform;
+import jade.core.SecureAgent.SecureAgentPlatform;
 
 public class CAAgent2 extends SecureAgentPlatform {
 	public void setup() {

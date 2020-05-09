@@ -1,6 +1,6 @@
 package jade.core.SecureTPM;
 
-import jade.core.CloudAgents.RequestSecureATT;
+import jade.core.SecureAgent.RequestSecureATT;
 
 
 import java.io.*;

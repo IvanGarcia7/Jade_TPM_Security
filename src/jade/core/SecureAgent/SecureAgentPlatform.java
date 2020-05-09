@@ -1,8 +1,7 @@
-package jade.core.CloudAgents;
+package jade.core.SecureAgent;
 
 
 import jade.core.Agent;
-import jade.core.Location;
 import jade.core.PlatformID;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
