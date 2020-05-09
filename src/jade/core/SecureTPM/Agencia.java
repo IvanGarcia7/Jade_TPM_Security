@@ -1,6 +1,6 @@
 package jade.core.SecureTPM;
 
-import jade.core.CloudAgents.KeyPairCloudPlatform;
+import jade.core.CloudAgents.RequestSecureATT;
 
 
 import java.io.*;
@@ -705,8 +705,8 @@ public class Agencia{
      * @param contentObject
      * @return
      */
-    public static KeyPairCloudPlatform decypher(Serializable contentObject) {
-        KeyPairCloudPlatform pp = null;
+    public static RequestSecureATT decypher(Serializable contentObject) {
+        RequestSecureATT pp = null;
         return pp;
     }
 

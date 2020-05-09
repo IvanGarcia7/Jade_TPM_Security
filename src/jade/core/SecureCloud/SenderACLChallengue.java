@@ -103,7 +103,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
 
 
             SecureChallenguerPacket pSender = new SecureChallenguerPacket(encryptedKeySecret,encryptedKeyPublic,byteCipherObjectPublic,byteCipherObjectSecret);
-            myMessage.setContentObject(Agencia.serialize(pSender));
+            myMessage.setContentObject(pSender);
 
 
 

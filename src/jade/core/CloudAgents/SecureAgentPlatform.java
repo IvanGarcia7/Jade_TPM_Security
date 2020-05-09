@@ -1,63 +1,56 @@
 package jade.core.CloudAgents;
 
+
 import jade.core.Agent;
 import jade.core.Location;
+import jade.core.PlatformID;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
-
 import java.security.PublicKey;
 import java.util.logging.Level;
 
-public class SecureAgentPlatform extends Agent{
-    private static final long serialVersionUID = 9058618378207435612L;
 
-    /**
-     * SERVICE CREATION, INTRA E INTER PLATFORM. SERVICES ARE INSTALLED WHEN THE PROGRAM REQUIRES IT
-     */
+public class SecureAgentPlatform extends Agent{
+
+    private static final long serialVersionUID = 9058618378207435612L;
     private transient SecureAgentTPMHelper mobHelperCloudPlatform;
 
     /**
-     * THIS SERVICE, ACCEPT REQUEST FROM ANOTHER PLATFORMS, AND PUT THEM INTO A LIST
-     * THAT IN THE FUTURE, ONE PERSONAL DESIGNED TO ID WILL PROCEED TO ACCEPT
-     * SOME OF THESE PLATFORMS.
+     * THIS FUNCTION, SENDS A REQUEST TO THE SECURE PLATFORM TO INCLUDE IT AS A RELIABLE HOST.
+     * @param CALocation THE PLATFORMID INFORMATION OF THE SECURE CA
+     * @param pubKey THE PUBLIC KEY OF THE SECURE CA
+     * @param contextEK THE INDEX WHERE THE EK IS LOADED INTO THE TPM
+     * @param contextAK THE INDEX WHERE THE PRIVATE AIK IS LOADED INTO THE TPM
      */
-    public void doInitializeAgent(Location CALocation, PublicKey pubKey,String contextEK, String contextAK){
-        System.out.println("INITIALIZING THE SECURE CLOUD PLATFORM AGENT");
-        System.out.println("hihihihih "+CALocation);
-        StringBuilder sb = new StringBuilder();
-        System.out.println(sb.toString());
+    public void doInitializeAgent(PlatformID CALocation, PublicKey pubKey, String contextEK, String contextAK){
         try {
             initmobHelperCloud();
-            Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
+            Agencia.printLog("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN",
                     Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
-            System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
             mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey, contextEK,  contextAK);
-        }
-        catch(ServiceException se) {
-            System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");
+        } catch(ServiceException se) {
+            System.out.println("THERE ARE AN ERROR IN THE doInitializeAgent");
             se.printStackTrace();
-            return;
         }
     }
 
-    public void doSecureMigration(Location destiny){
+
+    /**
+     * THIS FUNCTION START A REQUEST MIGRATION, WHEN THE PLATFORM RECEIVES THE CONFIRMATION FROM THE SECURE CA PLATFORM
+     * @param destiny THE PLATFORM ID WHERE I NEED TO MIGRATE
+     */
+    public void doSecureMigration(PlatformID destiny){
         System.out.println("EXECUTING THE MIGRATION PROCESS");
-        StringBuilder sb = new StringBuilder();
-        System.out.println(sb.toString());
         try {
             initmobHelperCloud();
-            Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
-                    Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
-            System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
+            Agencia.printLog("THE MIGRATION SERVICE HAS BEGUN TO RUN", Level.INFO,
+                              SecureAgentTPMHelper.DEBUG,this.getClass().getName());
             mobHelperCloudPlatform.doStartMigration(this, destiny);
-        }
-        catch(ServiceException se) {
-            System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");
+        } catch(ServiceException se) {
+            System.out.println("THERE ARE AN ERROR IN THE doSecureMigration");
             se.printStackTrace();
-            return;
         }
     }
-
 
 
     /**

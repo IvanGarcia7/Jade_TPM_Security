@@ -1,23 +1,23 @@
 package jade.core.CloudAgents;
 
+
 import jade.core.Agent;
 import jade.core.BaseService;
 import jade.core.GenericCommand;
+import jade.core.SecureTPM.Agencia;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
-import jade.util.Logger;
-
 import java.util.Vector;
+import java.util.logging.Level;
 
-public class ResponserAgentACL extends SimpleAchieveREResponder {
 
-    private Logger logger = Logger.getMyLogger(getClass().getName());
+public class ResponseAgentACL extends SimpleAchieveREResponder {
+
     private BaseService myService;
 
-
-    public ResponserAgentACL(Agent ams, MessageTemplate mt, SecureAgentTPMService secureAgentTPMService) {
+    public ResponseAgentACL(Agent ams, MessageTemplate mt, SecureAgentTPMService secureAgentTPMService) {
         super(ams, mt);
         myService = secureAgentTPMService;
     }
@@ -29,88 +29,85 @@ public class ResponserAgentACL extends SimpleAchieveREResponder {
      * @return
      */
     protected ACLMessage prepareResponse(ACLMessage request) {
-        System.out.println("PROCESSING THE REQUEST ATTESTATION IN THE DESTINY IN THE RESPONSER AGENT");
+
+        Agencia.printLog("PROCESSING THE REQUEST ATTESTATION IN THE DESTINY IN THE RESPONSER AGENT",
+                Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+
         ACLMessage reply = null;
+
         if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
             try{
                 System.out.println("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
-                        SecureAgentTPMHelper.NAME, null);
+                                                            SecureAgentTPMHelper.NAME, null);
                 command.addParam(request.getContentObject());
                 myService.submit(command);
-                System.out.println("ADIUSSSSSSSSS");
-            }catch(Exception e){
-                System.out.println("ERROR IN THE PREPARE RESPONSE OF THE ZONE 1");
-                e.printStackTrace();
-            }
-        }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){
-            try{
-                System.out.println("PLATFORM RECEIVE A ERROR REQUEST TO ATTESTATE THE ORIGIN");
-                System.out.println(request.getContent());
             }catch(Exception e){
                 System.out.println("ERROR IN THE PREPARE RESPONSE OF THE ZONE 1");
                 e.printStackTrace();
             }
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
             try{
-                System.out.println("HELLO DESDE LA PLATAFORMA NUUMEOR 2");
                 System.out.println("PLATFORM RECEIVE A CONFIRMATION SECURE MOVE");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                         SecureAgentTPMHelper.NAME, null);
                 command.addParam(request.getContentObject());
                 myService.submit(command);
             }catch(Exception e){
-                System.out.println("ERROR IN THE CONFIRMATION RESPONSE OF THE ZONE 1");
+                System.out.println("ERROR IN THE CONFIRMATION RESPONSE OF THE ZONE 2");
                 e.printStackTrace();
             }
+        }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){
+            System.out.println("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN");
+            System.out.println(request.getContent());
         }else{
-            System.out.println("AAAAAhuihnuhnuhuionhuiunA");
-            reply = request.createReply();
+            System.out.println("UNKNOWN ERROR RECEIVES FROM THE SECURE PLATFORM");
+            //reply = request.createReply();
         }
+
+        //SEND AN ACK TO THE SECURE PLATFORM
+        String Response = "200";
+        reply = request.createReply();
+        reply.setPerformative(ACLMessage.INFORM);
+        reply.setContent(Response);
+
         return reply;
     }
 
     protected ACLMessage prepareResultNotification(ACLMessage request, ACLMessage response) throws FailureException {
-        System.out.println("PREPARING THE RESULT NOTIFICATION IN THE RESPONSER AGENT");
-        //ACLMessage reply = request.createReply();
-        //return reply;
+        //System.out.println("PREPARING THE RESULT NOTIFICATION IN THE RESPONSE AGENT");
         return null;
     }
 
-    /**
-     * THIS FUNCTION PROCEED WITH THE SECURE MOVE OR CLONATION, IF THE MAXIMUM WAITING TIME IS NOT EXPIRED.
-     * @param inform
-     */
-    protected void handleInform(ACLMessage inform){
-        System.out.println("CATCH THE ACL MESSAGE IN THE HANDLE INFORM IN THE RESPONSER AGENT");
-        System.out.println("**********************************************************");
-    }
+    //REDEFINED ALL THE HANDLERS TO KNOW WHAT HAPPENS WITH THE MESSAGE THAT THE PLATFORM RECEIVE FROM THE CA
 
+    protected void handleInform(ACLMessage inform){
+        System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
+    }
 
     protected void handleAgree(ACLMessage agree){
-        System.out.println("hrvewrevwe");
+        System.out.println("MESSAGE RECEIVED IN THE AGREE HANDLER "+agree.getContent());
     }
 
-    protected void handleRefuse(ACLMessage refuse){
-        System.out.println("hwevew");
+    protected void handleRefuse(ACLMessage inform){
+        System.out.println("REFUSING THE MESSAGE RECEIVED FROM THE SECURE PLATFORM "+inform.getContent());
     }
 
     protected void handleAllResponses(Vector responses) {
-        System.out.println("hrr");
+        System.out.println("MESSAGE RECEIVED IN THE ALL REPONSE HANDLER ");
     }
 
     protected void handleNotUnderstood(ACLMessage notUnderstood){
-        System.out.println("hrr");
+        System.out.println("MESSAGE RECEIVED IN THE NOT UNDERSTOOD HANDLER "+notUnderstood.getContent());
     }
 
     protected void handleOutOfSequence(ACLMessage outOfSequence) {
-        System.out.println("hr");
+        System.out.println("MESSAGE RECEIVED IN THE OUT OF SEQUENCE HANDLER "+outOfSequence.getContent());
     }
 
     protected void handleFailure(ACLMessage failure){
-        System.out.println("h");
+        System.out.println("MESSAGE RECEIVED IN THE FAILURE HANDLER "+failure.getContent());
     }
-
 
 
 

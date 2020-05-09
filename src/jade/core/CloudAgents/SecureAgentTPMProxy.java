@@ -6,7 +6,6 @@ import jade.core.Node;
 import jade.core.SecureTPM.Agencia;
 import jade.core.Service;
 import jade.core.VerticalCommand;
-
 import java.util.logging.Level;
 
 
@@ -95,7 +94,8 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
             newCommand.addParam(command.getParams()[0]);
             Node n = getNode();
             Agencia.printLog("-> SENDING THE CONFIRMATION TO MIGRATE THROUGH A HORIZONTAL COMMAND TO THE " +
-                              "AMS NODE "+ n.getName(), Level.INFO,SecureAgentTPMHelper.DEBUG,this.getClass().getName());
+                              "AMS NODE "+ n.getName(), Level.INFO,SecureAgentTPMHelper.DEBUG,
+                              this.getClass().getName());
             n.accept(newCommand);
         }catch(Exception e){
             e.printStackTrace();

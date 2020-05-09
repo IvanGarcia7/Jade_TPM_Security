@@ -7,24 +7,21 @@ import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileOutputStream;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.*;
 import java.util.logging.Level;
+
 
 public class SecureAgentTPMService extends BaseService {
 
-    //INTERESTING VARIABLES.
     public static final String NAME = "jade.core.CloudAgents.SecureAgentTPM";
     public static final String VERBOSE = "jade_core_CloudAgents_SecureAgentTPMService_verbose";
 
@@ -60,39 +57,24 @@ public class SecureAgentTPMService extends BaseService {
     private boolean verbose = false;
     private AgentContainer actualcontainer;
 
-    private byte [] serialized_certificate = null;
-
-    //KEYSTORAGELIST TO SAVE THE LOCATION AND THE CERTIFICATE OF EVERY HOST THAT THE PLATFORM SCAN
-    List<PlatformID> device_list_host = new ArrayList<PlatformID>();
-
-    //HASHMAP TO REGISTER THE ID OF THE NONCE, AND THE CONTAINER TO RESEND THE INFORMATION
-    //THE FIRST VALUE ES THE NONCE AND THE SECOND THE CONTAINER NAME
-    Map<String, String> listRedirects = new HashMap<String, String>();
-
-
-    //SECURE CLOUD KEY PAIR FROM A PLATFORM;
-    private byte [] privateKeyCA;
-    private byte [] publicKeyCA;
-
-    //DICT OF THE HOSTPOTS
-    Map<Location,byte []> HostpotsRegister = new HashMap<Location,byte []>();
-
-
+    //MY PUBLIC AND PRIVATE KEY OF THE AGENT
     private PrivateKey privKeyAgent;
     private PublicKey pubKeyAgent;
 
+    //INDEX OF THE NVRAM WHERE THE KEYS ARE LOADED
     private String contextEK="";
     private String contextAK = "";
 
+    //MY AIK PUB SIGNED KEY
     private byte[] AIKPub;
 
-    public Location CALocation;
+    //ADDRESS OF THE SECURE PLATFORM
+    public PlatformID CALocation;
     public PublicKey CAKey;
 
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
-     *
      * @return
      */
     @Override
@@ -100,9 +82,9 @@ public class SecureAgentTPMService extends BaseService {
         return SecureAgentTPMHelper.NAME;
     }
 
+
     /**
      * THIS FUNCTION INIT THE SERVICE, CALLING THE SUPER METHODS THAT CONTAINS THE BASE SERVICE.
-     *
      * @param agentcontainer
      * @param prof
      * @throws ProfileException
@@ -112,22 +94,22 @@ public class SecureAgentTPMService extends BaseService {
         actualcontainer = agentcontainer;
     }
 
+
     /**
      * THIS FUNCTION EXECUTE THE START-UPS CONFIGURATIONS FOR THIS METHOD
-     *
      * @param prof
      * @throws ServiceException
      */
     public void boot(Profile prof) throws ServiceException {
         super.boot(prof);
         verbose = prof.getBooleanProperty(VERBOSE, false);
-        System.out.println("SECUE_CLOUD_TPM SERVICE STARTED CORRECTLY ON CONTAINER CALLED: " + actualcontainer.getID());
-
+        System.out.println("SECURE AGENT CLOUD SERVICE STARTED CORRECTLY ON CONTAINER CALLED: " +
+                           actualcontainer.getID());
     }
+
 
     /**
      * THIS FUNCTION RETRIEVE THE SERVICE HELPER.
-     *
      * @param agent
      * @return
      * @throws ServiceException
@@ -140,36 +122,36 @@ public class SecureAgentTPMService extends BaseService {
         }
     }
 
+
     /**
      * FUNCTION TO GET THE SLICE TO EXECUTE HORIZONTAL COMMANDS.
-     *
      * @return
      */
     public Class getHorizontalInterface() {
         return SecureAgentTPMSlice.class;
     }
 
+
     /**
      * FUNCTION TO GET THE ACTUAL SLICER.
-     *
      * @return
      */
     public Slice getLocalSlice() {
         return actualSlicer;
     }
 
+
     /**
      * FUNCTION TO GET THE COMMANDS THAT I IMPLEMENTED FOR THIS SERVICE IN THE HELPER.
-     *
      * @return
      */
     public String[] getOwnedCommands() {
         return actualCommands;
     }
 
+
     /**
      * RETRIEVE THE FILTERS IF IT WAS NECESSARY
-     *
      * @param direction
      * @return
      */
@@ -181,9 +163,9 @@ public class SecureAgentTPMService extends BaseService {
         }
     }
 
+
     /**
      * RETRIEVE THE SINKS IF IT WAS NECESSARY
-     *
      * @param side
      * @return
      */
@@ -195,18 +177,20 @@ public class SecureAgentTPMService extends BaseService {
         }
     }
 
+
     /**
      * DEFINE THE BEHAVIOUR TO SEND AND RECEIVE MESSAGES
+     * @return
      */
     public Behaviour getAMSBehaviour() {
-        System.out.println("THE CLOUD AMSBEHAVIOUR IS WORKING CORRECTLY");
+        System.out.println("THE AGENT CLOUD AMS BEHAVIOUR IS WORKING CORRECTLY");
         AID amsAID = new AID("ams", false);
         Agent ams = actualcontainer.acquireLocalAgent(amsAID);
         MessageTemplate mt =
                 MessageTemplate.and(
                         MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
                         MessageTemplate.MatchAll());
-        ResponserAgentACL resp = new ResponserAgentACL(ams, mt, SecureAgentTPMService.this);
+        ResponseAgentACL resp = new ResponseAgentACL(ams, mt, SecureAgentTPMService.this);
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
     }
@@ -218,68 +202,66 @@ public class SecureAgentTPMService extends BaseService {
         private Agent mySecureAgent;
         private Movable myMovable;
 
+
         @Override
         public void init(Agent agent) {
             mySecureAgent = agent;
         }
 
+
         public void registerMovable(Movable m) {
             myMovable = m;
         }
 
+
         /**
-         * THIS FUNCTION TRY TO INITIALIZE THE PLATFORMS, ACCORDING TO A KEY PAIR PROVEED
-         * BY PARAMS IN ORDER TO SIMULATE IT. FIRST OF ALL, I NEED TO CONTACT WITH THE AMS
-         * OF THE MAIN PLATFORM IN MY ENVIRONMENT.
+         * THIS FUNCTION TRY TO INITIALIZE THE PLATFORM, SO ITS GENERATE A KEY PAIR, AND A SIGNED KEY.
+         * TAKES A PUBLIC KEY AND A CA LOCATION, TO COMMUNICATE WITH THE PLATFORM.
+         * BECAUSE WE WANT TO CONNECT WITH REMOTE PLATFORMS, THE REQUEST NEEDS TO BE SENT IN THE AMS OF THE PLATFORM.
+         * IN ADDITION, IT TAKES AS A PARAMETER THE VALUE OF THE INDEX WHERE THE KEY IS STORED.
          * @param secureAgentPlatform
          */
         @Override
-        public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform,
-                                                   Location caLocation, PublicKey pubKey,
-                                                   String contextEK, String contextAK){
-            System.out.println("DUA LIPA "+caLocation);
-
-            StringBuilder sb = new StringBuilder();
-            sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
-                    .append(secureAgentPlatform.getAID());
-            System.out.println(sb.toString());
+        public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, PlatformID caLocation,
+                                                   PublicKey pubKey, String contextEK, String contextAK){
+            Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED BY THE AGENT: " +
+                              secureAgentPlatform.getAID(), Level.INFO, SecureAgentTPMHelper.DEBUG,
+                              this.getClass().getName());
             Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
-                    Level.INFO, true, this.getClass().getName());
-            System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
-                    "THE SERVICE NEED ");
-            GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_START,
-                    SecureAgentTPMHelper.NAME, null);
-
-            //AT THIS POINT FETC PUBLIC KEY TPM
-            KeyPairCloudPlatform Generated_Pack = new KeyPairCloudPlatform(pubKey,caLocation,contextEK,contextAK);
+                              Level.INFO, true, this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_START, SecureAgentTPMHelper.NAME,
+                                              null);
+            RequestSecureATT Generated_Pack = new RequestSecureATT(pubKey,caLocation,contextEK,contextAK);
             command.addParam(Generated_Pack);
-            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
-                    Level.INFO, true, this.getClass().getName());
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS", Level.INFO, true,
+                              this.getClass().getName());
             try {
-                System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
                 SecureAgentTPMService.this.submit(command);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
+
+        /**
+         * THIS FUNCTION TRY TO START A MIGRATION WHEN RECEIVE THE CONFIRMATION BY THE SECURE PLATFORM.
+         * TAKES AS A PARAM THE LOCATION OF THE PLATFORM WHERE IT NEEDS TO COMMUNICATE.
+         * @param secureAgentPlatform
+         * @param destiny
+         */
         @Override
-        public void doStartMigration(SecureAgentPlatform secureAgentPlatform, Location destiny) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS TO MOVE AN AGENT HAS JUST STARTED NAME AGENT:")
-                    .append(secureAgentPlatform.getAID());
-            System.out.println(sb.toString());
+        public void doStartMigration(SecureAgentPlatform secureAgentPlatform, PlatformID destiny) {
+            Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS TO MOVE AN AGENT HAS JUST STARTED " +
+                             "NAME AGENT: " + secureAgentPlatform.getAID(), Level.INFO, SecureAgentTPMHelper.DEBUG,
+                             this.getClass().getName());
             Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
-                    Level.INFO, true, this.getClass().getName());
-            System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
-                    "THE SERVICE NEED ");
+                              Level.INFO, true, this.getClass().getName());
             GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
-                    SecureAgentTPMHelper.NAME, null);
+                                                        SecureAgentTPMHelper.NAME, null);
             command.addParam(destiny);
-            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
-                    Level.INFO, true, this.getClass().getName());
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS", Level.INFO, true,
+                              this.getClass().getName());
             try {
-                System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
                 SecureAgentTPMService.this.submit(command);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -287,61 +269,69 @@ public class SecureAgentTPMService extends BaseService {
         }
     }
 
+
+    /**
+     * THE CommandSourceSink TRY TO PROCESS THE VERTICAL COMMANDS THAT I CREATED IN THIS PLATFORM.
+     */
     private class CommandSourceSink implements Sink {
+
 
         @Override
         public void consume(VerticalCommand command) {
-            System.out.println("AAAAA");
             try{
                 String commandName = command.getName();
+                SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
                 if(commandName.equals(SecureAgentTPMHelper.REQUEST_START)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "START THE AGENT");
-                    Object[] params = command.getParams();
-                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN " +
+                                    "PLATFORM TO START THE AGENT", Level.INFO, SecureAgentTPMHelper.DEBUG,
+                                    this.getClass().getName());
                     try{
                         obj.doCommunicateAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING START REQUEST IN THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "MIGRATE THE AGENT");
-                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN " +
+                                    "PLATFORM TO SEND THE REQUEST MIGRATE", Level.INFO, SecureAgentTPMHelper.DEBUG,
+                                    this.getClass().getName());
                     try{
                         obj.doMigrateAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST MIGRATION IN THE COMMAND SOURCE " +
+                                           "SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "ATTESTATE ZONE 1 THE AGENT");
-                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN " +
+                                    "PLATFORM TO ATTESTATE THE ORIGIN", Level.INFO, SecureAgentTPMHelper.DEBUG,
+                                    this.getClass().getName());
                     try{
                         obj.doAttestateOrginAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ORIGIN ATTESTATION IN THE COMMAND " +
+                                           "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
-                    System.out.println("PROCEED THE COMMAND TO MIGRATE THE AGENT WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "ATTESTATE ZONE 2 THE AGENT");
-                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO MIGRATE THE AGENT WITH THE AMS OF THE MAIN " +
+                                      "PLATFORM TO ATTESTATE THE DESTINY", Level.INFO, SecureAgentTPMHelper.DEBUG,
+                                      this.getClass().getName());
                     try{
                         obj.doMigrateHostpotAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST DESTINY ADDRESS IN THE COMMAND " +
+                                           "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MOVE)){
-                    System.out.println("PROCEED THE MOVE THE AGENT");
-                    SecureAgentTPMSlice obj = (SecureAgentTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO MOVE THE AGENT", Level.INFO,
+                                     SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     try{
                         obj.doMigrateHostpotAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ACCEPTED MOVE IN THE COMMAND " +
+                                           "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }
@@ -352,140 +342,147 @@ public class SecureAgentTPMService extends BaseService {
     }
 
 
+    /**
+     * THE CommandTargetSink TRY TO PROCESS THE VERTICAL COMMANDS THAT IT RECEIVE FROM THE SERVICE COMPONENT.
+     */
     private class CommandTargetSink implements Sink {
+
 
         @Override
         public void consume(VerticalCommand command) {
             try{
                 String CommandName = command.getName();
-                if(CommandName.equals(SecureAgentTPMHelper.REQUEST_START)){
-                    /**
-                     * AT THIS POINT, I AM IN THE AMS MAIN PLATFORM, FIRST OF ALL, I COMMUNICATE WITH THE TPM
-                     * IN CASE OF THE FIRST AGENT AND FETCH THE PUBLICKEY AND THE LOCATION OF THIS CONTAINER.
-                     * THEN, I CIPHER THIS DATA WITH THE PUBLICKEY OF THE CLOUD AND SEND IT WITH AN ACL MESSAGE.
-                     */
-                    KeyPairCloudPlatform PairReceive = (KeyPairCloudPlatform)command.getParams()[0];
-                    CALocation = PairReceive.getLocationPlatform();
-                    CAKey = PairReceive.getPublicPassword();
-                    //DELETING CONTEXT
 
-                    KeyPairCloudPlatform newPair = new KeyPairCloudPlatform(PairReceive.getPublicPassword(),
-                                                   PairReceive.getLocationPlatform());
+                if(CommandName.equals(SecureAgentTPMHelper.REQUEST_START)){
+
+                    //IN THIS PART OF THE CODE, THE AMS OF THE ORIGIN PLATFORM SEND A REQUEST TO THE CA FOR VALIDATION
+                    //IN THE SECURE PLATFORM
+
+                    RequestSecureATT PairReceive = (RequestSecureATT)command.getParams()[0];
+                    CALocation = PairReceive.getPlatformCALocation();
+                    CAKey = PairReceive.getPublicPassword();
+
+                    //CREATE THE NEW PACKET THAT THE PLATFORM SEND TO THE SECURE CA
+                    RequestSecureATT SecureCAInformation = new RequestSecureATT(CAKey, CALocation);
+
                     //CREATE KEY PAIR FROM MY PLATFORM AGENT
                     Pair<PrivateKey,PublicKey> pairAgent = Agencia.genKeyPairAgent();
+
+                    //SAVE INTO THE CONTEXT OF THE PLATFORM
                     privKeyAgent=pairAgent.getKey();
                     pubKeyAgent=pairAgent.getValue();
+
+                    //SAVE THE ACTUAL LOCATION OF THE PLATFORM
                     Location actualLocation = actualcontainer.here();
+
+                    //SAVE THE CONTEXT WHERE THE EK AND THE AK ARE SAVED
                     contextEK = PairReceive.getContextEK();
                     contextAK = PairReceive.getContextAK();
-                    //SAVE THE CONTEXT INTO THE AMS
+
+                    //GET THE INFORMATION OF THE PLATFORM
                     AID MYams =  actualcontainer.getAMS();
                     PlatformID myPlatform = new PlatformID(MYams);
-                    KeyPairCloudPlatform requestPair = new KeyPairCloudPlatform(pubKeyAgent,actualLocation,myPlatform);
-                    //INITIALIZE THE REPO
-                    System.out.println("CREATING THE REPO: "+contextEK+" "+contextAK);
+
+                    System.out.println("GENERATING THE TEMPORAL DIRECTORY: ");
+
+                    //GENERATE THE PRIVATE AND PUBLIC AIK TO SIGN THE INFORMATION
                     Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK);
-                    System.out.println("GENERATING THE TEMPORAL DIR TO ATTESTATE:");
+
+                    //GENERATE THE SIGNED FILES, AND SERIALIZE INTO AN OBJECT TO SEND IT AFTER TO THE SECURE PLATFORM
                     Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true);
                     File AIKFile = new File("./"+actualLocation.getName()+"/akpub.pem");
                     AIKPub = Files.readAllBytes(AIKFile.toPath());
-                    //SERIALIZE ALL THREE MESSAGES AND THEM DELETE IT
-                    AttestationSerialized packet_signed = new AttestationSerialized("./"+actualLocation.getName());
-                    //SEND THE INFORMATION TO THE PLATFORM
+                    AttestationSerialized PCR_Signed = new AttestationSerialized("./"+
+                                                                                    actualLocation.getName());
+
+                    RequestSecureATT requestSecureStart = new RequestSecureATT(pubKeyAgent,myPlatform,PCR_Signed);
+
+                    //SEND THE INFORMATION TO THE SECURE PLATFORM
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
-                            new SenderACLCloud(message, requestPair, newPair, amsMainPlatform, packet_signed,
-                                               SecureAgentTPMService.this)
+                            new SenderStartRequest(message, requestSecureStart, SecureCAInformation, amsMainPlatform,
+                                              SecureAgentTPMService.this)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
-
 
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM)){
-                    //Creo un mensaje cifrado con la clave publica de la plataforma seguro
-                    System.out.println("I AM INTO THE REQUEST MIGRATE PLATFORM");
-                    Location destiny = (Location) command.getParams()[0];
-                    KeyPairCloudPlatform newPack = new KeyPairCloudPlatform(CAKey,CALocation,destiny,actualcontainer.here());
+
+                    //IN THIS PART OF THE CODE, THE AMS OF THE ORIGIN PLATFORM SEND A REQUEST TO THE SECURE PLATFORM
+                    //TO START THE REMOTE ATTESTATION PROCESS
+
+                    PlatformID DestinyPlatform = (PlatformID) command.getParams()[0];
+                    RequestSecureATT PackRequest = new RequestSecureATT(CAKey,CALocation,DestinyPlatform,
+                                                                        actualcontainer.here());
+
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
-                            new SenderACLMigration(message, amsMainPlatform,
-                                    SecureAgentTPMService.this, newPack)
+                            new SenderMigrationRequest(message, amsMainPlatform,
+                                    SecureAgentTPMService.this, PackRequest)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
+
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
-                    //DECIPHER THE INFORMATION
-                    System.out.println("HOSLS HFUERSMHI");
-                    byte [] packetRecSeri = (byte [])command.getParams()[0];
-                    SecureChallenguerPacket pSenderDone = (SecureChallenguerPacket) Agencia.deserialize(packetRecSeri);
+
+                    //IN THIS PART OF THE CODE, THE AMS OF THE ORIGIN PLATFORM RECEIVES A REQUEST FROM THE SECURE
+                    // PLATFORM TO SEND THE SIGNED PCR VALUES
+
+                    SecureChallenguerPacket pSenderDone = (SecureChallenguerPacket) command.getParams()[0];
 
                     byte [] OTP_Pub = pSenderDone.getOTPPub();
                     byte [] contentPub = pSenderDone.getPartPublic();
-                    //challenguer
-
-                    System.out.println("MI CLAVE EN EL P1 PRIVADA ES LA SIGUIENTE:");
-                    System.out.println(privKeyAgent);
-
-                    System.out.println("MI CLAVE EN EL P1 PUBLICA ES LA SIGUIENTE:");
-                    System.out.println(pubKeyAgent);
-
-
-                    System.out.println("ESTOY AL COMIENZO");
                     byte [] decryptedKey = Agencia.decrypt(privKeyAgent,OTP_Pub);
-                    System.out.println("ESTOY EN EL SEGUNDO");
-                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length, "AES");
-                    System.out.println("ESTOY EN EL TERCERO");
+
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
+                                                              "AES");
                     Cipher aesCipher = Cipher.getInstance("AES");
-                    System.out.println("ESTOY EN EL CUARTO");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    System.out.println("ESTOY EN EL QUINTO");
                     byte[] byteObject = aesCipher.doFinal(contentPub);
-                    System.out.println("ESTOY EN EL SEXTO");
-                    String challengue = (String)Agencia.deserialize(byteObject);
+                    String challenge = (String)Agencia.deserialize(byteObject);
+
                     System.out.println("*************************************************");
-                    System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challengue);
+                    System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challenge);
                     System.out.println("*************************************************");
 
-
-                    Location actualLocation = actualcontainer.here();
                     String temPath = "./temp_agent";
                     new File(temPath).mkdir();
-                    //Deserialize the AIK
                     try (FileOutputStream fos = new FileOutputStream(temPath+"/akpub.pem")) {
                         fos.write(AIKPub);
                     }
-                    Agencia.attestation_files(temPath,contextAK,challengue,false);
-                    //SERIALIZE ALL THREE MESSAGES AND THEM DELETE IT
-                    AttestationSerialized packet_signed = new AttestationSerialized(temPath);
-                    //SEND THE INFORMATION TO THE PLATFORM
+                    Agencia.attestation_files(temPath,contextAK,challenge,false);
+                    AttestationSerialized PCR_Signed = new AttestationSerialized(temPath);
                     Agencia.deleteFolder(new File(temPath));
+
+                    //CREATE THE NEW PACKET TO SEND IT TO THE SECURE CA PLATFORM
+                    SecureChallenguerPacket pSender = new SecureChallenguerPacket(pSenderDone.getOTPPriv(),
+                                                                                  null,null,
+                                                                                   pSenderDone.getPartPriv());
+
                     AID amsMain = new AID("ams", false);
-
-
-
-                    SecureChallenguerPacket pSenderD2 = new SecureChallenguerPacket(pSenderDone.getOTPPriv(),null,null,pSenderDone.getPartPriv());
-
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                    //byte [] PacketOrigin = (byte [])command.getParams()[0];
                     amsMainPlatform.addBehaviour(
-                            new SenderACLChallengueAgent(message, amsMainPlatform, packet_signed,
-                                    SecureAgentTPMService.this, CAKey,CALocation,pSenderD2)
+                            new SenderChallengueAgentRequest(message, amsMainPlatform, PCR_Signed,
+                                    SecureAgentTPMService.this, CAKey,CALocation,pSender)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
+
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
-                    //VERIFY THE SIGNED
+
                     byte [] designed = Agencia.deSigned(CAKey,(byte [])command.getParams()[0]);
+
                     try{
-                        Pair<Pair<Location,Location>,PublicKey> informationSecure = (Pair<Pair<Location,Location>, PublicKey>)Agencia.deserialize(designed);
-                        //Comunicate with the agent
-                        //REVIEW IF NEMA OR ADDRESS
+                        Pair<Pair<Location,Location>,PublicKey> informationSecure =
+                                (Pair<Pair<Location,Location>, PublicKey>)Agencia.deserialize(designed);
                         AID amsDestiny = new AID(informationSecure.getKey().getKey().getName(), false);
                         Agent agent = actualcontainer.acquireLocalAgent(amsDestiny);
                         actualcontainer.releaseLocalAgent(amsDestiny);
-                        //to-do
+                        /**
+                         * TO-TO
+                         */
                         agent.doMove(informationSecure.getKey().getValue());
                     }catch(Exception e){
                         System.out.println("MENSAJE DESDE PLATAFORMA NO VALIDA");
@@ -499,21 +496,29 @@ public class SecureAgentTPMService extends BaseService {
         }
     }
 
+
+    /**
+     * ServiceComponent PROCESS THE HORIZONTAL COMMANDS THAT THE PLATFORM RECEIVE FROM ANOTHER EXTERNAL PLATFORM AND
+     * CONVERTS IT IN VERTICAL COMMANDS.
+     */
     private class ServiceComponent implements Slice {
+
 
         @Override
         public Service getService() {
             return SecureAgentTPMService.this;
         }
 
+
         @Override
         public Node getNode() throws ServiceException {
             try {
                 return SecureAgentTPMService.this.getLocalNode();
             } catch (Exception e) {
-                throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE CLOUD SERVICE COMPONENT");
+                throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE CLOUD AGENT SERVICE");
             }
         }
+
 
         @Override
         public VerticalCommand serve(HorizontalCommand command) {
@@ -521,40 +526,36 @@ public class SecureAgentTPMService extends BaseService {
             try{
                 String commandReceived = command.getName();
                 if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_START)) {
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                                       "TO START THE HOST");
-                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_START,
-                            SecureAgentTPMHelper.NAME, null);
-                    KeyPairCloudPlatform keyPack = (KeyPairCloudPlatform) command.getParams()[0];
-                    commandResponse.addParam(keyPack);
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND TO START THE HOST ",
+                                    Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_START, SecureAgentTPMHelper.NAME,
+                                               null);
+                    commandResponse.addParam(command.getParams()[0]);
                 }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_MIGRATE_PLATFORM)){
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO MIGRATE THE HOST");
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND TO MIGRATE THE HOST ",
+                                    Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
-                            SecureAgentTPMHelper.NAME, null);
+                                                         SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM)){
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO ATTESTATE THE HOSTJJ");
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND ATTESTATE THE ORIGIN PLATFORM",
+                                    Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
-                            SecureAgentTPMHelper.NAME, null);
+                                                         SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
-                    System.out.println("+*-> I HAVE RECEIVED A CONFIRMATION A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO ATTESTATE THE HOST");
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND ATTESTATE THE DESTINY PLATFORM",
+                                    Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
-                            SecureAgentTPMHelper.NAME, null);
+                                                         SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }
             }catch(Exception e){
-                System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");
+                System.out.println("AN ERROR HAPPENED WHILE THE VERTICAL COMMAND WAS PROCESSED IN THE SERVER SERVICE " +
+                                   "COMPONENT");
                 e.printStackTrace();
             }
             return commandResponse;
         }
     }
-
-
-
-
 }

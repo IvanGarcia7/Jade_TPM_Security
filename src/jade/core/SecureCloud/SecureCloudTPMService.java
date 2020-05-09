@@ -384,22 +384,25 @@ public class SecureCloudTPMService extends BaseService {
                     }
                     System.out.println("*********************HOSTPOTS*****************************");
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
-                    RequestSecure packSecure = (RequestSecure) command.getParams()[0];
-                    KeyPairCloudPlatform pack = packSecure.getPacketAgent();
+
+
+
+                    RequestSecureATT packSecure = (RequestSecureATT) command.getParams()[0];
+
                     System.out.println("*********************NEW REQUEST*****************************");
-                    System.out.println("LOCATION -> "+pack.getLocationPlatform());
-                    System.out.println("PUBLIC PASSWORD -> "+pack.getPublicPassword());
+                    System.out.println("LOCATION -> "+packSecure.getLocationPlatform());
+                    System.out.println("PUBLIC PASSWORD -> "+packSecure.getPublicPassword());
                     System.out.println("*********************NEW REQUEST*****************************");
-                    if(HostpotsRegister.get(pack.getLocationPlatform())!=null){
+                    if(HostpotsRegister.get(packSecure.getLocationPlatform())!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE CONFIRMED LIST");
-                    }else if(HostpotsRegister.get(pack.getLocationPlatform())!=null){
+                    }else if(HostpotsRegister.get(packSecure.getLocationPlatform())!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
                     }else{
                         System.out.println("PCRS LIST:");
                         String temPath = "./temp";
                         new File(temPath).mkdir();
                         System.out.println("DESERIALIZE THEIR INFORMATION");
-                        AttestationSerialized packetReceive = packSecure.getPacket_signed();
+                        AttestationSerialized packetReceive = packSecure.getPCR_Signed();
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
                             stream.write(packetReceive.getAIKPub());
                         }
@@ -417,22 +420,21 @@ public class SecureCloudTPMService extends BaseService {
                             System.out.println("DO YOU WANT TO VALIDATE IT NOW Y/N?");
                             Scanner sc = new Scanner(System.in);
                             String response = sc.nextLine();
-                            pack = packSecure.getPacketAgent();
                             Iterator it = null;
                             //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOSTPOTS
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath+"/pcr.out");
-                            SecureInformationCloud saveRequest = new SecureInformationCloud(pack.getPublicPassword(),hash,packetReceive.getAIKPub(),pack.getMyPlatform());
+                            SecureInformationCloud saveRequest = new SecureInformationCloud(packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),packSecure.getMyPlatform());
                             Agencia.deleteFolder(new File(temPath));
-                            Pair accepted = new Pair(pack.getPublicPassword(),hash);
+                            Pair accepted = new Pair(packSecure.getPublicPassword(),hash);
                             if(response.toUpperCase().equals("Y")){
                                 System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
-                                HostpotsRegister.put(pack.getLocationPlatform().getID(),saveRequest);
+                                HostpotsRegister.put(packSecure.getLocationPlatform().getID(),saveRequest);
                                 System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST "+HostpotsRegister.size());
                                 it = HostpotsRegister.entrySet().iterator();
                             }else {
                                 System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
-                                pendingRedirects.put(pack.getLocationPlatform().getID(),saveRequest);
+                                pendingRedirects.put(packSecure.getLocationPlatform().getID(),saveRequest);
                                 it = pendingRedirects.entrySet().iterator();
                                 System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
                             }
@@ -459,7 +461,7 @@ public class SecureCloudTPMService extends BaseService {
                      * TO EVIT REPETITION ATTACKS
                      */
 
-                    KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform)command.getParams()[0];
+                    RequestSecureATT packetReceived = (RequestSecureATT)command.getParams()[0];
                     Location originPlatform = packetReceived.getMyLocation();
                     Location destiny = packetReceived.getLocationDestiny();
 
@@ -663,7 +665,7 @@ public class SecureCloudTPMService extends BaseService {
                     Cipher aesCipher = Cipher.getInstance("AES");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
                     byte[] byteObject = aesCipher.doFinal(object);
-                    RequestSecure pack = (RequestSecure) Agencia.deserialize(byteObject);
+                    RequestSecureATT pack = (RequestSecureATT) Agencia.deserialize(byteObject);
                     commandResponse.addParam(pack);
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_MIGRATE_PLATFORM)){
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
@@ -678,7 +680,7 @@ public class SecureCloudTPMService extends BaseService {
                     Cipher aesCipher = Cipher.getInstance("AES");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
                     byte[] byteObject = aesCipher.doFinal(object);
-                    KeyPairCloudPlatform packetReceived = (KeyPairCloudPlatform) Agencia.deserialize(byteObject);
+                    RequestSecureATT packetReceived = (RequestSecureATT) Agencia.deserialize(byteObject);
                     commandResponse.addParam(packetReceived);
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM)){
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
