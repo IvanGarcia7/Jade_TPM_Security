@@ -11,7 +11,7 @@ My implementation Services are in the following dirs:
 
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureCloud (NEW)
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/CloudAgents (NEW)
-* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM *(DEPRECATED)*
+* https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM 
 
 Here are some **basic examples** to demonstrate how the library works.
 
