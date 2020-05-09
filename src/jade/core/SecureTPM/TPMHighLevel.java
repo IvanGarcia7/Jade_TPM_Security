@@ -1,6 +1,8 @@
 package jade.core.SecureTPM;
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TPMHighLevel {
     public static void main(String [] args){

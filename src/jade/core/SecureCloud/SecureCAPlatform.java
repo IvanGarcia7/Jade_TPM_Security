@@ -56,6 +56,27 @@ public class SecureCAPlatform extends Agent{
         }
     }
 
+
+
+    public void doAcceptListCA(String index){
+        System.out.println("REQUEST THE SECURE CLOUD PLATFORM DEVICES REGISTER");
+        StringBuilder sb = new StringBuilder();
+        System.out.println(sb.toString());
+        try {
+            initmobHelperCloud();
+            Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
+                    Level.INFO,SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
+            mobHelperCloud.doAcceptCloud(this,index);
+        }
+        catch(ServiceException se) {
+            System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");
+            se.printStackTrace();
+            return;
+        }
+    }
+
+
     /**
      * CALL THIS FUNCTION TO INICALIZE THE CLOUD SERVICE
      * @throws ServiceException

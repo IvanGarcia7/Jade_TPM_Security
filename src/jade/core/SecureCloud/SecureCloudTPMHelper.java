@@ -17,6 +17,7 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
      */
     static final String REQUEST_START           = "START_REQUEST";
     static final String REQUEST_LIST            = "LIST_REQUEST";
+    static final String REQUEST_ACCEPT       = "ACCEPT_LIST_REQUEST";
     static final String REQUEST_INSERT_PLATFORM = "INSERT_REQUEST";
     static final String REQUEST_ACCEPT_PLATFORM = "ACCEPT_REQUEST";
     static final String REQUEST_PACK_PLATFORM   = "PACK_REQUEST";
@@ -32,5 +33,5 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
      */
     void doStartCloud(SecureCAPlatform secureCAPlatform, PrivateKey priv, PublicKey pub);
     void listPlatforms(SecureCAPlatform secureCAPlatform);
-    void doAcceptCloud(SecureCAPlatform secureCAPlatform, byte[] index);
+    void doAcceptCloud(SecureCAPlatform secureCAPlatform, String index);
 }

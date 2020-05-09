@@ -17,12 +17,14 @@ public interface SecureCloudTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM   = "7";
     static final String REMOTE_REQUEST_MIGRATE_ZONE2_PLATFORM   = "8";
     static final String REMOTE_REQUEST_ERROR   = "9";
+    static final String REMOTE_REQUEST_ACCEPT       = "10";
 
     /**
      * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
      */
     void doCommunicateAMS(VerticalCommand command);
     void doRequestListAMS(VerticalCommand command);
+    void doRequestAcceptAMS(VerticalCommand command);
     void doInsertHostpotAMS(VerticalCommand command);
     void doStartAttestationHostpotAMS(VerticalCommand command);
     void doCheckAttestationHostpotoRIGIN(VerticalCommand command);

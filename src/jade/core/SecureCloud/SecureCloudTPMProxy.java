@@ -39,6 +39,22 @@ public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureClo
     }
 
     @Override
+    public void doRequestAcceptAMS(VerticalCommand command) {
+        try{
+            System.out.println("PROCEED TO DO THE COMMUNICATION WITH THE AMS OF THE MAIN PLATFORM IN THE PROXY");
+            GenericCommand newCommand = new GenericCommand(SecureCloudTPMSlice.REMOTE_REQUEST_ACCEPT,
+                    SecureCloudTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
+            Node n = getNode();
+            System.out.println("-> SENDING THE REQUEST START THROUGH A HORIZONTAL COMMAND TO THE AMS NODE "+
+                    n.getName());
+            n.accept(newCommand);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void doInsertHostpotAMS(VerticalCommand command) {
         try{
             System.out.println("PROCEED TO DO THE COMMUNICATION WITH THE AMS OF THE MAIN PLATFORM IN THE PROXY TO" +

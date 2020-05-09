@@ -3,63 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/com/company/Rastreador.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/com/company/Rastreador.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$ActiveLifeCycle.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$ActiveLifeCycle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$AssociationTB.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$AssociationTB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$CondVar.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$CondVar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$DeletedLifeCycle.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$DeletedLifeCycle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$Interrupted.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$Interrupted.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$SuspendedLifeCycle.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$SuspendedLifeCycle.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent$TBPair.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent$TBPair.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/Agent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/Agent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureInterTPM/ResponserACL.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureInterTPM/ResponserACL.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureInterTPM/SenderACL.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureInterTPM/SenderACL.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureInterTPM/SenderACL2.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureInterTPM/SenderACL2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMHelper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMProxy.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMService$CommandSourceSink.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMService$CommandTargetSink.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMService$SecureIntraTPMServiceHelperImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMService$ServiceComponent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureIntraTPM/SecureIntraTPMSlice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureTPM/SecureAgent$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureTPM/SecureAgent$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureTPM/SecureAgent$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureTPM/SecureAgent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureTPM/SecureAgent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Rastreador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Rastreador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/Agent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/AttestationSerialized.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/AttestationSerialized.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/RequestSecureATT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/RequestSecureATT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/ResponseAgentACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SecureAgentTPMSlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SenderChallengueAgentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderChallengueAgentRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SenderMigrationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CloudAgents/SenderStartRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderStartRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallengue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallengue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureInterTPM/ResponserACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureInterTPM/ResponserACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureInterTPM/SenderACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureInterTPM/SenderACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureInterTPM/SenderACL2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureInterTPM/SenderACL2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureIntraTPM/SecureIntraTPMHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureIntraTPM/SecureIntraTPMProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureIntraTPM/SecureIntraTPMService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureIntraTPM/SecureIntraTPMSlice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureOnionTPM/ReceiveOnionKeystorage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureOnionTPM/SecureOnionTPMHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureOnionTPM/SecureOnionTPMProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureOnionTPM/SecureOnionTPMService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureOnionTPM/SecureOnionTPMSlice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureOnionTPM/SenderOnionKeystorage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/SecureAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/SecureAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMSlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMSlice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/TPMHighLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/TPMHighLevel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +71,7 @@
       <workItem from="1588498918475" duration="50501000" />
       <workItem from="1588857616973" duration="14293000" />
       <workItem from="1588942947147" duration="10499000" />
-      <workItem from="1589014139758" duration="18449000" />
+      <workItem from="1589014139758" duration="21372000" />
     </task>
     <servers />
   </component>
@@ -165,7 +115,7 @@
     <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587829722284" />
     <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.738/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514209472" />
     <state x="-1302" y="-208" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1587838924384" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup" timestamp="1589058169041">
+    <state x="-1588" y="-288" width="961" height="728" key="find.popup" timestamp="1589060095669">
       <screen x="-1920" y="-364" width="1920" height="1057" />
     </state>
     <state x="-1294" y="-73" width="1001" height="676" key="find.popup/0.0.1280.752/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588858903347" />
@@ -181,6 +131,7 @@
     <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.726/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587894992892" />
     <state x="-1155" y="-241" width="961" height="728" key="find.popup/0.23.1280.729/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588861624900" />
     <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.730/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588878305555" />
+    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589060095669" />
     <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.732/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589058169041" />
     <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.733/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588443239236" />
     <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.734/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589045461761" />

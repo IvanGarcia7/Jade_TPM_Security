@@ -103,7 +103,7 @@ public class SecureAgentTPMService extends BaseService {
     public void boot(Profile prof) throws ServiceException {
         super.boot(prof);
         verbose = prof.getBooleanProperty(VERBOSE, false);
-        System.out.println("SECURE AGENT CLOUD SERVICE STARTED CORRECTLY ON CONTAINER CALLED: " +
+        System.out.println("SECURE AGENT CLOUD TPM SERVICE STARTED CORRECTLY ON CONTAINER CALLED: " +
                            actualcontainer.getID());
     }
 

@@ -19,11 +19,10 @@ import java.util.logging.Level;
 
 public class SecureCloudTPMService extends BaseService {
 
-    //INTERESTING VARIABLES.
     public static final String NAME = "jade.core.SecureCloud.SecureCloudTPM";
     public static final String VERBOSE = "SecureCloud";
 
-    //TIME VAR THAT THE AGENCY USE TO SEE THE TIME THAT A REQUEST IT'S TAKEN.
+    //TIMESTAMP TO INSERT INTO A CHALLENGE PACKET
     long startTime = System.nanoTime();
 
     //DEFINE THE SLICER AND THE HELPER TO EXECUTE CORRECTLY THE SERVICE.
@@ -38,13 +37,14 @@ public class SecureCloudTPMService extends BaseService {
     private Sink OutputSink = new SecureCloudTPMService.CommandSourceSink();
     private Sink InputSink = new SecureCloudTPMService.CommandTargetSink();
 
-    //REQUEST THE HELPERIMPL
+    //REQUEST THE HELPER IMPL
     private SecureCloudTPMServiceHelperImpl myServiceHelperImpl = new SecureCloudTPMServiceHelperImpl();
 
     //REQUEST THE COMMANDS THAT I HAVE IMPLEMENTED AND SAVE INTO A LIST.
     private String[] actualCommands = new String[]{
             SecureCloudTPMHelper.REQUEST_START,
             SecureCloudTPMHelper.REQUEST_LIST,
+            SecureCloudTPMHelper.REQUEST_ACCEPT,
             SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
             SecureCloudTPMHelper.REQUEST_ACCEPT_PLATFORM,
             SecureCloudTPMHelper.REQUEST_PACK_PLATFORM,
@@ -58,28 +58,19 @@ public class SecureCloudTPMService extends BaseService {
     private boolean verbose = false;
     private AgentContainer actualcontainer;
 
-    private byte [] serialized_certificate = null;
-
-    //KEYSTORAGELIST TO SAVE THE LOCATION AND THE CERTIFICATE OF EVERY HOST THAT THE PLATFORM SCAN
-    List<PlatformID> device_list_host = new ArrayList<PlatformID>();
-
-    //HASHMAP TO REGISTER THE ID OF THE NONCE, AND THE CONTAINER TO RESEND THE INFORMATION
-    //THE FIRST VALUE ES THE NONCE AND THE SECOND THE CONTAINER NAME
-    Map<String, String> listRedirects = new HashMap<String, String>();
-
-    //SECURE CLOUD KEY PAIR FROM A PLATFORM;
+    //SECURE CLOUD KEY PAIR FROM A SECURE PLATFORM;
     private PrivateKey privateKeyCA;
     private PublicKey publicKeyCA;
 
-    //DICT OF THE HOSTPOTS
-    Map<String,SecureInformationCloud> HostpotsRegister = new HashMap<String,SecureInformationCloud>();
+    //HASHMAP OF ACCEPTED HOTSPOTS
+    Map<String,SecureInformationCloud> HotspotsRegister = new HashMap<String,SecureInformationCloud>();
 
-    //DICT TO REGISTER THE PLATFORMS TO CONFIRM
+    //HASHMAP TO REGISTER THE PLATFORMS STILL TO BE CONFIRMED
     Map<String, SecureInformationCloud> pendingRedirects = new HashMap<String, SecureInformationCloud>();
+
 
     /**
      * THIS FUNCTION GET THE NAME OF THE ACTUAL SERVICE.
-     *
      * @return
      */
     @Override
@@ -87,9 +78,9 @@ public class SecureCloudTPMService extends BaseService {
         return SecureCloudTPMHelper.NAME;
     }
 
+
     /**
      * THIS FUNCTION INIT THE SERVICE, CALLING THE SUPER METHODS THAT CONTAINS THE BASE SERVICE.
-     *
      * @param agentcontainer
      * @param prof
      * @throws ProfileException
@@ -99,22 +90,23 @@ public class SecureCloudTPMService extends BaseService {
         actualcontainer = agentcontainer;
     }
 
+
     /**
      * THIS FUNCTION EXECUTE THE START-UPS CONFIGURATIONS FOR THIS METHOD
-     *
      * @param prof
      * @throws ServiceException
      */
     public void boot(Profile prof) throws ServiceException {
         super.boot(prof);
         verbose = prof.getBooleanProperty(VERBOSE, false);
-        System.out.println("SECUE_CLOUD_TPM SERVICE STARTED CORRECTLY ON CONTAINER CALLED: " + actualcontainer.getID());
+        System.out.println("SECURE CLOUD TPM SERVICE STARTED CORRECTLY ON CONTAINER CALLED: " +
+                           actualcontainer.getID());
 
     }
 
+
     /**
      * THIS FUNCTION RETRIEVE THE SERVICE HELPER.
-     *
      * @param agent
      * @return
      * @throws ServiceException
@@ -127,36 +119,36 @@ public class SecureCloudTPMService extends BaseService {
         }
     }
 
+
     /**
      * FUNCTION TO GET THE SLICE TO EXECUTE HORIZONTAL COMMANDS.
-     *
      * @return
      */
     public Class getHorizontalInterface() {
         return SecureCloudTPMSlice.class;
     }
 
+
     /**
      * FUNCTION TO GET THE ACTUAL SLICER.
-     *
      * @return
      */
     public Slice getLocalSlice() {
         return actualSlicer;
     }
 
+
     /**
      * FUNCTION TO GET THE COMMANDS THAT I IMPLEMENTED FOR THIS SERVICE IN THE HELPER.
-     *
      * @return
      */
     public String[] getOwnedCommands() {
         return actualCommands;
     }
 
+
     /**
      * RETRIEVE THE FILTERS IF IT WAS NECESSARY
-     *
      * @param direction
      * @return
      */
@@ -168,16 +160,9 @@ public class SecureCloudTPMService extends BaseService {
         }
     }
 
-    /**
-     * Retrieve the HelperImpl
-     */
-    public SecureCloudTPMServiceHelperImpl getHelperImpl(){
-        return myServiceHelperImpl;
-    }
 
     /**
      * RETRIEVE THE SINKS IF IT WAS NECESSARY
-     *
      * @param side
      * @return
      */
@@ -189,11 +174,13 @@ public class SecureCloudTPMService extends BaseService {
         }
     }
 
+
     /**
      * DEFINE THE BEHAVIOUR TO SEND AND RECEIVE MESSAGES
+     * @return
      */
     public Behaviour getAMSBehaviour() {
-        System.out.println("THE CLOUD AMSBEHAVIOUR IS WORKING CORRECTLY");
+        System.out.println("THE SECURE CLOUD AMS BEHAVIOUR IS WORKING CORRECTLY");
         AID amsAID = new AID("ams", false);
         Agent ams = actualcontainer.acquireLocalAgent(amsAID);
         MessageTemplate mt =
@@ -204,6 +191,7 @@ public class SecureCloudTPMService extends BaseService {
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
     }
+
 
     public class SecureCloudTPMServiceHelperImpl implements SecureCloudTPMHelper {
 
@@ -217,72 +205,107 @@ public class SecureCloudTPMService extends BaseService {
             mySecureAgent = agent;
         }
 
+
         public void registerMovable(Movable m) {
             myMovable = m;
         }
 
+
         /**
-         * THIS FUNCTION TRY TO INITIALIZE THE PLATFORMS, ACCORDING TO A KEY PAIR PROVEED
-         * BY PARAMS IN ORDER TO SIMULATE IT. FIRST OF ALL, I NEED TO CONTACT WITH THE AMS
-         * OF THE MAIN PLATFORM IN MY ENVIRONMENT.
+         * THIS FUNCTION TRY TO INITIALIZE THE SECURE PLATFORM, ACCORDING TO A KEY PAIR INTRODUCED AS
+         * PARAMETERS IN ORDER TO SIMULATE IT. FIRST OF ALL, I NEED TO CONTACT WITH THE AMS OF THE MAIN
+         * PLATFORM IN MY ENVIRONMENT.
          * @param secureCAPlatform
          */
         public synchronized void doStartCloud(SecureCAPlatform secureCAPlatform,PrivateKey priv, PublicKey pub) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
-                    .append(secureCAPlatform.getAID());
-            System.out.println(sb.toString());
+            Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:" +
+                             secureCAPlatform.getAID(), Level.INFO, SecureCloudTPMHelper.DEBUG,
+                             this.getClass().getName());
             Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
-                    Level.INFO, true, this.getClass().getName());
-            System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
-                    "THE SERVICE NEED ");
-            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_START,
-                    SecureCloudTPMHelper.NAME, null);
-            Pair<PrivateKey,PublicKey> keypairgenerate = new Pair<PrivateKey,PublicKey>(priv,pub);
-            command.addParam(keypairgenerate);
+                             Level.INFO, true, this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_START, SecureCloudTPMHelper.NAME,
+                                                        null);
+            Pair<PrivateKey,PublicKey> KeyPairCA = new Pair<PrivateKey,PublicKey>(priv,pub);
+            command.addParam(KeyPairCA);
             try{
-                Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
-                        Level.INFO, true, this.getClass().getName());
-                try {
-                    System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
-                    SecureCloudTPMService.this.submit(command);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS", Level.INFO,
+                                 true, this.getClass().getName());
+                SecureCloudTPMService.this.submit(command);
             }catch(Exception e){
                 System.out.println("THERE ARE AN ERROR STARTING THE CA");
                 e.printStackTrace();
             }
-
         }
 
+
+        /**
+         * THIS FUNCTION PRINT THE LIST OF HOTSPOTS REGISTER IN THE SECURE PLATFORM. SON TO RETRIEVE THE LIST,
+         * SEND A VERTICAL COMMAND TO CONTACT WITH THE AMS.
+         * @param secureCAPlatform
+         */
         @Override
         public synchronized void listPlatforms(SecureCAPlatform secureCAPlatform) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:")
-                    .append(secureCAPlatform.getAID());
-            System.out.println(sb.toString());
-            Agencia.printLog("START THE SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
-                    Level.INFO, true, this.getClass().getName());
-            System.out.println("CREATE A NEW VERTICAL COMMAND TO PERFORM THE OPERATION THAT " +
-                    "THE SERVICE NEED ");
-            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST,
-                    SecureCloudTPMHelper.NAME, null);
-            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS",
-                    Level.INFO, true, this.getClass().getName());
+            Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED IN ORDER TO RETRIEVE" +
+                            "THE LIST OF SECURE PLATFORMS. NAME AGENT:" +
+                            secureCAPlatform.getAID(), Level.INFO, SecureCloudTPMHelper.DEBUG,
+                            this.getClass().getName());
+            Agencia.printLog("START THE LIST SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
+                             Level.INFO, true, this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST, SecureCloudTPMHelper.NAME,
+                                                        null);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS TO RETRIEVE THE LIST OF HOTSPOTS " +
+                            "REGISTERED", Level.INFO, true, this.getClass().getName());
             try {
-                System.out.println("-> THE VERTICAL COMMAND TO COMMUNICATE IS CORRECTLY SUBMITED");
                 SecureCloudTPMService.this.submit(command);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        @Override
-        public void doAcceptCloud(SecureCAPlatform secureCAPlatform, byte[] index) {
-            System.out.println("HELLO MY FRIEND");
+
+        /**
+         * THIS FUNCTION, TAKES AN INDEX, IN ORDER TO ESTABLISHED A DEVICE AS SECURE, BASED ON THE LIST OF HOTSPOTS
+         * @param secureCAPlatform
+         * @param index
+         */
+        public void doAcceptCloud(SecureCAPlatform secureCAPlatform, String index) {
+            Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED IN ORDER TO ACCEPT "+
+                            "ONE AGENT. NAME AGENT:" + secureCAPlatform.getAID(), Level.INFO,
+                            SecureCloudTPMHelper.DEBUG, this.getClass().getName());
+            Agencia.printLog("START THE ACCEPT SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
+                    Level.INFO, true, this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_ACCEPT, SecureCloudTPMHelper.NAME,
+                                                        null);
+            command.addParam(index);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS TO ACCEPT ONE PLATFORM IN THE LIST OF " +
+                    "HOTSPOTS REGISTERED", Level.INFO, true, this.getClass().getName());
+            try {
+                SecureCloudTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private class CommandSourceSink implements Sink {
 
@@ -311,7 +334,18 @@ public class SecureCloudTPMService extends BaseService {
                                 "SOURCE SINK");
                         ie.printStackTrace();
                     }
-                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
+                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
+                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
+                            "ACEPT ONE OF THE LIST OF THE HOTSPOTS");
+                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    try{
+                        obj.doRequestAcceptAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
+                                "SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                } else if(commandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
                     System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
                             "REGISTER ONE HOSTPOT");
                     SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
@@ -376,13 +410,35 @@ public class SecureCloudTPMService extends BaseService {
                             "AMS DESTINATION CONTAINER");
                     System.out.println("NAME OF THE REGISTER HOSTPOTS IN: "+actualcontainer.getID().getName());
                     System.out.println("*********************HOSTPOTS*****************************");
-                    Iterator it = HostpotsRegister.entrySet().iterator();
+                    Iterator it = HotspotsRegister.entrySet().iterator();
                     while(it.hasNext()){
                         Map.Entry pair = (Map.Entry)it.next();
                         System.out.println(pair.getKey() + " = " + pair.getValue());
-                        it.remove();
+
                     }
                     System.out.println("*********************HOSTPOTS*****************************");
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
+                    String index = (String) command.getParams()[0];
+
+                    System.out.println("PROCESSING THE VERTICAL COMMAND LIST CLOUD REQUEST INTO THE " +
+                            "AMS DESTINATION CONTAINER");
+                    System.out.println("NAME OF THE REGISTER HOSTPOTS IN: "+actualcontainer.getID().getName());
+                    System.out.println("*********************HOSTPOTS*****************************");
+                    Iterator it = HotspotsRegister.entrySet().iterator();
+                    while(it.hasNext()){
+                        Map.Entry pair = (Map.Entry)it.next();
+                        System.out.println(pair.getKey() + " = " + pair.getValue());
+                    }
+                    System.out.println("*********************HOSTPOTS*****************************");
+
+                    try{
+                        HotspotsRegister.put(index,pendingRedirects.get(index));
+                    }catch(Exception e){
+                        System.out.println("THE REQUEST PLATFORM IS NOT REGISTER IN THE PENDING LIST");
+                        e.printStackTrace();
+                    }
+
+
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
 
 
@@ -393,9 +449,9 @@ public class SecureCloudTPMService extends BaseService {
                     System.out.println("LOCATION -> "+packSecure.getLocationPlatform());
                     System.out.println("PUBLIC PASSWORD -> "+packSecure.getPublicPassword());
                     System.out.println("*********************NEW REQUEST*****************************");
-                    if(HostpotsRegister.get(packSecure.getLocationPlatform())!=null){
+                    if(HotspotsRegister.get(packSecure.getLocationPlatform())!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE CONFIRMED LIST");
-                    }else if(HostpotsRegister.get(packSecure.getLocationPlatform())!=null){
+                    }else if(HotspotsRegister.get(packSecure.getLocationPlatform())!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
                     }else{
                         System.out.println("PCRS LIST:");
@@ -433,9 +489,9 @@ public class SecureCloudTPMService extends BaseService {
                             Pair accepted = new Pair(packSecure.getPublicPassword(),hash);
                             if(response.toUpperCase().equals("Y")){
                                 System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
-                                HostpotsRegister.put(packSecure.getLocationPlatform().getID(),saveRequest);
-                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST "+HostpotsRegister.size());
-                                it = HostpotsRegister.entrySet().iterator();
+                                HotspotsRegister.put(packSecure.getLocationPlatform().getID(),saveRequest);
+                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST "+HotspotsRegister.size());
+                                it = HotspotsRegister.entrySet().iterator();
                             }else {
                                 System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
                                 pendingRedirects.put(packSecure.getLocationPlatform().getID(),saveRequest);
@@ -469,16 +525,16 @@ public class SecureCloudTPMService extends BaseService {
                     Location originPlatform = packetReceived.getMyLocation();
                     Location destiny = packetReceived.getLocationDestiny();
 
-                    if(HostpotsRegister.containsKey(originPlatform.getID()) && HostpotsRegister.containsKey(packetReceived.getLocationDestiny().getID())){
+                    if(HotspotsRegister.containsKey(originPlatform.getID()) && HotspotsRegister.containsKey(packetReceived.getLocationDestiny().getID())){
                         System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE");
-                        Location newDestiny = HostpotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
+                        Location newDestiny = HotspotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
                         System.out.println(newDestiny);
                         String challengue = Agencia.getRandomChallengue();
                         System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challengue);
                         //Send the challengue to the origin platform to attestate
                         AID amsMain = new AID("ams", false);
-                        PublicKey destinypub = HostpotsRegister.get(originPlatform.getID()).getKeyPub();
-                        PlatformID destinyPT = HostpotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
+                        PublicKey destinypub = HotspotsRegister.get(originPlatform.getID()).getKeyPub();
+                        PlatformID destinyPT = HotspotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
                         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                         Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                         amsMainPlatform.addBehaviour(
@@ -506,7 +562,7 @@ public class SecureCloudTPMService extends BaseService {
                         new File(temPath).mkdir();
                         System.out.println("DESERIALIZE THEIR INFORMATION");
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
-                            stream.write(HostpotsRegister.get(origin.getID()).getAIK());
+                            stream.write(HotspotsRegister.get(origin.getID()).getAIK());
                         }
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/sign.out")) {
                             stream.write(packetReceive.getSign());
@@ -522,13 +578,13 @@ public class SecureCloudTPMService extends BaseService {
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath + "/pcr.out");
                             System.out.println("CHEKING TH SAH256");
-                            String hashSaved = HostpotsRegister.get(origin.getID()).getSha256();
+                            String hashSaved = HotspotsRegister.get(origin.getID()).getSha256();
                             if(!hashSaved.equals(hash)){
                                 System.out.println("THE PLATFORM IS CORRUPTED BY A MALWARE");
                                 AID amsMain = new AID("ams", false);
                                 Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                 ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                                PublicKey destinypub = HostpotsRegister.get(origin.getID()).getKeyPub();
+                                PublicKey destinypub = HotspotsRegister.get(origin.getID()).getKeyPub();
                                 String ms = "THE PLATFORM IS CORRUPTED BY A MALWARE";
                                 amsMainPlatform.addBehaviour(
                                         new SenderACLChallengueError(message, amsMainPlatform,
@@ -536,9 +592,9 @@ public class SecureCloudTPMService extends BaseService {
                                 );
                                 actualcontainer.releaseLocalAgent(amsMain);
                                 //REMOVE
-                                SecureInformationCloud malware = HostpotsRegister.get(origin);
+                                SecureInformationCloud malware = HotspotsRegister.get(origin);
                                 pendingRedirects.put(origin.getID(),malware);
-                                HostpotsRegister.remove(origin);
+                                HotspotsRegister.remove(origin);
                             }else{
                                 if(packet_privative.getValidation()==1){
                                     System.out.println("BOTH PLATFORMS CONFIRMED");
@@ -549,17 +605,17 @@ public class SecureCloudTPMService extends BaseService {
 
 
 
-                                    PublicKey destinypub = HostpotsRegister.get(origin.getID()).getKeyPub();
+                                    PublicKey destinypub = HotspotsRegister.get(origin.getID()).getKeyPub();
                                     System.out.println("*************************************");
                                     System.out.println("A    "+origin.getID());
                                     System.out.println("*************************************");
                                     System.out.println("B    "+destiny.getID());
 
-                                    PublicKey destinyremotepub = HostpotsRegister.get(destiny.getID()).getKeyPub();
+                                    PublicKey destinyremotepub = HotspotsRegister.get(destiny.getID()).getKeyPub();
                                     System.out.println("*************************************");
 
 
-                                    PlatformID destinyPT = HostpotsRegister.get(origin.getID()).getPlatformLocation();
+                                    PlatformID destinyPT = HotspotsRegister.get(origin.getID()).getPlatformLocation();
 
 
                                     System.out.println("HE LLEGADO ANTES DEL BEHAVIOUR");
@@ -582,8 +638,8 @@ public class SecureCloudTPMService extends BaseService {
                                     System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challengue);
                                     //Send the challengue to the origin platform to attestate
                                     AID amsMain = new AID("ams", false);
-                                    PublicKey destinypub = HostpotsRegister.get(packet_privative.getDestiny().getID()).getKeyPub();
-                                    PlatformID destinyPT = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
+                                    PublicKey destinypub = HotspotsRegister.get(packet_privative.getDestiny().getID()).getKeyPub();
+                                    PlatformID destinyPT = HotspotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
                                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
 
                                     Location originPlatform = packet_privative.getOrigin();
@@ -605,7 +661,7 @@ public class SecureCloudTPMService extends BaseService {
                             AID amsMain = new AID("ams", false);
                             Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                             ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-                            PublicKey destinypub = HostpotsRegister.get(origin).getKeyPub();
+                            PublicKey destinypub = HotspotsRegister.get(origin).getKeyPub();
                             String ms = "ERROR READING THE INFORMATION, IGNORE THE MESSAGE";
                             amsMainPlatform.addBehaviour(
                                     new SenderACLChallengueError(message, amsMainPlatform,
@@ -643,19 +699,25 @@ public class SecureCloudTPMService extends BaseService {
         @Override
         public VerticalCommand serve(HorizontalCommand command) {
             GenericCommand commandResponse = null;
-            try{
+            try {
                 String commandReceived = command.getName();
-                if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_START)) {
+                if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_START)) {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
                             "TO START THE HOST");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_START,
                             SecureCloudTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
-                }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_LIST)) {
+                } else if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_LIST)) {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
                             "TO REQUEST THE LIST OF THE HOST");
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST,
                             SecureCloudTPMHelper.NAME, null);
+                }else if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_ACCEPT)) {
+                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
+                            "TO ACCEPT ONE OF THE LIST OF THE HOST");
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_ACCEPT,
+                            SecureCloudTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams());
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_INSERT_PLATFORM)) {
                     System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
                             "TO INSERT A NEW HOSTPOT IN THE SECURE PLATFORM");
