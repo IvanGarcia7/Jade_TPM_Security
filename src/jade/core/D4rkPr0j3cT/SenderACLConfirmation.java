@@ -29,9 +29,10 @@ public class SenderACLConfirmation extends SimpleAchieveREInitiator {
     private PublicKey originKey;
     private PublicKey destinyKey;
     private PrivateKey CAKey;
+    private PlatformID mypt;
 
 
-    public SenderACLConfirmation(ACLMessage message, Agent amsMainPlatform, Location or, Location dr, String requestMigrateZone2Platform, PublicKey destinypub,PublicKey destinypubremote,PrivateKey CA) {
+    public SenderACLConfirmation(ACLMessage message, Agent amsMainPlatform, Location or, Location dr, String requestMigrateZone2Platform, PublicKey destinypub,PublicKey destinypubremote,PrivateKey CA,PlatformID ppt) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;
@@ -41,6 +42,7 @@ public class SenderACLConfirmation extends SimpleAchieveREInitiator {
         originKey = destinypub;
         destinyKey = destinypubremote;
         CAKey = CA;
+        mypt = ppt;
     }
 
     /**
@@ -75,10 +77,10 @@ public class SenderACLConfirmation extends SimpleAchieveREInitiator {
         */
 
         System.out.println("PROCEEDING TO SEND THE MESSAGE IN THE PREPARE REQUEST METHOD");
-        AID receiver = new AID("ams@"+origin.getName(),AID.ISGUID);
-        receiver.addAddresses(origin.getAddress());
-        System.out.println(receiver+" "+origin.getAddress());
-        myMessage.addReceiver(receiver);
+        AID receiver = new AID("ams@"+mypt.getName(),AID.ISGUID);
+        receiver.addAddresses(mypt.getAddress());
+        System.out.println(receiver+"BETTER THA ALONE "+origin.getAddress());
+        myMessage.addReceiver(mypt.getAmsAID());
         myMessage.setOntology(Ontology);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND, Agencia.getTimeout());

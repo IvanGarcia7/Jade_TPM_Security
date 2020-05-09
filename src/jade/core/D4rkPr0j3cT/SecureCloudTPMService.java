@@ -546,7 +546,6 @@ public class SecureCloudTPMService extends BaseService {
 
 
 
-
                                     PublicKey destinypub = HostpotsRegister.get(origin.getID()).getKeyPub();
                                     System.out.println("*************************************");
                                     System.out.println("A    "+origin.getID());
@@ -556,10 +555,14 @@ public class SecureCloudTPMService extends BaseService {
                                     PublicKey destinyremotepub = HostpotsRegister.get(destiny.getID()).getKeyPub();
                                     System.out.println("*************************************");
 
+
+                                    PlatformID destinyPT = HostpotsRegister.get(origin.getID()).getPlatformLocation();
+
+
                                     System.out.println("HE LLEGADO ANTES DEL BEHAVIOUR");
                                     amsMainPlatform.addBehaviour(
                                             new SenderACLConfirmation(message, amsMainPlatform,
-                                                    origin,destiny ,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,destinypub,destinyremotepub,privateKeyCA)
+                                                    origin,destiny ,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,destinypub,destinyremotepub,privateKeyCA,destinyPT)
                                     );
                                     actualcontainer.releaseLocalAgent(amsMain);
                                 }else{
@@ -569,7 +572,8 @@ public class SecureCloudTPMService extends BaseService {
                                     System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGUE TO THE DESTINY");
 
 
-                                    Location newDestiny = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
+                                    //Location newDestiny = HostpotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
+                                    Location newDestiny = packet_privative.getDestiny();
                                     System.out.println(newDestiny);
                                     String challengue = Agencia.getRandomChallengue();
                                     System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challengue);

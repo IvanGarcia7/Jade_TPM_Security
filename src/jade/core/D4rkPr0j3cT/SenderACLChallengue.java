@@ -68,6 +68,19 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             Date date = new Date();
             long timeMilli = date.getTime();
             SecretInformation secretInfo = new SecretInformation(Destiny,timeMilli,Challengue,Origin,validation);
+
+            System.out.println("LA INFORMACION QUE HE GUARDADO ES LA SIGUIENTE");
+            System.out.println("***********************************************");
+            System.out.println("***********************************************");
+            System.out.println(Destiny);
+            System.out.println("***********************************************");
+            System.out.println(Origin);
+            System.out.println("***********************************************");
+            System.out.println("***********************************************");
+            System.out.println("***********************************************");
+
+
+
             //Cipher with the pubKeySec
             byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(secretInfo));
 
