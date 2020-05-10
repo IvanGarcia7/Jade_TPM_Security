@@ -496,11 +496,14 @@ public class SecureCloudTPMService extends BaseService {
                         AID amsMain = new AID("ams", false);
                         PublicKey destinypub = HotspotsRegister.get(originPlatform.getID()).getKeyPub();
 
+                        PlatformID RegisterOrigin = HotspotsRegister.get(originPlatform.getID()).getPlatformLocation();
+                        PlatformID RegisterDestiny = HotspotsRegister.get(destiny.getID()).getPlatformLocation();
+
                         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                         Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                         amsMainPlatform.addBehaviour(
                                 new SenderCAChallenge(message, amsMainPlatform,
-                                        SecureCloudTPMService.this,originPlatform,destiny ,
+                                        SecureCloudTPMService.this,RegisterOrigin,RegisterDestiny,
                                         challenge,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,
                                         publicKeyCA,0)
                         );
@@ -573,10 +576,16 @@ public class SecureCloudTPMService extends BaseService {
                                     PublicKey destinypub = HotspotsRegister.get(origin.getID()).getKeyPub();
                                     PublicKey destinyremotepub = HotspotsRegister.get(destiny.getID()).getKeyPub();
 
+                                    PlatformID RegisterOrigin = HotspotsRegister.get(
+                                            origin.getID()).getPlatformLocation();
+                                    PlatformID RegisterDestiny = HotspotsRegister.get(
+                                            destiny.getID()).getPlatformLocation();
+
                                     amsMainPlatform.addBehaviour(
                                             new SenderCAConfirmation(message, amsMainPlatform,
-                                                    origin,destiny ,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
-                                                    destinypub,destinyremotepub,privateKeyCA)
+                                                    RegisterOrigin,RegisterDestiny ,
+                                                    SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM, destinypub,
+                                                    destinyremotepub,privateKeyCA)
                                     );
                                     actualcontainer.releaseLocalAgent(amsMain);
 
@@ -586,8 +595,6 @@ public class SecureCloudTPMService extends BaseService {
                                     System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE TO " +
                                                        "THE DESTINY");
                                     System.out.println("**************************************************");
-
-                                    PlatformID newDestiny = packet_privative.getDestiny();
 
                                     String challenge = Agencia.getRandomChallenge();
                                     System.out.println("**************************************************");
@@ -599,13 +606,20 @@ public class SecureCloudTPMService extends BaseService {
                                     PublicKey destinypub = HotspotsRegister.get(
                                                                     packet_privative.getDestiny().getID()).getKeyPub();
                                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+
                                     PlatformID originPlatform = packet_privative.getOrigin();
+                                    PlatformID newDestiny = packet_privative.getDestiny();
+
+                                    PlatformID RegisterOrigin = HotspotsRegister.get(
+                                            originPlatform.getID()).getPlatformLocation();
+                                    PlatformID RegisterDestiny = HotspotsRegister.get(
+                                            newDestiny.getID()).getPlatformLocation();
 
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                     amsMainPlatform.addBehaviour(
                                             new SenderCAChallenge(message, amsMainPlatform,
-                                                    SecureCloudTPMService.this,originPlatform,
-                                                    newDestiny ,challenge,
+                                                    SecureCloudTPMService.this,RegisterDestiny,
+                                                    RegisterOrigin ,challenge,
                                                     SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                                                     destinypub,publicKeyCA,1)
                                     );
@@ -760,7 +774,7 @@ public class SecureCloudTPMService extends BaseService {
                     if(((Long)command.getParams()[1]-packet_Priv.getTimestamp())<=Agencia.getTimeout()){
                         System.out.println("Checking the values");
                         System.out.println("I receive the following time "+packet_Priv.getTimestamp());
-                        commandResponse.addParam(Agencia.serialize(pairProcessed));
+                        commandResponse.addParam(pairProcessed);
                     }else{
                         System.out.println("THE AGENCIA IS TIMEOUT, IGNORING THE REQUEST");
                         commandResponse.addParam(null);

@@ -437,8 +437,15 @@ public class SecureAgentTPMService extends BaseService {
 
                     byte [] OTP_Pub = pSenderDone.getOTPPub();
                     byte [] contentPub = pSenderDone.getPartPublic();
-                    byte [] decryptedKey = Agencia.decrypt(privKeyAgent,OTP_Pub);
 
+
+                    System.out.println("MI PUBLIC KEY IS THE FOLLOWING: ");
+                    System.out.println(pubKeyAgent);
+                    System.out.println("MI PRIVATE KEY IS THE FOLLOWING: ");
+                    System.out.println(privKeyAgent);
+
+                    byte [] decryptedKey = Agencia.decrypt(privKeyAgent,OTP_Pub);
+                    System.out.println("HIOLA");
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
                                                               "AES");
                     Cipher aesCipher = Cipher.getInstance("AES");

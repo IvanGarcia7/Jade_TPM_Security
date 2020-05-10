@@ -690,15 +690,7 @@ public class Agencia{
             logger.logp(nivel,clase,null,mensaje);
         }
     }
-
-
-    public static byte[] InfineonCertificate() {
-		return null;
-
-        //TO-DO
-
-    }
-
+    
 
     /**
      * THIS METHOD IS USED TO DECIPHER TE CONTENT OF A REQUEST IN THE PLATFORM,

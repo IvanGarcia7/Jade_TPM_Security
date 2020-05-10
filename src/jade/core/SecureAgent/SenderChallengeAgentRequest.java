@@ -47,7 +47,7 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
      * @return
      */
     public ACLMessage prepareRequest(ACLMessage acl){
-
+        System.out.println("ENTRO");
         try {
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256);
@@ -79,7 +79,7 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
 
         Agencia.printLog("MESSAGE CREATE CORRECTLY INTO THE SENDER ZONE 1 ATT REQUEST", Level.INFO,
                 SecureAgentTPMHelper.DEBUG, this.getClass().getName());
-
+        System.out.println("SALFO");
         return myMessage;
     }
 
