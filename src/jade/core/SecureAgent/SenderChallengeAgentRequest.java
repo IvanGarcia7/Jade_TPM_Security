@@ -2,7 +2,7 @@ package jade.core.SecureAgent;
 
 
 import jade.core.*;
-import jade.core.SecureCloud.SecureChallenguerPacket;
+import jade.core.SecureCloud.SecureChallengerPacket;
 import jade.core.SecureTPM.Agencia;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
@@ -16,19 +16,19 @@ import java.util.Vector;
 import java.util.logging.Level;
 
 
-public class SenderChallengueAgentRequest extends SimpleAchieveREInitiator {
+public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
 
     private ACLMessage myMessage;
     private BaseService myService;
     private AttestationSerialized myAttestation;
     private PublicKey pubCA;
     private PlatformID CAlocation;
-    private SecureChallenguerPacket packetResponser;
+    private SecureChallengerPacket packetResponser;
 
 
-    public SenderChallengueAgentRequest(ACLMessage message, Agent amsMainPlatform, AttestationSerialized PCR_Signed,
+    public SenderChallengeAgentRequest(ACLMessage message, Agent amsMainPlatform, AttestationSerialized PCR_Signed,
                                         SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, PlatformID CAloc,
-                                        SecureChallenguerPacket pSender) {
+                                        SecureChallengerPacket pSender) {
         super(amsMainPlatform,message);
         myMessage = message;
         myAgent = amsMainPlatform;

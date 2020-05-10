@@ -15,7 +15,7 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_ERROR   = "5";
 
 
-   //PUBLIC METHODS
+    //PUBLIC METHODS
 
     void doCommunicateAMS(VerticalCommand command);
     void doMigrateAMS(VerticalCommand command);

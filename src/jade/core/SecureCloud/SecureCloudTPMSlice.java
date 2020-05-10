@@ -5,9 +5,8 @@ import jade.core.VerticalCommand;
 
 public interface SecureCloudTPMSlice extends Service.Slice {
 
-    /**
-     * HORIZONTAL COMMANDS THAT I DEFINE TO THIS SERVICE.
-     */
+    //HORIZONTAL COMMANDS
+
     static final String REMOTE_REQUEST_START           = "1";
     static final String REMOTE_REQUEST_LIST            = "2";
     static final String REMOTE_REQUEST_INSERT_PLATFORM = "3";
@@ -19,13 +18,13 @@ public interface SecureCloudTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_ERROR   = "9";
     static final String REMOTE_REQUEST_ACCEPT       = "10";
 
-    /**
-     * PUBLIC METHODS THAT SEND THE VERTICAL COMMAND TO THE PROXY.
-     */
+
+    //PUBLIC METHODS
+
     void doCommunicateAMS(VerticalCommand command);
     void doRequestListAMS(VerticalCommand command);
     void doRequestAcceptAMS(VerticalCommand command);
     void doInsertHostpotAMS(VerticalCommand command);
     void doStartAttestationHostpotAMS(VerticalCommand command);
-    void doCheckAttestationHostpotoRIGIN(VerticalCommand command);
+    void doCheckAttestationHostpotORIGIN(VerticalCommand command);
 }

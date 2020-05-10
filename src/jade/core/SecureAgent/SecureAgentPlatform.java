@@ -53,13 +53,12 @@ public class SecureAgentPlatform extends Agent{
 
 
     /**
-     * CALL THIS FUNCTION TO INICALIZE THE CLOUD SERVICE
+     * CALL THIS FUNCTION TO INITIALIZE THE CLOUD SERVICE
      * @throws ServiceException
      */
     private void initmobHelperCloud() throws ServiceException {
         if(mobHelperCloudPlatform == null){
             mobHelperCloudPlatform = (SecureAgentTPMHelper) getHelper(SecureAgentTPMHelper.NAME);
-            System.out.println(mobHelperCloudPlatform);
         }
     }
 

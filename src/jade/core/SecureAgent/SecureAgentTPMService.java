@@ -1,7 +1,7 @@
 package jade.core.SecureAgent;
 
 import jade.core.*;
-import jade.core.SecureCloud.SecureChallenguerPacket;
+import jade.core.SecureCloud.SecureChallengerPacket;
 import jade.core.SecureCloud.SecureCloudTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
@@ -430,7 +430,7 @@ public class SecureAgentTPMService extends BaseService {
                     //IN THIS PART OF THE CODE, THE AMS OF THE ORIGIN PLATFORM RECEIVES A REQUEST FROM THE SECURE
                     // PLATFORM TO SEND THE SIGNED PCR VALUES
 
-                    SecureChallenguerPacket pSenderDone = (SecureChallenguerPacket) command.getParams()[0];
+                    SecureChallengerPacket pSenderDone = (SecureChallengerPacket) command.getParams()[0];
 
                     byte [] OTP_Pub = pSenderDone.getOTPPub();
                     byte [] contentPub = pSenderDone.getPartPublic();
@@ -444,7 +444,7 @@ public class SecureAgentTPMService extends BaseService {
                     String challenge = (String)Agencia.deserialize(byteObject);
 
                     System.out.println("*************************************************");
-                    System.out.println("THE CHALLENGUE IS THE FOLLOWING "+challenge);
+                    System.out.println("THE CHALLENGE IS THE FOLLOWING "+challenge);
                     System.out.println("*************************************************");
 
                     String temPath = "./temp_agent";
@@ -457,7 +457,7 @@ public class SecureAgentTPMService extends BaseService {
                     Agencia.deleteFolder(new File(temPath));
 
                     //CREATE THE NEW PACKET TO SEND IT TO THE SECURE CA PLATFORM
-                    SecureChallenguerPacket pSender = new SecureChallenguerPacket(pSenderDone.getOTPPriv(),
+                    SecureChallengerPacket pSender = new SecureChallengerPacket(pSenderDone.getOTPPriv(),
                                                                                   null,null,
                                                                                    pSenderDone.getPartPriv());
 
@@ -465,7 +465,7 @@ public class SecureAgentTPMService extends BaseService {
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
-                            new SenderChallengueAgentRequest(message, amsMainPlatform, PCR_Signed,
+                            new SenderChallengeAgentRequest(message, amsMainPlatform, PCR_Signed,
                                     SecureAgentTPMService.this, CAKey,CALocation,pSender)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);

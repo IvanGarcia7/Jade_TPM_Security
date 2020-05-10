@@ -172,7 +172,7 @@ public class SecureAgent extends Agent {
 
 
     /**
-     * THIS FUNCTION TRY TO DEFINE A LIST OF HOSTPOTS WELL KNOW BY THE MAIN PLATFORM
+     * THIS FUNCTION TRY TO DEFINE A LIST OF HOTSPOTS WELL KNOW BY THE MAIN PLATFORM
      * PROVIDED BY AN AGENT.
      * @param devices_list
      * @throws ServiceException
@@ -184,7 +184,7 @@ public class SecureAgent extends Agent {
         Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
                 Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
         System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
-        mobHelperOnion.sendAMSHostpots(this,devices_list);
+        mobHelperOnion.sendAMSHotspots(this,devices_list);
     }
 
 
@@ -195,7 +195,7 @@ public class SecureAgent extends Agent {
         Agencia.printLog("THE SERVICE HAS BEGUN TO RUN",
                 Level.INFO,SecureInterTPMHelper.DEBUG,this.getClass().getName());
         System.out.println("THE SERVICE HAS STARTED WITHOUT ERRORS, PROCEEDING TO ITS IMPLEMENTATION");
-        mobHelperOnion.sendOnionHostpots(this,destiny);
+        mobHelperOnion.sendOnionHotspots(this,destiny);
     }
 
 */

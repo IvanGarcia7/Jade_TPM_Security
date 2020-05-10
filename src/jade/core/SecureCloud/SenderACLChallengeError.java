@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-public class SenderACLChallengueError extends SimpleAchieveREInitiator {
+public class SenderACLChallengeError extends SimpleAchieveREInitiator {
 
     private ACLMessage myMessage = null;
     private BaseService myService;
@@ -21,7 +21,7 @@ public class SenderACLChallengueError extends SimpleAchieveREInitiator {
     private Location origin;
 
 
-    public SenderACLChallengueError(ACLMessage message, Agent amsMainPlatform, String requestError, PublicKey destinypub, String ms, Location or) {
+    public SenderACLChallengeError(ACLMessage message, Agent amsMainPlatform, String requestError, PublicKey destinypub, String ms, Location or) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;
@@ -57,7 +57,7 @@ public class SenderACLChallengueError extends SimpleAchieveREInitiator {
         //SETTING THE TIMEOUT IN THE ACL MESSAGE
         Date t = new Date(c.getTimeInMillis());
         myMessage.setReplyByDate(t);
-        System.out.println("MESSAGE CREATE SUCCESFULLY INTO THE SENDERACLCHALLENGUEERROR");
+        System.out.println("MESSAGE CREATE SUCCESFULLY INTO THE SENDERACLCHALLENGEERROR");
         return myMessage;
     }
 

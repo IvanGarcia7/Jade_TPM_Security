@@ -30,9 +30,8 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
      */
     protected ACLMessage prepareResponse(ACLMessage request) {
 
-        Agencia.printLog("PROCESSING THE REQUEST ATTESTATION IN THE DESTINY IN THE RESPONSER AGENT",
-                Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
-
+        Agencia.printLog("PROCESSING THE REQUEST IN THE AGENT DESTINY RESPONSER AGENT", Level.INFO,
+                        SecureAgentTPMHelper.DEBUG, this.getClass().getName());
         ACLMessage reply = null;
 
         if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
@@ -108,7 +107,5 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
     protected void handleFailure(ACLMessage failure){
         System.out.println("MESSAGE RECEIVED IN THE FAILURE HANDLER "+failure.getContent());
     }
-
-
 
 }

@@ -16,13 +16,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-public class SenderACLChallengue extends SimpleAchieveREInitiator {
+public class SenderACLChallenge extends SimpleAchieveREInitiator {
 
     private ACLMessage myMessage = null;
     private BaseService myService;
     private Location Origin;
     private Location Destiny;
-    private String Challengue;
+    private String Challenge;
     private String Ontology;
     private PublicKey destinyKey;
     private PublicKey pubCA;
@@ -30,7 +30,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
     private PlatformID mypt;
 
 
-    public SenderACLChallengue(ACLMessage message, Agent amsMainPlatform, SecureCloudTPMService secureCloudTPMService,
+    public SenderACLChallenge(ACLMessage message, Agent amsMainPlatform, SecureCloudTPMService secureCloudTPMService,
                                Location origin,Location destiny, String challen, String onto, PublicKey pub, PublicKey publicSec, int val,PlatformID pt) {
         super(amsMainPlatform,message);
         myMessage=message;
@@ -38,7 +38,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
         myService = secureCloudTPMService;
         Origin = origin;
         Destiny = destiny;
-        Challengue = challen;
+        Challenge = challen;
         Ontology = onto;
         destinyKey = pub;
         pubCA = publicSec;
@@ -63,7 +63,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
             Date date = new Date();
             long timeMilli = date.getTime();
-            SecretInformation secretInfo = new SecretInformation(Destiny,timeMilli,Challengue,Origin,validation);
+            PrivateInformationCA secretInfo = new PrivateInformationCA(Destiny,timeMilli,Challenge,Origin,validation);
 
             System.out.println("LA INFORMACION QUE HE GUARDADO ES LA SIGUIENTE");
             System.out.println("***********************************************");
@@ -88,8 +88,8 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
             SecretKey secKey2 = generator.generateKey();
             Cipher aesCipher2 = Cipher.getInstance("AES");
             aesCipher2.init(Cipher.ENCRYPT_MODE, secKey2);
-            Pair<String, Pair<byte [],byte []>> publico = new Pair<String,Pair<byte [],byte []>>(Challengue,SecretPack);
-            byte[] byteCipherObjectPublic = aesCipher2.doFinal(Agencia.serialize(Challengue));
+            Pair<String, Pair<byte [],byte []>> publico = new Pair<String,Pair<byte [],byte []>>(Challenge,SecretPack);
+            byte[] byteCipherObjectPublic = aesCipher2.doFinal(Agencia.serialize(Challenge));
             byte [] encryptedKeyPublic = Agencia.encrypt(destinyKey,secKey2.getEncoded());
 
             Pair<byte[],byte[]> packetFinal = new Pair<byte[],byte[]>(encryptedKeyPublic,byteCipherObjectPublic);
@@ -102,7 +102,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
 
 
 
-            SecureChallenguerPacket pSender = new SecureChallenguerPacket(encryptedKeySecret,encryptedKeyPublic,byteCipherObjectPublic,byteCipherObjectSecret);
+            SecureChallengerPacket pSender = new SecureChallengerPacket(encryptedKeySecret,encryptedKeyPublic,byteCipherObjectPublic,byteCipherObjectSecret);
             myMessage.setContentObject(pSender);
 
 
@@ -131,7 +131,7 @@ public class SenderACLChallengue extends SimpleAchieveREInitiator {
         Date t = new Date(c.getTimeInMillis());
 
         myMessage.setReplyByDate(t);
-        System.out.println("MESSAGE CREATE SUCCESFULLY INTO THE SENDER ACL CHALLENGUE");
+        System.out.println("MESSAGE CREATE SUCCESFULLY INTO THE SENDER ACL CHALLENGE");
 
 
         return myMessage;

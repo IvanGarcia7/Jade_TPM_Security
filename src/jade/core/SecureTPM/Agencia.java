@@ -959,7 +959,7 @@ public class Agencia{
         }
     }
 
-    public static String getRandomChallengue(){
+    public static String getRandomChallenge(){
         return UUID.randomUUID().toString().replace("-", "");
     }
 

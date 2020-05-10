@@ -4,38 +4,38 @@ import jade.core.Location;
 
 import java.io.Serializable;
 
-public class SecretInformation implements Serializable {
+public class PrivateInformationCA implements Serializable {
+
 
     private Location destiny;
     private long Timestamp;
-    private String Challengue;
-    private Location origin;
+    private String Challenge;
+    private Location Origin;
     private int validation;
 
-    public SecretInformation(Location dest, long time, String chall, Location or,int val){
+
+    public PrivateInformationCA(Location dest, long time, String challenge, Location origin, int bitStatus){
         destiny = dest;
         Timestamp = time;
-        Challengue = chall;
-        origin = or;
-        validation = val;
+        Challenge = challenge;
+        Origin = origin;
+        validation = bitStatus;
     }
 
-    public String getChallengue() {
-        return Challengue;
-    }
 
+    //GETTER METHODS
+    public String getChallenge() {
+        return Challenge;
+    }
     public Location getDestiny() {
         return destiny;
     }
-
     public long getTimestamp() {
         return Timestamp;
     }
-
     public Location getOrigin() {
-        return origin;
+        return Origin;
     }
-
     public int getValidation() {
         return validation;
     }

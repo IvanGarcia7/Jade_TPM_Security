@@ -9,11 +9,11 @@ import java.util.List;
 public class RequestOnion implements Serializable {
 
     private PlatformID destiny;
-    private List<PlatformID> hostpots_devices;
+    private List<PlatformID> hotspots_devices;
 
     public  RequestOnion(PlatformID platform, List<PlatformID> platform_host) {
         platform = destiny;
-        hostpots_devices = platform_host;
+        hotspots_devices = platform_host;
     }
 
     public PlatformID getPlatformID(){
@@ -21,14 +21,14 @@ public class RequestOnion implements Serializable {
     }
 
     public List<PlatformID> getListHost(){
-        return hostpots_devices;
+        return hotspots_devices;
     }
 
     public void setPlatformID(PlatformID config_platform){
         destiny = config_platform;
     }
 
-    public void setHostpots(List<PlatformID> platforms){
-        hostpots_devices = platforms;
+    public void setHotspots(List<PlatformID> platforms){
+        hotspots_devices = platforms;
     }
 }
