@@ -61,7 +61,7 @@ public class SenderChallengueAgentRequest extends SimpleAchieveREInitiator {
             packetResponser.setOTPPub(encryptedKey);
             packetResponser.setPartPublic(byteCipherObject);
 
-            myMessage.setContentObject(Agencia.serialize(packetResponser));
+            myMessage.setContentObject(packetResponser);
         } catch (Exception e) {
             e.printStackTrace();
         }

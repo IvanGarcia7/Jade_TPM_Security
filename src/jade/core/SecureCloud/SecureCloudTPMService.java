@@ -288,94 +288,74 @@ public class SecureCloudTPMService extends BaseService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * THE CommandSourceSink TRY TO PROCESS THE VERTICAL COMMANDS THAT I CREATED IN THIS PLATFORM.
+     */
     private class CommandSourceSink implements Sink {
 
         @Override
         public void consume(VerticalCommand command) {
             try{
                 String commandName = command.getName();
+                SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
                 if(commandName.equals(SecureCloudTPMHelper.REQUEST_START)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "START THE HOTSPOTS");
-                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS AND START THE " +
+                                    "PLATFORM IN THE SECURE CA", Level.INFO, true, this.getClass().getName());
                     try{
                         obj.doCommunicateAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST ADDRESS IN THE COMMAND SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING START COMMAND IN THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_LIST)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "PRINT THE LIST OF THE HOTSPOTS");
-                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS AND PRINT THE LIST " +
+                                    "OF THE HOTSPOTS", Level.INFO, true, this.getClass().getName());
                     try{
                         obj.doRequestListAMS(command);
                     }catch(Exception ie){
                         System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
-                                "SOURCE SINK");
+                                           "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "ACEPT ONE OF THE LIST OF THE HOTSPOTS");
-                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS AND ACCEPT ONE OF " +
+                                    "THE LIST OF THE HOTSPOTS", Level.INFO, true, this.getClass().getName());
                     try{
                         obj.doRequestAcceptAMS(command);
                     }catch(Exception ie){
                         System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
-                                "SOURCE SINK");
+                                           "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 } else if(commandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "REGISTER ONE HOSTPOT");
-                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS TO REGISTER ONE " +
+                                    "HOTSPOT", Level.INFO, true, this.getClass().getName());
                     try{
                         obj.doInsertHostpotAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
-                                "SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST INSERT PLATFORM IN THE COMMAND " +
+                                           "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "INITIALIZE THE ATTESTATION PROCESS");
-                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS TO INITIALIZE THE " +
+                                    "ATTESTATION PROCESS", Level.INFO, true, this.getClass().getName());
                     try{
                         obj.doStartAttestationHostpotAMS(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
-                                "SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST MIGRATE PLATFORM IN THE COMMAND " +
+                                           "SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
-                    System.out.println("PROCEED THE COMMAND TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM TO " +
-                            "CHECK THE ATT FILES ORIGIN PLATFORM THE ATTESTATION PROCESS");
-                    SecureCloudTPMSlice obj = (SecureCloudTPMSlice) getSlice(MAIN_SLICE);
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS TO CHECK THE " +
+                                    "ATT FILES ORIGIN PLATFORM THE ATTESTATION PROCESS", Level.INFO, true,
+                                    this.getClass().getName());
                     try{
                         obj.doCheckAttestationHostpotoRIGIN(command);
                     }catch(Exception ie){
-                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
-                                "SOURCE SINK");
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST MIGRATE ZONE 1 PLATFORM IN THE " +
+                                "COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
                 }
@@ -386,6 +366,9 @@ public class SecureCloudTPMService extends BaseService {
     }
 
 
+    /**
+     * THE CommandTargetSink TRY TO PROCESS THE VERTICAL COMMANDS THAT IT RECEIVE FROM THE SERVICE COMPONENT.
+     */
     private class CommandTargetSink implements Sink {
 
         @Override
@@ -680,21 +663,29 @@ public class SecureCloudTPMService extends BaseService {
         }
     }
 
+
+    /**
+     * ServiceComponent PROCESS THE HORIZONTAL COMMANDS THAT THE PLATFORM RECEIVE FROM ANOTHER EXTERNAL PLATFORM AND
+     * CONVERTS IT IN VERTICAL COMMANDS.
+     */
     private class ServiceComponent implements Slice {
+
 
         @Override
         public Service getService() {
             return SecureCloudTPMService.this;
         }
 
+
         @Override
         public Node getNode() throws ServiceException {
             try {
                 return SecureCloudTPMService.this.getLocalNode();
             } catch (Exception e) {
-                throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE CLOUD SERVICE COMPONENT");
+                throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE SECURE CLOUD SERVICE COMPONENT");
             }
         }
+
 
         @Override
         public VerticalCommand serve(HorizontalCommand command) {
@@ -702,109 +693,100 @@ public class SecureCloudTPMService extends BaseService {
             try {
                 String commandReceived = command.getName();
                 if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_START)) {
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO START THE HOST");
-                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_START,
-                            SecureCloudTPMHelper.NAME, null);
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                            "COMPONENT TO START THE HOST", Level.INFO, true, this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_START, SecureCloudTPMHelper.NAME,
+                                                         null);
                     commandResponse.addParam(command.getParams()[0]);
                 } else if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_LIST)) {
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO REQUEST THE LIST OF THE HOST");
-                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST,
-                            SecureCloudTPMHelper.NAME, null);
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO REQUEST THE LIST OF THE HOST", Level.INFO, true,
+                                    this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST, SecureCloudTPMHelper.NAME,
+                                                         null);
                 }else if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_ACCEPT)) {
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO ACCEPT ONE OF THE LIST OF THE HOST");
-                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_ACCEPT,
-                            SecureCloudTPMHelper.NAME, null);
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO ACCEPT ONE OF THE LIST OF THE HOST", Level.INFO, true,
+                                    this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_ACCEPT, SecureCloudTPMHelper.NAME,
+                                                         null);
                     commandResponse.addParam(command.getParams());
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_INSERT_PLATFORM)) {
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO INSERT A NEW HOSTPOT IN THE SECURE PLATFORM");
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO INSERT A NEW HOTSPOT IN THE SECURE PLATFORM", Level.INFO,
+                                    true, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
-                            SecureCloudTPMHelper.NAME, null);
-                    Pair<byte [],byte []> pairsender = (Pair<byte [],byte []>)command.getParams()[0];
-                    byte [] key = pairsender.getKey();
-                    byte [] object = pairsender.getValue();
+                                                        SecureCloudTPMHelper.NAME, null);
+
+                    Pair<byte [],byte []> PairRequest = (Pair<byte [],byte []>)command.getParams()[0];
+                    byte [] key = PairRequest.getKey();
+                    byte [] object = PairRequest.getValue();
+
                     byte[] decryptedKey = Agencia.decrypt(privateKeyCA,key);
-                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length, "AES");
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
+                                                              "AES");
                     Cipher aesCipher = Cipher.getInstance("AES");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
                     byte[] byteObject = aesCipher.doFinal(object);
+
                     RequestSecureATT pack = (RequestSecureATT) Agencia.deserialize(byteObject);
                     commandResponse.addParam(pack);
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_MIGRATE_PLATFORM)){
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO MIGRATE A NEW HOSTPOT IN THE SECURE PLATFORM");
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO MIGRATE A NEW HOSTPOT IN THE SECURE PLATFORM", Level.INFO,
+                                    true, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
                             SecureCloudTPMHelper.NAME, null);
-                    Pair<byte [],byte []> pairsender = (Pair<byte [],byte []>)command.getParams()[0];
-                    byte [] key = pairsender.getKey();
-                    byte [] object = pairsender.getValue();
+
+                    Pair<byte [],byte []> PairRequestMigrate = (Pair<byte [],byte []>)command.getParams()[0];
+                    byte [] key = PairRequestMigrate.getKey();
+                    byte [] object = PairRequestMigrate.getValue();
+
                     byte[] decryptedKey = Agencia.decrypt(privateKeyCA,key);
-                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length, "AES");
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
+                                                              "AES");
                     Cipher aesCipher = Cipher.getInstance("AES");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
                     byte[] byteObject = aesCipher.doFinal(object);
+
                     RequestSecureATT packetReceived = (RequestSecureATT) Agencia.deserialize(byteObject);
                     commandResponse.addParam(packetReceived);
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM)){
-                    System.out.println("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE COMPONENT " +
-                            "TO CHECK ORIGIN A NEW HOSTPOT IN THE SECURE PLATFORM");
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                            "COMPONENT TO CHECK THE ORIGIN", Level.INFO, true, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                             SecureCloudTPMHelper.NAME, null);
+                    SecureChallenguerPacket secrectInformation = (SecureChallenguerPacket) command.getParams()[0];
 
-
-                    System.out.println("LEAVE THE WORLD BEHIND YOU");
-
-                    SecureChallenguerPacket secrec = (SecureChallenguerPacket) Agencia.deserialize((byte [])command.getParams()[0]);
-
-
-                    System.out.println("LEAVE THE WORLD AFTER YOU");
-
-
-
-
-                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: ");
-                    byte [] OTP_PUB = secrec.getOTPPub();
-                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+OTP_PUB);
-                    byte [] OTP_PRIV = secrec.getOTPPriv();
-                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+OTP_PRIV);
-                    byte [] public_Part = secrec.getPartPublic();
-                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+public_Part);
-                    byte [] private_part = secrec.getPartPriv();
-                    System.out.println("HE CONSEGUIDO LA SIGUIENTE INFORMACION: "+private_part);
+                    byte [] OTP_PUB = secrectInformation.getOTPPub();
+                    byte [] OTP_PRIV = secrectInformation.getOTPPriv();
+                    byte [] public_Part = secrectInformation.getPartPublic();
+                    byte [] private_part = secrectInformation.getPartPriv();
 
                     byte[] decryptedKeyPublic = Agencia.decrypt(privateKeyCA,OTP_PUB);
-                    SecretKey originalKey = new SecretKeySpec(decryptedKeyPublic , 0, decryptedKeyPublic .length, "AES");
+                    SecretKey originalKey = new SecretKeySpec(decryptedKeyPublic , 0, decryptedKeyPublic .length,
+                                                              "AES");
                     Cipher aesCipher = Cipher.getInstance("AES");
                     aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
                     byte[] byteObject = aesCipher.doFinal(public_Part);
 
-                    System.out.println("LLEGUE AQUI");
-
                     byte[] decryptedKeyPrivate = Agencia.decrypt(privateKeyCA,OTP_PRIV);
-                    SecretKey originalKeyPrivate = new SecretKeySpec(decryptedKeyPrivate , 0, decryptedKeyPrivate .length, "AES");
+                    SecretKey originalKeyPrivate = new SecretKeySpec(decryptedKeyPrivate , 0,
+                                                                     decryptedKeyPrivate .length, "AES");
                     Cipher aesCipherPrivate = Cipher.getInstance("AES");
                     aesCipherPrivate.init(Cipher.DECRYPT_MODE, originalKeyPrivate);
                     byte[] byteObjectPrivatesender = aesCipherPrivate.doFinal(private_part);
 
-                    System.out.println("LLEGUE a1uip");
+                    Pair<byte [],byte []> pairProcessed = new Pair<byte[],byte[]>(byteObject,byteObjectPrivatesender);
 
-                    //I NEED TO DECRYPT THE PUBLIC KEY AND THE ATTESTATTE THE SIGN WITH THE NONCE
-                    Pair<byte [],byte []> pairsenderro = new Pair<byte[],byte[]>(byteObject,byteObjectPrivatesender);
+                    SecretInformation packet_Priv = (SecretInformation) Agencia.deserialize(byteObjectPrivatesender);
 
-                    System.out.println("LLEGUE fewafwa");
-
-                    SecretInformation packet_privative = (SecretInformation) Agencia.deserialize(byteObjectPrivatesender);
-
-                    System.out.println("LLEGUE gregerwgew");
-                    if(((Long)command.getParams()[1]-packet_privative.getTimestamp())<=Agencia.getTimeout()){
+                    if(((Long)command.getParams()[1]-packet_Priv.getTimestamp())<=Agencia.getTimeout()){
                         System.out.println("Checking the values");
-                        System.out.println("I receive the following time "+packet_privative.getTimestamp());
-                        commandResponse.addParam(Agencia.serialize(pairsenderro));
+                        System.out.println("I receive the following time "+packet_Priv.getTimestamp());
+                        commandResponse.addParam(Agencia.serialize(pairProcessed));
                     }else{
-                        System.out.println("THE AGENCIA IS TIMEOUT");
+                        System.out.println("THE AGENCIA IS TIMEOUT, IGNORING THE REQUEST");
                         commandResponse.addParam(null);
                     }
                 }

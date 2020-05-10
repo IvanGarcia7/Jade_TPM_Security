@@ -515,7 +515,7 @@ public class SecureAgentTPMService extends BaseService {
             try {
                 return SecureAgentTPMService.this.getLocalNode();
             } catch (Exception e) {
-                throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE CLOUD AGENT SERVICE");
+                throw new ServiceException("AN ERROR HAPPENED WHEN RUNNING THE SECURE AGENT SERVICE");
             }
         }
 
