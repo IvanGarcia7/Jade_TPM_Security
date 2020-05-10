@@ -34,15 +34,14 @@ java -cp TPM.jar:test.jar jade.Boot -container-name P1 -gui -host localhost -por
 ```
 package vom;
 
+
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
 import jade.core.SecureCloud.SecureCAPlatform;
-
 
 
 public class CAPlatform extends SecureCAPlatform{
@@ -75,14 +74,15 @@ public class CAPlatform extends SecureCAPlatform{
 ```
 package vom;
 
+
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
 import jade.core.AID;
 import jade.core.PlatformID;
 import jade.core.SecureAgent.SecureAgentPlatform;
+
 
 public class CAAgent extends SecureAgentPlatform {
 	public void setup() {
@@ -105,9 +105,8 @@ public class CAAgent extends SecureAgentPlatform {
 			Thread.sleep(10000);
 			System.out.println("IM GOING TO AWAKE");
 					
-			
-			AID remoteAMSDestiny = new AID("P2@192.168.0.110", AID.ISGUID);
-			remoteAMSDestiny.addAddresses("http://192.168.0.100:7778/acc");
+			AID remoteAMSDestiny = new AID("ams@192.168.0.110:1364/JADE", AID.ISGUID);
+			remoteAMSDestiny.addAddresses("http://raspberrypi:45309/acc");
 			PlatformID destination2 = new PlatformID(remoteAMSDestiny);
 			doSecureMigration(destination2);
 			
@@ -119,8 +118,6 @@ public class CAAgent extends SecureAgentPlatform {
 		
 	}
 }
-
-
 ```
 
 * AGENT 2 EXAMPLE:
@@ -128,14 +125,15 @@ public class CAAgent extends SecureAgentPlatform {
 ```
 package vom;
 
+
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
 import jade.core.AID;
 import jade.core.PlatformID;
 import jade.core.SecureAgent.SecureAgentPlatform;
+
 
 public class CAAgent2 extends SecureAgentPlatform {
 	public void setup() {
