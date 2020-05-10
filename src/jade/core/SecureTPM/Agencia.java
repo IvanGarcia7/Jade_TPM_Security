@@ -690,7 +690,7 @@ public class Agencia{
             logger.logp(nivel,clase,null,mensaje);
         }
     }
-    
+
 
     /**
      * THIS METHOD IS USED TO DECIPHER TE CONTENT OF A REQUEST IN THE PLATFORM,

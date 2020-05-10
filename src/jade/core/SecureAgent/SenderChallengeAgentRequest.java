@@ -79,7 +79,6 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
 
         Agencia.printLog("MESSAGE CREATE CORRECTLY INTO THE SENDER ZONE 1 ATT REQUEST", Level.INFO,
                 SecureAgentTPMHelper.DEBUG, this.getClass().getName());
-        System.out.println("SALFO");
         return myMessage;
     }
 
