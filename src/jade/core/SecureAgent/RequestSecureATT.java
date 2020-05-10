@@ -10,15 +10,12 @@ import java.security.PublicKey;
 public class RequestSecureATT implements Serializable {
 
 
-    private Location locationPlatform;
-
-    private Location myDestiny;
-    private Location myLocation;
     private String contextEK;
     private String contextAK;
     private PublicKey publicPassword;
     private PlatformID PlatformLocation;
     private PlatformID PlatformCALocation;
+    private PlatformID PlatformCALocationDestiny;
     private AttestationSerialized PCR_Signed;
 
 
@@ -35,6 +32,11 @@ public class RequestSecureATT implements Serializable {
         PlatformCALocation = locationP;
     }
 
+    public RequestSecureATT(PlatformID origin, PlatformID destiny){
+        PlatformLocation = origin;
+        PlatformCALocationDestiny=destiny;
+    }
+
 
     public RequestSecureATT(PublicKey PlatformKey, PlatformID PlatformLoc, AttestationSerialized PCR){
         publicPassword  = PlatformKey;
@@ -42,17 +44,12 @@ public class RequestSecureATT implements Serializable {
         PCR_Signed = PCR;
     }
 
-    public RequestSecureATT(Location myLoc, Location destiny){
-        myLocation=myLoc;
-        myDestiny=destiny;
-    }
 
-
-    public RequestSecureATT(PublicKey publicCA, PlatformID CAPlatform, Location destiny, Location myLoc){
+    public RequestSecureATT(PublicKey publicCA, PlatformID CAPlatform, PlatformID destiny, PlatformID myLoc){
         publicPassword  = publicCA;
         PlatformCALocation = CAPlatform;
-        myDestiny=destiny;
-        myLocation = myLoc;
+        PlatformCALocationDestiny=destiny;
+        PlatformLocation = myLoc;
     }
 
 
@@ -60,17 +57,15 @@ public class RequestSecureATT implements Serializable {
 
     public PublicKey getPublicPassword(){ return publicPassword; }
 
-    public Location getLocationPlatform(){ return locationPlatform; }
-
     public String getContextEK(){ return contextEK; }
 
     public String getContextAK(){ return contextAK; }
 
-    public Location getLocationDestiny(){ return myDestiny; }
-
-    public Location getMyLocation(){ return myLocation; }
-
     public PlatformID getPlatformCALocation() { return PlatformCALocation; }
 
     public AttestationSerialized getPCR_Signed(){ return PCR_Signed; }
+
+    public PlatformID getPlatformLocationOrigin(){ return PlatformLocation; }
+
+    public PlatformID getPlatformCALocationDestiny(){ return PlatformCALocationDestiny; }
 }

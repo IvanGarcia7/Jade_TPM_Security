@@ -1,5 +1,6 @@
 package jade.core.SecureTPM;
 
+import jade.core.SecureAgent.AttestationSerialized;
 import jade.core.SecureAgent.RequestSecureATT;
 
 
@@ -964,8 +965,41 @@ public class Agencia{
     }
 
 
+    public static void deserializeATT(String temPath, AttestationSerialized packetReceive){
+        try{
+            FileOutputStream streamAIK = new FileOutputStream(temPath+"/akpub.pem");
+            streamAIK.write(packetReceive.getAIKPub());
+            streamAIK.close();
+            FileOutputStream streamSIGN = new FileOutputStream(temPath+"/sign.out");
+            streamSIGN.write(packetReceive.getSign());
+            streamSIGN.close();
+            FileOutputStream streamPCR = new FileOutputStream(temPath+"/pcr.out");
+            streamPCR.write(packetReceive.getMessage());
+            streamPCR.close();
+            FileOutputStream streamQUOTE = new FileOutputStream(temPath+"/quote.out");
+            streamQUOTE.write(packetReceive.getQuoted());
+            streamQUOTE.close();
+        }catch(Exception e){
+            System.out.println("ERROR IN THE DESERIALIZATION OF THE ATT INFORMATION RECEIVE");
+        }
+    }
 
 
+    public static void deserializeATTWAIK(String temPath, AttestationSerialized packetReceive){
+        try{
+            FileOutputStream streamSIGN = new FileOutputStream(temPath+"/sign.out");
+            streamSIGN.write(packetReceive.getSign());
+            streamSIGN.close();
+            FileOutputStream streamPCR = new FileOutputStream(temPath+"/pcr.out");
+            streamPCR.write(packetReceive.getMessage());
+            streamPCR.close();
+            FileOutputStream streamQUOTE = new FileOutputStream(temPath+"/quote.out");
+            streamQUOTE.write(packetReceive.getQuoted());
+            streamQUOTE.close();
+        }catch(Exception e){
+            System.out.println("ERROR IN THE DESERIALIZATION OF THE ATT INFORMATION RECEIVE");
+        }
+    }
 
 
 

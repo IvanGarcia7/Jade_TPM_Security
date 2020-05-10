@@ -413,8 +413,11 @@ public class SecureAgentTPMService extends BaseService {
                     //TO START THE REMOTE ATTESTATION PROCESS
 
                     PlatformID DestinyPlatform = (PlatformID) command.getParams()[0];
+                    AID MYams =  actualcontainer.getAMS();
+                    PlatformID myPlatform = new PlatformID(MYams);
+
                     RequestSecureATT PackRequest = new RequestSecureATT(CAKey,CALocation,DestinyPlatform,
-                                                                        actualcontainer.here());
+                                                                        myPlatform);
 
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);

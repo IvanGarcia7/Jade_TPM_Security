@@ -2,26 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallengeError.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/RequestSecureATT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/RequestSecureATT.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderChallengueAgentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderChallengeAgentRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/ResponserCloudACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/ResponserCloudACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecretInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/PrivateInformationCA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureChallenguerPacket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureChallengerPacket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/PrivateInformationCA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/PrivateInformationCA.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMSlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMSlice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureInformationCloud.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureInformationCloud.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallengue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallenge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallengueError.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallengeError.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallenge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLChallengeError.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderACLConfirmation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAConfirmation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/RequestOnion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/RequestOnion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/SecureAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/SecureAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/KeyStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/OnionPacketOrigin.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +79,7 @@
       <workItem from="1588857616973" duration="14293000" />
       <workItem from="1588942947147" duration="10499000" />
       <workItem from="1589014139758" duration="21827000" />
-      <workItem from="1589100387889" duration="5730000" />
+      <workItem from="1589100387889" duration="11461000" />
     </task>
     <servers />
   </component>
@@ -128,7 +123,7 @@
     <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587829722284" />
     <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.738/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514209472" />
     <state x="-1302" y="-208" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1587838924384" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup" timestamp="1589108613204">
+    <state x="-1588" y="-288" width="961" height="728" key="find.popup" timestamp="1589120820778">
       <screen x="-1920" y="-364" width="1920" height="1057" />
     </state>
     <state x="-1294" y="-73" width="1001" height="676" key="find.popup/0.0.1280.752/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588858903347" />
@@ -144,8 +139,8 @@
     <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.726/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587894992892" />
     <state x="-1155" y="-241" width="961" height="728" key="find.popup/0.23.1280.729/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589103947006" />
     <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.730/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589107094979" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589108613204" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.732/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589058169041" />
+    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589120820778" />
+    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.732/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589117806219" />
     <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.733/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588443239236" />
     <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.734/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589045461761" />
     <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.735/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589020264220" />

@@ -1,20 +1,22 @@
 package jade.core.SecureCloud;
 
-import jade.core.Location;
 
+import jade.core.Location;
+import jade.core.PlatformID;
 import java.io.Serializable;
+
 
 public class PrivateInformationCA implements Serializable {
 
 
-    private Location destiny;
+    private PlatformID destiny;
     private long Timestamp;
     private String Challenge;
-    private Location Origin;
+    private PlatformID Origin;
     private int validation;
 
 
-    public PrivateInformationCA(Location dest, long time, String challenge, Location origin, int bitStatus){
+    public PrivateInformationCA(PlatformID dest, long time, String challenge, PlatformID origin, int bitStatus){
         destiny = dest;
         Timestamp = time;
         Challenge = challenge;
@@ -27,13 +29,13 @@ public class PrivateInformationCA implements Serializable {
     public String getChallenge() {
         return Challenge;
     }
-    public Location getDestiny() {
+    public PlatformID getDestiny() {
         return destiny;
     }
     public long getTimestamp() {
         return Timestamp;
     }
-    public Location getOrigin() {
+    public PlatformID getOrigin() {
         return Origin;
     }
     public int getValidation() {

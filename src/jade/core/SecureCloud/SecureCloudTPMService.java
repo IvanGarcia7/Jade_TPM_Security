@@ -371,48 +371,45 @@ public class SecureCloudTPMService extends BaseService {
      */
     private class CommandTargetSink implements Sink {
 
+
         @Override
         public void consume(VerticalCommand command) {
             try{
                 String CommandName = command.getName();
                 if(CommandName.equals(SecureCloudTPMHelper.REQUEST_START)){
-                    System.out.println("PROCESSING THE VERTICAL COMMAND START CLOUD REQUEST INTO THE " +
-                            "AMS DESTINATION CONTAINER");
+                    Agencia.printLog("PROCESSING THE VERTICAL COMMAND START SECURE CA INTO THE AMS " +
+                                    "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
+
                     Pair<PrivateKey,PublicKey> keyPairReceive = (Pair<PrivateKey, PublicKey>)command.getParams()[0];
                     System.out.println("INITIALIZING THE KEY PAIR RECEIVE");
                     privateKeyCA = keyPairReceive.getKey();
                     publicKeyCA  = keyPairReceive.getValue();
-                    System.out.println("I'M IN THE AMS MAIN CONTAINER, AND THE KEY PAIR IS THE FOLLOWING: ");
-                    System.out.println("NAME OF THE CONAINER: "+actualcontainer.getID().getName());
-                    System.out.println("*********************SECRET*****************************");
+
+                    System.out.println("NAME OF THE CONTAINER: "+actualcontainer.getID().getName());
+                    System.out.println("*********************PUBLIC*****************************");
                     System.out.println("PUBLIC KEY: "+publicKeyCA);
+                    System.out.println("*********************PUBLIC*****************************");
+                    System.out.println("*********************SECRET*****************************");
                     System.out.println("PRIVATE KEY: "+privateKeyCA);
                     System.out.println("*********************SECRET*****************************");
+
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_LIST)){
-                    System.out.println("PROCESSING THE VERTICAL COMMAND LIST CLOUD REQUEST INTO THE " +
-                            "AMS DESTINATION CONTAINER");
+                    Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST REQUEST INTO THE AMS " +
+                                    "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
+
                     System.out.println("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName());
                     System.out.println("*********************HOTSPOTS*****************************");
                     Iterator it = HotspotsRegister.entrySet().iterator();
                     while(it.hasNext()){
                         Map.Entry pair = (Map.Entry)it.next();
                         System.out.println(pair.getKey() + " = " + pair.getValue());
-
                     }
                     System.out.println("*********************HOTSPOTS*****************************");
+
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
+                    Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST CLOUD REQUEST INTO THE AMS " +
+                                    "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
                     String index = (String) command.getParams()[0];
-
-                    System.out.println("PROCESSING THE VERTICAL COMMAND LIST CLOUD REQUEST INTO THE " +
-                            "AMS DESTINATION CONTAINER");
-                    System.out.println("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName());
-                    System.out.println("*********************HOTSPOTS*****************************");
-                    Iterator it = HotspotsRegister.entrySet().iterator();
-                    while(it.hasNext()){
-                        Map.Entry pair = (Map.Entry)it.next();
-                        System.out.println(pair.getKey() + " = " + pair.getValue());
-                    }
-                    System.out.println("*********************HOTSPOTS*****************************");
 
                     try{
                         HotspotsRegister.put(index,pendingRedirects.get(index));
@@ -421,66 +418,55 @@ public class SecureCloudTPMService extends BaseService {
                         e.printStackTrace();
                     }
 
-
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
-
-
 
                     RequestSecureATT packSecure = (RequestSecureATT) command.getParams()[0];
 
                     System.out.println("*********************NEW REQUEST*****************************");
-                    System.out.println("LOCATION -> "+packSecure.getLocationPlatform());
+                    System.out.println("LOCATION -> "+packSecure.getPlatformLocationOrigin());
                     System.out.println("PUBLIC PASSWORD -> "+packSecure.getPublicPassword());
                     System.out.println("*********************NEW REQUEST*****************************");
-                    if(HotspotsRegister.get(packSecure.getLocationPlatform())!=null){
+
+                    if(HotspotsRegister.get(packSecure.getPlatformLocationOrigin())!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE CONFIRMED LIST");
-                    }else if(HotspotsRegister.get(packSecure.getLocationPlatform())!=null){
+                    }else if(HotspotsRegister.get(packSecure.getPlatformLocationOrigin())!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
                     }else{
                         System.out.println("PCRS LIST:");
+
                         String temPath = "./temp";
                         new File(temPath).mkdir();
                         System.out.println("DESERIALIZE THEIR INFORMATION");
                         AttestationSerialized packetReceive = packSecure.getPCR_Signed();
-                        try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
-                            stream.write(packetReceive.getAIKPub());
-                        }
-                        try (FileOutputStream stream = new FileOutputStream(temPath+"/sign.out")) {
-                            stream.write(packetReceive.getSign());
-                        }
-                        try (FileOutputStream stream = new FileOutputStream(temPath+"/pcr.out")) {
-                            stream.write(packetReceive.getMessage());
-                        }
-                        try (FileOutputStream stream = new FileOutputStream(temPath+"/quote.out")) {
-                            stream.write(packetReceive.getQuoted());
-                        }
+                        Agencia.deserializeATT(temPath,packetReceive);
+
                         int result = Agencia.check_attestation_files(temPath,"",true);
                         if(result==0){
                             System.out.println("DO YOU WANT TO VALIDATE IT NOW Y/N?");
                             Scanner sc = new Scanner(System.in);
                             String response = sc.nextLine();
                             Iterator it = null;
-                            //CHECK IF THE PLATFORM IS NOT IN THE REQUEST OR VALIDATE HOTSPOTS
-                            System.out.println("COMPUTING THE HASH");
+
+                            System.out.println("COMPUTING THE HASH:");
                             String hash = Agencia.computeSHA256(temPath+"/pcr.out");
-                            //SecureInformationCloud saveRequest = new SecureInformationCloud(packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),packSecure.getMyPlatform());
 
-                            //BAD
-
-                            SecureInformationCloud saveRequest = new SecureInformationCloud(packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),packSecure.getPlatformCALocation());
+                            SecureInformationCloud saveRequest = new SecureInformationCloud(
+                                    packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),
+                                    packSecure.getPlatformLocationOrigin());
                             Agencia.deleteFolder(new File(temPath));
-                            Pair accepted = new Pair(packSecure.getPublicPassword(),hash);
+
                             if(response.toUpperCase().equals("Y")){
                                 System.out.println("ADDING THE REQUEST IN THE CONFIRM LIST");
-                                HotspotsRegister.put(packSecure.getLocationPlatform().getID(),saveRequest);
-                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY ACCEPTED LIST "+HotspotsRegister.size());
+                                HotspotsRegister.put(packSecure.getPlatformLocationOrigin().getID(),saveRequest);
+                                System.out.println("PLATFORM INSERTED IN THE SECURE LIST "+HotspotsRegister.size());
                                 it = HotspotsRegister.entrySet().iterator();
                             }else {
-                                System.out.println("ADDING THE REQUEST IN THE PREVIOUS LIST");
-                                pendingRedirects.put(packSecure.getLocationPlatform().getID(),saveRequest);
+                                System.out.println("ADDING THE REQUEST IN THE PENDING LIST");
+                                pendingRedirects.put(packSecure.getPlatformLocationOrigin().getID(),saveRequest);
                                 it = pendingRedirects.entrySet().iterator();
                                 System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
                             }
+
                             System.out.println("*********************HOTSPOTS*****************************");
                             while(it.hasNext()){
                                 Map.Entry pair = (Map.Entry)it.next();
@@ -491,55 +477,50 @@ public class SecureCloudTPMService extends BaseService {
                         }else{
                             System.out.println("ERROR READING THE ATTESTATION DATA.");
                         }
-
                     }
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM)){
-                    /**
-                     * AT THIS POINT, I AM IN THE AMS OF THE SECURE PLATFORM, AND IN THE PACKET, I
-                     * HAVE ONE DESTINY, SO FIRST I NEED TO VIEW IF THE PLATFORM ARE SAVE IN THE REPO,
-                     * THEM, CREATE A CHALLENGE AND SEND IT, THEN VERIFIE THE CHALLENGUE, CREATE A NEW CHALLENGUE
-                     * TO THE SECODN PLATFORM, ATTESTATE THE INFORMATION, COMPARE, AND START OR DENIED THE PROCESS
-                     *
-                     * IF ONE INFORMATION IS NOT VALID, MOVE THE ACEPTED TO PENDIENTS AND CREARE A COUNTER
-                     * TO EVIT REPETITION ATTACKS
-                     */
 
                     RequestSecureATT packetReceived = (RequestSecureATT)command.getParams()[0];
-                    Location originPlatform = packetReceived.getMyLocation();
-                    Location destiny = packetReceived.getLocationDestiny();
+                    PlatformID originPlatform = packetReceived.getPlatformLocationOrigin();
+                    PlatformID destiny = packetReceived.getPlatformCALocationDestiny();
 
-                    if(HotspotsRegister.containsKey(originPlatform.getID()) && HotspotsRegister.containsKey(packetReceived.getLocationDestiny().getID())){
+                    if(HotspotsRegister.containsKey(originPlatform.getID()) &&
+                            HotspotsRegister.containsKey(packetReceived.getPlatformCALocationDestiny().getID())){
+
                         System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE");
-                        Location newDestiny = HotspotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
-                        System.out.println(newDestiny);
                         String challenge = Agencia.getRandomChallenge();
+                        System.out.println("**************************************************");
                         System.out.println("THE CHALLENGE IS THE FOLLOWING "+challenge);
-                        //Send the challenge to the origin platform to attestate
+                        System.out.println("**************************************************");
+
                         AID amsMain = new AID("ams", false);
                         PublicKey destinypub = HotspotsRegister.get(originPlatform.getID()).getKeyPub();
-                        PlatformID destinyPT = HotspotsRegister.get(packetReceived.getMyLocation().getID()).getPlatformLocation();
+
                         ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                         Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                         amsMainPlatform.addBehaviour(
-                                new SenderACLChallenge(message, amsMainPlatform,
-                                        SecureCloudTPMService.this,originPlatform,destiny ,challenge,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,publicKeyCA,0,destinyPT)
+                                new SenderCAChallenge(message, amsMainPlatform,
+                                        SecureCloudTPMService.this,originPlatform,destiny ,
+                                        challenge,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,
+                                        publicKeyCA,0)
                         );
                         actualcontainer.releaseLocalAgent(amsMain);
                     }else{
-                        System.out.println("REJECTED REQUEST, PLATFORM IS NOT FOUND WITHIN THE ACCEPTED DESTINATIONS DIRECTORY");
+                        System.out.println("REJECTED REQUEST, PLATFORM IS NOT FOUND WITHIN THE ACCEPTED " +
+                                "DESTINATIONS DIRECTORY");
                     }
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
+
                     if(command.getParams()[0]!=null){
 
-                        byte [] rec = (byte [])command.getParams()[0];
-                        Pair<byte [],byte []> pairsenderro = (Pair<byte[],byte[]>)Agencia.deserialize(rec);
+                        Pair<byte [],byte []> PairATTReceive = (Pair<byte[],byte[]>)command.getParams()[0];
+                        AttestationSerialized packetReceive = (AttestationSerialized)
+                                Agencia.deserialize(PairATTReceive.getKey());
+                        PrivateInformationCA packet_privative = (PrivateInformationCA)
+                                Agencia.deserialize(PairATTReceive.getValue());
 
-                        AttestationSerialized packetReceive = (AttestationSerialized) Agencia.deserialize(pairsenderro.getKey());
-                        PrivateInformationCA packet_privative = (PrivateInformationCA) Agencia.deserialize(pairsenderro.getValue());
-
-                        //I need to check the data
-                        Location origin = packet_privative.getOrigin();
-                        Location destiny = packet_privative.getDestiny();
+                        PlatformID origin = packet_privative.getOrigin();
+                        PlatformID destiny = packet_privative.getDestiny();
 
                         String temPath = "./temp";
                         new File(temPath).mkdir();
@@ -547,113 +528,108 @@ public class SecureCloudTPMService extends BaseService {
                         try (FileOutputStream stream = new FileOutputStream(temPath+"/akpub.pem")) {
                             stream.write(HotspotsRegister.get(origin.getID()).getAIK());
                         }
-                        try (FileOutputStream stream = new FileOutputStream(temPath+"/sign.out")) {
-                            stream.write(packetReceive.getSign());
-                        }
-                        try (FileOutputStream stream = new FileOutputStream(temPath+"/pcr.out")) {
-                            stream.write(packetReceive.getMessage());
-                        }
-                        try (FileOutputStream stream = new FileOutputStream(temPath+"/quote.out")) {
-                            stream.write(packetReceive.getQuoted());
-                        }
-                        int result = Agencia.check_attestation_files(temPath,packet_privative.getChallenge(),false);
+                        Agencia.deserializeATTWAIK(temPath,packetReceive);
+                        int result = Agencia.check_attestation_files(temPath,packet_privative.getChallenge(),
+                                                                     false);
                         if(result==0) {
                             System.out.println("COMPUTING THE HASH");
                             String hash = Agencia.computeSHA256(temPath + "/pcr.out");
-                            System.out.println("CHEKING TH SAH256");
                             String hashSaved = HotspotsRegister.get(origin.getID()).getSha256();
+
                             if(!hashSaved.equals(hash)){
+                                System.out.println("**************************************************");
                                 System.out.println("THE PLATFORM IS CORRUPTED BY A MALWARE");
+                                System.out.println("**************************************************");
+
                                 AID amsMain = new AID("ams", false);
                                 Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                 ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                                 PublicKey destinypub = HotspotsRegister.get(origin.getID()).getKeyPub();
                                 String ms = "THE PLATFORM IS CORRUPTED BY A MALWARE";
                                 amsMainPlatform.addBehaviour(
-                                        new SenderACLChallengeError(message, amsMainPlatform,
+                                        new SenderCAChallengeError(message, amsMainPlatform,
                                                 SecureCloudTPMHelper.REQUEST_ERROR,destinypub,ms,origin)
                                 );
                                 actualcontainer.releaseLocalAgent(amsMain);
-                                //REMOVE
                                 SecureInformationCloud malware = HotspotsRegister.get(origin);
                                 pendingRedirects.put(origin.getID(),malware);
                                 HotspotsRegister.remove(origin);
                             }else{
+
                                 if(packet_privative.getValidation()==1){
+                                    System.out.println("**************************************************");
                                     System.out.println("BOTH PLATFORMS CONFIRMED");
+                                    System.out.println("**************************************************");
+
+
+                                    /**
+                                     * NECESITA REVISION PARA SER COMPLETADO CORRECTAMENTE
+                                     */
 
                                     AID amsMain = new AID("ams", false);
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-
-
 
                                     PublicKey destinypub = HotspotsRegister.get(origin.getID()).getKeyPub();
-                                    System.out.println("*************************************");
-                                    System.out.println("A    "+origin.getID());
-                                    System.out.println("*************************************");
-                                    System.out.println("B    "+destiny.getID());
-
                                     PublicKey destinyremotepub = HotspotsRegister.get(destiny.getID()).getKeyPub();
-                                    System.out.println("*************************************");
 
-
-                                    PlatformID destinyPT = HotspotsRegister.get(origin.getID()).getPlatformLocation();
-
-
-                                    System.out.println("HE LLEGADO ANTES DEL BEHAVIOUR");
                                     amsMainPlatform.addBehaviour(
-                                            new SenderACLConfirmation(message, amsMainPlatform,
-                                                    origin,destiny ,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,destinypub,destinyremotepub,privateKeyCA,destinyPT)
+                                            new SenderCAConfirmation(message, amsMainPlatform,
+                                                    origin,destiny ,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
+                                                    destinypub,destinyremotepub,privateKeyCA)
                                     );
                                     actualcontainer.releaseLocalAgent(amsMain);
+
                                 }else{
+                                    //SEND ATT REQUEST TO THE SECONd PLATFORM
+                                    System.out.println("**************************************************");
+                                    System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE TO " +
+                                                       "THE DESTINY");
+                                    System.out.println("**************************************************");
 
+                                    PlatformID newDestiny = packet_privative.getDestiny();
 
-                                    //SEND ATT REQUEST TO THE SECONF PLATFROM
-                                    System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE TO THE DESTINY");
-
-
-                                    //Location newDestiny = HotspotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
-                                    Location newDestiny = packet_privative.getDestiny();
-                                    System.out.println(newDestiny);
                                     String challenge = Agencia.getRandomChallenge();
+                                    System.out.println("**************************************************");
                                     System.out.println("THE CHALLENGE IS THE FOLLOWING "+challenge);
-                                    //Send the challenge to the origin platform to attestate
+                                    System.out.println("**************************************************");
+
+                                    //SEND THE CHALLENGE TO THE DESTINY PLATFORM TO ATTESTATE IT
                                     AID amsMain = new AID("ams", false);
-                                    PublicKey destinypub = HotspotsRegister.get(packet_privative.getDestiny().getID()).getKeyPub();
-                                    PlatformID destinyPT = HotspotsRegister.get(packet_privative.getDestiny().getID()).getPlatformLocation();
+                                    PublicKey destinypub = HotspotsRegister.get(
+                                                                    packet_privative.getDestiny().getID()).getKeyPub();
                                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-
-                                    Location originPlatform = packet_privative.getOrigin();
-
+                                    PlatformID originPlatform = packet_privative.getOrigin();
 
                                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                                     amsMainPlatform.addBehaviour(
-                                            new SenderACLChallenge(message, amsMainPlatform,
+                                            new SenderCAChallenge(message, amsMainPlatform,
                                                     SecureCloudTPMService.this,originPlatform,
                                                     newDestiny ,challenge,
                                                     SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
-                                                    destinypub,publicKeyCA,1,destinyPT)
+                                                    destinypub,publicKeyCA,1)
                                     );
                                     actualcontainer.releaseLocalAgent(amsMain);
                                 }
                             }
                         }else{
+                            System.out.println("**************************************************");
                             System.out.println("ERROR READING THE INFORMATION, IGNORE THE MESSAGE");
+                            System.out.println("**************************************************");
+
                             AID amsMain = new AID("ams", false);
                             Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                             ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                             PublicKey destinypub = HotspotsRegister.get(origin).getKeyPub();
                             String ms = "ERROR READING THE INFORMATION, IGNORE THE MESSAGE";
                             amsMainPlatform.addBehaviour(
-                                    new SenderACLChallengeError(message, amsMainPlatform,
+                                    new SenderCAChallengeError(message, amsMainPlatform,
                                             SecureCloudTPMHelper.REQUEST_ERROR,destinypub,ms,origin)
                             );
                             actualcontainer.releaseLocalAgent(amsMain);
                         }
                     }else{
-                        System.out.println("ERROR TIMEOUT IGNORIGN ");
+                        System.out.println("ERROR TIMEOUT IGNORING THE REQUEST ");
                     }
                 }
             }catch(Exception ex){
