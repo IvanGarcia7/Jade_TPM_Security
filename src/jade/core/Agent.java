@@ -1075,11 +1075,11 @@ public class Agent implements Runnable, Serializable
 	}
 
 
-	public void doMove(Location destination,PublicKey destinyKey) {
+	public void doSecureMove(Location destination,PublicKey destinyKey) {
 		// Do nothing if the mobility service is not installed
 		try {
 			initMobHelper();
-			mobHelper.move(destination,destinyKey);
+			mobHelper.moveSecure(destination,destinyKey);
 		}
 		catch(ServiceException se) {
 			// FIXME: Log a proper warning

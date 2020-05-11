@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
 import java.io.InterruptedIOException;
+import java.security.PublicKey;
 import java.util.StringTokenizer;
 import java.util.zip.*;
 
@@ -465,7 +466,7 @@ public class AgentMobilityService extends BaseService {
 				myContainer.releaseLocalAgent(agentID);
 			}
 		}
-		
+
 		private void handleInformCloned(VerticalCommand cmd) throws IMTPException, NotFoundException, NameClashException, JADESecurityException { // HandleInformCloned start
 			Object[] params = cmd.getParams();
 			AID agentID = (AID)params[0];
@@ -1438,6 +1439,10 @@ public class AgentMobilityService extends BaseService {
 		public void move(Location destination) {
 			myAgent.changeStateTo(new TransitLifeCycle(destination, myMovable, AgentMobilityService.this));
 		}
+
+		public void move(Location destination, PublicKey destinyKey) {
+			myAgent.changeStateTo(new TransitLifeCycle(destination,destinyKey, myMovable, AgentMobilityService.this));
+		}
 		
 		public void clone(Location destination, String newName) {
 			myAgent.changeStateTo(new CopyLifeCycle(destination, newName, myMovable, AgentMobilityService.this));
@@ -1468,6 +1473,14 @@ public class AgentMobilityService extends BaseService {
 		private boolean messageAware = false;
 		
 		private TransitLifeCycle(Location l, Movable m, AgentMobilityService s) {
+			super(AP_TRANSIT);
+			myDestination = l;
+			myMovable = m;
+			myService = s;
+			myLogger = Logger.getMyLogger(myService.getName());
+		}
+
+		private TransitLifeCycle(Location l,PublicKey destinyKey, Movable m, AgentMobilityService s) {
 			super(AP_TRANSIT);
 			myDestination = l;
 			myMovable = m;

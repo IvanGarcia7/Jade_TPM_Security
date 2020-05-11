@@ -504,7 +504,8 @@ public class SecureAgentTPMService extends BaseService {
                     SecureAgentPlatform requestAgent = packetReceived.getAgent();
 
                     try{
-                        requestAgent.doMove(packetReceived.getDestinyPlatform(),packetReceived.getDestinyPublic());
+                        requestAgent.doSecureMove(packetReceived.getDestinyPlatform(),
+                                packetReceived.getDestinyPublic());
                     }catch(Exception e){
                         System.out.println("THE REQUESTED AGENT COULD NOT MAKE THE MIGRATION");
                         e.printStackTrace();
