@@ -23,6 +23,7 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
     static final String REQUEST_MIGRATE_ZONE1_PLATFORM   = "MIGRATE_ZONE1_REQUEST";
     static final String REQUEST_MIGRATE_ZONE2_PLATFORM   = "MIGRATE_ZONE2_REQUEST";
     static final String REQUEST_MIGRATE_ZONE3_PLATFORM   = "MIGRATE_ZONE3_REQUEST";
+    static final String REQUEST_MIGRATE_ZONE4_PLATFORM   = "MIGRATE_ZONE4_REQUEST";
     static final String REQUEST_ERROR   = "REQUEST_ERROR";
 
     public static final boolean DEBUG = true;

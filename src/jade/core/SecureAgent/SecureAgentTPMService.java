@@ -55,6 +55,7 @@ public class SecureAgentTPMService extends BaseService {
             SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
             SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
             SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
+            SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
             SecureAgentTPMHelper.REQUEST_ERROR
     };
 
@@ -453,7 +454,7 @@ public class SecureAgentTPMService extends BaseService {
                     byte [] contentPub = pSenderDone.getPartPublic();
 
                     byte [] decryptedKey = Agencia.decrypt(privKeyAgent,OTP_Pub);
-                    System.out.println("HIOLA");
+
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
                                                               "AES");
                     Cipher aesCipher = Cipher.getInstance("AES");
@@ -490,7 +491,6 @@ public class SecureAgentTPMService extends BaseService {
 
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
 
-
                     Pair<byte [],byte []> confirmationPacket = (Pair<byte [],byte []>)command.getParams()[0];
                     byte[] decryptedKey = Agencia.decrypt(privKeyAgent,confirmationPacket.getKey());
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
@@ -503,9 +503,13 @@ public class SecureAgentTPMService extends BaseService {
                     //MIGRATE THE AGENT
                     SecureAgentPlatform requestAgent = packetReceived.getAgent();
 
+                    System.out.println("*****************************************************************");
+                    System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:"+requestAgent);
+                    System.out.println("*****************************************************************");
+
+
                     try{
-                        requestAgent.doSecureMove(packetReceived.getDestinyPlatform(),
-                                packetReceived.getDestinyPublic());
+                        requestAgent.doMove(packetReceived.getDestinyPlatform());
                     }catch(Exception e){
                         System.out.println("THE REQUESTED AGENT COULD NOT MAKE THE MIGRATION");
                         e.printStackTrace();
@@ -581,13 +585,13 @@ public class SecureAgentTPMService extends BaseService {
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                                                          SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
-                }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
+                }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE2_PLATFORM)){
                     Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND IN THE ORIGIN" +
                                     " PLATFORM", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                                                          SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
-                }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
+                }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE3_PLATFORM)){
                     Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND IN THE DESTINY" +
                                     " PLATFORM", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,

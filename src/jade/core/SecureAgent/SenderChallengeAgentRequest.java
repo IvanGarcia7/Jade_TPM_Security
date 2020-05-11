@@ -47,7 +47,7 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
      * @return
      */
     public ACLMessage prepareRequest(ACLMessage acl){
-        System.out.println("ENTRO");
+
         try {
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256);

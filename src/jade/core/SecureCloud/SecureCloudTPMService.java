@@ -51,6 +51,7 @@ public class SecureCloudTPMService extends BaseService {
             SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
+            SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
             SecureCloudTPMHelper.REQUEST_ERROR
     };
 

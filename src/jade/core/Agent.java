@@ -1075,19 +1075,6 @@ public class Agent implements Runnable, Serializable
 	}
 
 
-	public void doSecureMove(Location destination,PublicKey destinyKey) {
-		// Do nothing if the mobility service is not installed
-		try {
-			initMobHelper();
-			mobHelper.moveSecure(destination,destinyKey);
-		}
-		catch(ServiceException se) {
-			// FIXME: Log a proper warning
-			return;
-		}
-	}
-
-
 	/**
 	 Make this agent be cloned on another location. This method
 	 is intended to support agent mobility and is called either by the

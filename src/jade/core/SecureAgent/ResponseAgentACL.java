@@ -67,7 +67,7 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
                 System.out.println("ERROR IN THE DESTINY CONFIRMATION RESPONSE OF THE ZONE 2");
                 e.printStackTrace();
             }
-        }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){
+        } else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){
             System.out.println("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN");
             System.out.println(request.getContent());
         }else{
