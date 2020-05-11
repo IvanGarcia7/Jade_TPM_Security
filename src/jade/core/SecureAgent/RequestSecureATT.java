@@ -56,16 +56,15 @@ public class RequestSecureATT implements Serializable {
     //GETTER METHODS
 
     public PublicKey getPublicPassword(){ return publicPassword; }
-
     public String getContextEK(){ return contextEK; }
-
     public String getContextAK(){ return contextAK; }
-
     public PlatformID getPlatformCALocation() { return PlatformCALocation; }
-
     public AttestationSerialized getPCR_Signed(){ return PCR_Signed; }
-
     public PlatformID getPlatformLocationOrigin(){ return PlatformLocation; }
-
     public PlatformID getPlatformCALocationDestiny(){ return PlatformCALocationDestiny; }
+
+    //SETTER METHODS
+
+    public void setPlatformLocation(PlatformID location){ PlatformLocation=location; }
+
 }

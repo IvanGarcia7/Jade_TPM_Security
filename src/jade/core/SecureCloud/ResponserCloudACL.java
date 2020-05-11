@@ -6,6 +6,7 @@ import jade.core.BaseService;
 import jade.core.GenericCommand;
 import jade.core.SecureAgent.SecureAgentTPMHelper;
 import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -16,9 +17,11 @@ import java.util.logging.Level;
 
 public class ResponserCloudACL extends SimpleAchieveREResponder {
 
+
     private BaseService myService;
 
-    public ResponserCloudACL(Agent ams, MessageTemplate mt, SecureCloudTPMService secureCloudTPMService) {
+
+    public ResponserCloudACL(Agent ams, MessageTemplate mt, SecureCloudTPMService secureCloudTPMService){
         super(ams, mt);
         myService = secureCloudTPMService;
     }
@@ -30,6 +33,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
      */
     protected ACLMessage prepareResponse(ACLMessage request) {
 
+
         Agencia.printLog("PROCESSING THE REQUEST IN THE SECURE DESTINY RESPONSER AGENT", Level.INFO,
                 SecureAgentTPMHelper.DEBUG, this.getClass().getName());
         ACLMessage reply = null;
@@ -39,7 +43,9 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                System.out.println("SAVING THE PLATFORM IN THE SECURE DIRECTORY");
                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
                                                            SecureCloudTPMHelper.NAME, null);
-               command.addParam(request.getContentObject());
+               Pair<String,Object> requestInsert = new Pair<String,Object>(request.getSender().getName(),
+                                                                           request.getContentObject());
+               command.addParam(requestInsert);
                myService.submit(command);
                String Response = "RESPONSE: 200";
                reply = request.createReply();
@@ -57,8 +63,9 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                System.out.println("THE SECURE PLATFORM RECEIVES A MIGRATE REQUEST");
                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
                        SecureCloudTPMHelper.NAME, null);
-
-               command.addParam(request.getContentObject());
+               Pair<String,Object> requestMigrate = new Pair<String,Object>(request.getSender().getName(),
+                                                                            request.getContentObject());
+               command.addParam(requestMigrate);
                myService.submit(command);
                String Response = "RESPONSE MIGRATE REQUEST: 200";
                reply = request.createReply();
@@ -76,7 +83,9 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                System.out.println("THE SECURE PLATFORM RECEIVES AN ATTESTATE PLATFORM REQUEST");
                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                                                            SecureCloudTPMHelper.NAME, null);
-               command.addParam(request.getContentObject());
+               Pair<String,Object> requestZone1 = new Pair<String,Object>(request.getSender().getName(),
+                       request.getContentObject());
+               command.addParam(requestZone1);
                command.addParam(request.getPostTimeStamp());
                myService.submit(command);
                String Response = "RESPONSE ATTESTATION REQUEST: 200";
