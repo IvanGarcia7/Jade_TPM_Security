@@ -1,8 +1,10 @@
 package jade.core.SecureAgent;
 
 import jade.core.*;
+import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.SecureCloud.SecureChallengerPacket;
 import jade.core.SecureCloud.SecureCloudTPMHelper;
+import jade.core.SecureCloud.SecureInformationCloud;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.behaviours.Behaviour;
@@ -17,6 +19,9 @@ import jade.lang.acl.MessageTemplate;
 import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 
@@ -71,6 +76,10 @@ public class SecureAgentTPMService extends BaseService {
     //ADDRESS OF THE SECURE PLATFORM
     public PlatformID CALocation;
     public PublicKey CAKey;
+
+    //PERMITS ASSIGNED BY THE AC
+    Map<String, SecureCAConfirmation> CAPermissionList = new HashMap<String,SecureCAConfirmation>();
+
 
 
     /**
@@ -258,7 +267,9 @@ public class SecureAgentTPMService extends BaseService {
                               Level.INFO, true, this.getClass().getName());
             GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_PLATFORM,
                                                         SecureAgentTPMHelper.NAME, null);
-            command.addParam(destiny);
+            Pair<SecureAgentPlatform,PlatformID> migrationRequest = new Pair<SecureAgentPlatform,PlatformID>
+                    (secureAgentPlatform,destiny);
+            command.addParam(migrationRequest);
             Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS", Level.INFO, true,
                               this.getClass().getName());
             try {
@@ -412,12 +423,15 @@ public class SecureAgentTPMService extends BaseService {
                     //IN THIS PART OF THE CODE, THE AMS OF THE ORIGIN PLATFORM SEND A REQUEST TO THE SECURE PLATFORM
                     //TO START THE REMOTE ATTESTATION PROCESS
 
-                    PlatformID DestinyPlatform = (PlatformID) command.getParams()[0];
+                    Pair<SecureAgentPlatform,PlatformID> migratePair = (Pair<SecureAgentPlatform,PlatformID>)
+                            command.getParams()[0];
+                    PlatformID DestinyPlatform = (PlatformID) migratePair.getValue();
+                    SecureAgentPlatform requestAgentPlatform = (SecureAgentPlatform) migratePair.getKey();
                     AID MYams =  actualcontainer.getAMS();
                     PlatformID myPlatform = new PlatformID(MYams);
 
                     RequestSecureATT PackRequest = new RequestSecureATT(CAKey,CALocation,DestinyPlatform,
-                                                                        myPlatform);
+                                                                        myPlatform,requestAgentPlatform);
 
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
@@ -437,12 +451,6 @@ public class SecureAgentTPMService extends BaseService {
 
                     byte [] OTP_Pub = pSenderDone.getOTPPub();
                     byte [] contentPub = pSenderDone.getPartPublic();
-
-
-                    System.out.println("MI PUBLIC KEY IS THE FOLLOWING: ");
-                    System.out.println(pubKeyAgent);
-                    System.out.println("MI PRIVATE KEY IS THE FOLLOWING: ");
-                    System.out.println(privKeyAgent);
 
                     byte [] decryptedKey = Agencia.decrypt(privKeyAgent,OTP_Pub);
                     System.out.println("HIOLA");
@@ -482,22 +490,41 @@ public class SecureAgentTPMService extends BaseService {
 
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
 
-                    byte [] designed = Agencia.deSigned(CAKey,(byte [])command.getParams()[0]);
+
+                    Pair<byte [],byte []> confirmationPacket = (Pair<byte [],byte []>)command.getParams()[0];
+                    byte[] decryptedKey = Agencia.decrypt(privKeyAgent,confirmationPacket.getKey());
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
+                                                              "AES");
+                    Cipher aesCipher = Cipher.getInstance("AES");
+                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+                    byte[] byteObject = aesCipher.doFinal(confirmationPacket.getValue());
+                    SecureCAConfirmation packetReceived = (SecureCAConfirmation) Agencia.deserialize(byteObject);
+
+                    //MIGRATE THE AGENT
+                    SecureAgentPlatform requestAgent = packetReceived.getAgent();
 
                     try{
-                        Pair<Pair<Location,Location>,PublicKey> informationSecure =
-                                (Pair<Pair<Location,Location>, PublicKey>)Agencia.deserialize(designed);
-                        AID amsDestiny = new AID(informationSecure.getKey().getKey().getName(), false);
-                        Agent agent = actualcontainer.acquireLocalAgent(amsDestiny);
-                        actualcontainer.releaseLocalAgent(amsDestiny);
-                        /**
-                         * TO-TO
-                         */
-                        agent.doMove(informationSecure.getKey().getValue());
+                        requestAgent.doMove(packetReceived.getDestinyPlatform(),packetReceived.getDestinyPublic());
                     }catch(Exception e){
-                        System.out.println("MENSAJE DESDE PLATAFORMA NO VALIDA");
+                        System.out.println("THE REQUESTED AGENT COULD NOT MAKE THE MIGRATION");
                         e.printStackTrace();
                     }
+                }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
+
+                    Pair<byte [],byte []> confirmationPacket = (Pair<byte [],byte []>)command.getParams()[0];
+                    byte[] decryptedKey = Agencia.decrypt(privKeyAgent,confirmationPacket.getKey());
+                    SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
+                            "AES");
+                    Cipher aesCipher = Cipher.getInstance("AES");
+                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+                    byte[] byteObject = aesCipher.doFinal(confirmationPacket.getValue());
+                    SecureCAConfirmation packetReceived = (SecureCAConfirmation) Agencia.deserialize(byteObject);
+
+                    System.out.println("***********************************************************");
+                    System.out.println("SAVING THE CONFIRMATION REQUEST: "+packetReceived.getToken());
+                    System.out.println("***********************************************************");
+
+                    CAPermissionList.put(packetReceived.getToken(),packetReceived);
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -554,10 +581,16 @@ public class SecureAgentTPMService extends BaseService {
                                                          SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
-                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND ATTESTATE THE DESTINY PLATFORM",
-                                    Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND IN THE ORIGIN" +
+                                    " PLATFORM", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                                                          SecureAgentTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
+                }else if(commandReceived.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND IN THE DESTINY" +
+                                    " PLATFORM", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
+                            SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }
             }catch(Exception e){

@@ -17,6 +17,7 @@ public class RequestSecureATT implements Serializable {
     private PlatformID PlatformCALocation;
     private PlatformID PlatformCALocationDestiny;
     private AttestationSerialized PCR_Signed;
+    private SecureAgentPlatform Agente;
 
 
     public RequestSecureATT(PublicKey publicP, PlatformID locationP, String contextek, String contextak){
@@ -45,11 +46,13 @@ public class RequestSecureATT implements Serializable {
     }
 
 
-    public RequestSecureATT(PublicKey publicCA, PlatformID CAPlatform, PlatformID destiny, PlatformID myLoc){
+    public RequestSecureATT(PublicKey publicCA, PlatformID CAPlatform, PlatformID destiny, PlatformID myLoc,
+                            SecureAgentPlatform agent){
         publicPassword  = publicCA;
         PlatformCALocation = CAPlatform;
         PlatformCALocationDestiny=destiny;
         PlatformLocation = myLoc;
+        Agente = agent;
     }
 
 
@@ -62,6 +65,7 @@ public class RequestSecureATT implements Serializable {
     public AttestationSerialized getPCR_Signed(){ return PCR_Signed; }
     public PlatformID getPlatformLocationOrigin(){ return PlatformLocation; }
     public PlatformID getPlatformCALocationDestiny(){ return PlatformCALocationDestiny; }
+    public SecureAgentPlatform getAgente(){ return Agente; }
 
     //SETTER METHODS
 

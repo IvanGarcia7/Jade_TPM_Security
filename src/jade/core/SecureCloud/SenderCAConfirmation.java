@@ -1,11 +1,16 @@
 package jade.core.SecureCloud;
 
 import jade.core.*;
+import jade.core.SecureAgent.SecureAgentPlatform;
 import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Calendar;
@@ -23,11 +28,14 @@ public class SenderCAConfirmation extends SimpleAchieveREInitiator {
     private PublicKey originKey;
     private PublicKey destinyKey;
     private PrivateKey CAKey;
+    private String Challenge;
+    private Date Time;
+    private SecureAgentPlatform Agent;
 
 
     public SenderCAConfirmation(ACLMessage message, Agent amsMainPlatform, PlatformID or, PlatformID dr,
                                 String requestMigrateZone2Platform, PublicKey destinypub, PublicKey destinypubremote,
-                                PrivateKey CA) {
+                                PrivateKey CA, String token, Date time, SecureAgentPlatform agent) {
 
         super(amsMainPlatform,message);
         myMessage=message;
@@ -38,6 +46,9 @@ public class SenderCAConfirmation extends SimpleAchieveREInitiator {
         originKey = destinypub;
         destinyKey = destinypubremote;
         CAKey = CA;
+        Challenge = token;
+        Time = time;
+        Agent = agent;
     }
 
 
@@ -48,43 +59,44 @@ public class SenderCAConfirmation extends SimpleAchieveREInitiator {
      * @return
      */
     public ACLMessage prepareRequest(ACLMessage acl) {
-        System.out.println("HOLA");
-        /*
-        //destiny keypubdestiny
-        Pair<Pair<Location,Location>,PublicKey> information = new Pair<Pair<Location,Location>,PublicKey>(new Pair<Location,Location>(origin,destiny),destinyKey);
-        byte [] informationSerial = null;
-        byte [] signed = null;
 
-        try{
-            informationSerial = Agencia.serialize(information);
-            signed = Agencia.Signed(CAKey,Agencia.serialize(informationSerial));
+       SecureCAConfirmation packetConfirmation = new SecureCAConfirmation(originKey, origin, Challenge, Time, Agent);
+
+       try{
+            KeyGenerator generator = KeyGenerator.getInstance("AES");
+            generator.init(256);
+            SecretKey secKey = generator.generateKey();
+            Cipher aesCipher = Cipher.getInstance("AES");
+            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+
+            Date date = new Date();
+            long timeMilli = date.getTime();
+
+            byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(packetConfirmation));
+            byte [] encryptedKeySecret = Agencia.encrypt(destinyKey,secKey.getEncoded());
+            Pair<byte [],byte []> confirmationPacket = new Pair<byte [],byte []>
+                    (encryptedKeySecret,byteCipherObjectSecret);
+
+            myMessage.setContentObject(confirmationPacket);
         }catch(Exception e){
+            System.out.println("THERE ARE AN ERROR SENDING THE SECURE CONFIRMATION");
             e.printStackTrace();
         }
 
-        try {
-            byte [] encryptedKey = Agencia.encrypt(originKey,signed);
-            myMessage.setContentObject(encryptedKey);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
+       Agencia.printLog("PROCEEDING TO SEND THE CONFIRMATION MESSAGE IN THE PREPARE REQUEST METHOD",
+               Level.INFO, SecureCloudTPMHelper.DEBUG, this.getClass().getName());
 
-        Agencia.printLog("PROCEEDING TO SEND THE CONFIRMATION MESSAGE IN THE PREPARE REQUEST METHOD",
-                Level.INFO, SecureCloudTPMHelper.DEBUG, this.getClass().getName());
+       myMessage.addReceiver(destiny.getAmsAID());
+       myMessage.setOntology(Ontology);
 
-        myMessage.addReceiver(destiny.getAmsAID());
-        myMessage.setOntology(Ontology);
+       Calendar c = Calendar.getInstance();
+       c.add(Calendar.SECOND, Agencia.getTimeout());
+       Date t = new Date(c.getTimeInMillis());
+       myMessage.setReplyByDate(t);
 
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.SECOND, Agencia.getTimeout());
-        Date t = new Date(c.getTimeInMillis());
-        myMessage.setReplyByDate(t);
-
-        Agencia.printLog("CONFIRMATION MESSAGE CREATE CORRECTLY INTO THE SENDER CONFIRMATION", Level.INFO,
+       Agencia.printLog("CONFIRMATION MESSAGE CREATE CORRECTLY INTO THE SENDER CONFIRMATION", Level.INFO,
                         SecureCloudTPMHelper.DEBUG, this.getClass().getName());
-        return myMessage;
+       return myMessage;
     }
 
     //REDEFINED ALL THE HANDLERS TO KNOW WHAT HAPPENS WITH THE MESSAGE THAT THE PLATFORM RECEIVE FROM THE CA

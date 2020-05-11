@@ -38,6 +38,8 @@ import jade.security.JADESecurityException;
 
 import jade.util.leap.List;
 
+import java.security.PublicKey;
+
 /**
 
    The vertical interface for the JADE kernel-level service managing
@@ -49,6 +51,7 @@ public interface AgentMobilityHelper extends ServiceHelper {
 
 	void registerMovable(Movable m);
 	void move(Location destination);
+    void move(Location destination, PublicKey destinyKey);
 	void clone(Location destination, String newName);
 	//#J2ME_EXCLUDE_BEGIN
 	ClassLoader getContainerClassLoader(String containerName, ClassLoader parent) throws ServiceException;

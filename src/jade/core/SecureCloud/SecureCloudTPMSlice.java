@@ -15,8 +15,9 @@ public interface SecureCloudTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_MIGRATE_PLATFORM   = "6";
     static final String REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM   = "7";
     static final String REMOTE_REQUEST_MIGRATE_ZONE2_PLATFORM   = "8";
-    static final String REMOTE_REQUEST_ERROR   = "9";
-    static final String REMOTE_REQUEST_ACCEPT       = "10";
+    static final String REMOTE_REQUEST_MIGRATE_ZONE3_PLATFORM   = "9";
+    static final String REMOTE_REQUEST_ERROR   = "10";
+    static final String REMOTE_REQUEST_ACCEPT       = "11";
 
 
     //PUBLIC METHODS

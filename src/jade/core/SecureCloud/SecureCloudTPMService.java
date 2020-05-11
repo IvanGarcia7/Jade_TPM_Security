@@ -508,7 +508,7 @@ public class SecureCloudTPMService extends BaseService {
                                 new SenderCAChallenge(message, amsMainPlatform,
                                         SecureCloudTPMService.this,RegisterOrigin,RegisterDestiny,
                                         challenge,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,
-                                        publicKeyCA,0)
+                                        publicKeyCA,0, packetReceived.getAgente())
                         );
                         actualcontainer.releaseLocalAgent(amsMain);
                     }else{
@@ -572,15 +572,18 @@ public class SecureCloudTPMService extends BaseService {
                                         System.out.println("BOTH PLATFORMS CONFIRMED");
                                         System.out.println("**************************************************");
 
-
                                         /**
                                          * NECESITA REVISION PARA SER COMPLETADO CORRECTAMENTE
+                                         * EN ESTA PARTE, LO QUE HE PENSADO ES GENERARO UN ID FIRMADO, JUNTO
+                                         * CON UN TIMESTAMP Y ENVIARSELO A AMBAS PARTES, POR ELLO, CUANDO
+                                         * LA PLATAFORMA ORIGEN DESEE ENVIAR A LA DE DESTINO, INCLUIRA ESTE ID
+                                         * JUNTO CON EL AGENTE, CUANDO LLEGUE A LA PLATAFORMA DESTINO, MIRARA EN LA
+                                         * LISTA SI EXISTE ESE ID, Y COMPARARA EL TIEMPO OBTENIDO EN EL PAQUETE
+                                         * ES COMO SI FUERA UN PERIODO DE GRACIA DEFINIDO O LIMITADO EN CIERTA MEDIDA
+                                         * POR LA AGENCIA.
                                          */
 
                                         AID amsMain = new AID("ams", false);
-                                        Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
-                                        ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
-
                                         PublicKey destinypub = HotspotsRegister.get(origin.getID()).getKeyPub();
                                         PublicKey destinyremotepub = HotspotsRegister.get(destiny.getID()).getKeyPub();
 
@@ -589,11 +592,40 @@ public class SecureCloudTPMService extends BaseService {
                                         PlatformID RegisterDestiny = HotspotsRegister.get(
                                                 destiny.getID()).getPlatformLocation();
 
-                                        amsMainPlatform.addBehaviour(
-                                                new SenderCAConfirmation(message, amsMainPlatform,
+                                        String challenge = Agencia.getRandomChallenge();
+                                        Calendar c = Calendar.getInstance();
+                                        c.add(Calendar.SECOND, Agencia.getTimeout());
+                                        Date timeChallenge = new Date(c.getTimeInMillis()+Agencia.getTimeout());
+
+
+                                        System.out.println("**************************************************");
+                                        System.out.println("TOKEN GENERATED: "+challenge);
+                                        System.out.println("TIMESTAMP: "+timeChallenge);
+                                        System.out.println("**************************************************");
+
+                                        //SENDING TO THE DESTINY FIRST
+
+                                        Agent amsMainPlatformDestiny = actualcontainer.acquireLocalAgent(amsMain);
+                                        ACLMessage messageDestiny = new ACLMessage(ACLMessage.REQUEST);
+                                        amsMainPlatformDestiny.addBehaviour(
+                                                new SenderCAConfirmation(messageDestiny, amsMainPlatformDestiny,
+                                                        RegisterDestiny, RegisterOrigin,
+                                                        SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
+                                                        destinyremotepub, destinypub, privateKeyCA, challenge,
+                                                        timeChallenge, packet_privative.getAgent())
+                                        );
+                                        actualcontainer.releaseLocalAgent(amsMain);
+
+                                        //SENDING TO THE ORIGIN SECOND
+
+                                        Agent amsMainPlatformOrigin = actualcontainer.acquireLocalAgent(amsMain);
+                                        ACLMessage messageOrigin = new ACLMessage(ACLMessage.REQUEST);
+                                        amsMainPlatformOrigin.addBehaviour(
+                                                new SenderCAConfirmation(messageOrigin, amsMainPlatformOrigin,
                                                         RegisterOrigin,RegisterDestiny ,
                                                         SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM, destinypub,
-                                                        destinyremotepub,privateKeyCA)
+                                                        destinyremotepub, privateKeyCA, challenge, timeChallenge,
+                                                        packet_privative.getAgent())
                                         );
                                         actualcontainer.releaseLocalAgent(amsMain);
 
@@ -629,7 +661,7 @@ public class SecureCloudTPMService extends BaseService {
                                                         SecureCloudTPMService.this,RegisterDestiny,
                                                         RegisterOrigin ,challenge,
                                                         SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
-                                                        destinypub,publicKeyCA,1)
+                                                        destinypub,publicKeyCA,1, packet_privative.getAgent())
                                         );
                                         actualcontainer.releaseLocalAgent(amsMain);
                                     }

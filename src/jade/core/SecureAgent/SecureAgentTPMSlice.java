@@ -12,7 +12,8 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_MIGRATE_PLATFORM   = "2";
     static final String REMOTE_REQUEST_MIGRATE_ZONE1_PLATFORM   = "3";
     static final String REMOTE_REQUEST_MIGRATE_ZONE2_PLATFORM   = "4";
-    static final String REMOTE_REQUEST_ERROR   = "5";
+    static final String REMOTE_REQUEST_MIGRATE_ZONE3_PLATFORM   = "5";
+    static final String REMOTE_REQUEST_ERROR   = "6";
 
 
     //PUBLIC METHODS

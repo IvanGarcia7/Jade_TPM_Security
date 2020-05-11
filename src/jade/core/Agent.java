@@ -30,6 +30,7 @@ import jade.util.Logger;
 import jade.util.leap.Serializable;
 import jade.util.leap.Iterator;
 
+import java.security.PublicKey;
 import java.util.Hashtable;
 import java.util.Enumeration;
 
@@ -1066,6 +1067,19 @@ public class Agent implements Runnable, Serializable
 		try {
 			initMobHelper();
 			mobHelper.move(destination);
+		}
+		catch(ServiceException se) {
+			// FIXME: Log a proper warning
+			return;
+		}
+	}
+
+
+	public void doMove(Location destination,PublicKey destinyKey) {
+		// Do nothing if the mobility service is not installed
+		try {
+			initMobHelper();
+			mobHelper.move(destination,destinyKey);
 		}
 		catch(ServiceException se) {
 			// FIXME: Log a proper warning

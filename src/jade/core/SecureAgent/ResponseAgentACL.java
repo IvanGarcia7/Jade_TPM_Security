@@ -47,13 +47,24 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
             }
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
             try{
-                System.out.println("PLATFORM RECEIVE A CONFIRMATION SECURE MOVE");
+                System.out.println("PLATFORM RECEIVE A CONFIRMATION ORIGIN SECURE MOVE");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                         SecureAgentTPMHelper.NAME, null);
                 command.addParam(request.getContentObject());
                 myService.submit(command);
             }catch(Exception e){
-                System.out.println("ERROR IN THE CONFIRMATION RESPONSE OF THE ZONE 2");
+                System.out.println("ERROR IN THE ORIGIN CONFIRMATION RESPONSE OF THE ZONE 2");
+                e.printStackTrace();
+            }
+        }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
+            try{
+                System.out.println("PLATFORM RECEIVE A CONFIRMATION DESTINY SECURE MOVE");
+                GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
+                        SecureAgentTPMHelper.NAME, null);
+                command.addParam(request.getContentObject());
+                myService.submit(command);
+            }catch(Exception e){
+                System.out.println("ERROR IN THE DESTINY CONFIRMATION RESPONSE OF THE ZONE 2");
                 e.printStackTrace();
             }
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){

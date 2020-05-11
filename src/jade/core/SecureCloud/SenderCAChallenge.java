@@ -2,6 +2,7 @@ package jade.core.SecureCloud;
 
 
 import jade.core.*;
+import jade.core.SecureAgent.SecureAgentPlatform;
 import jade.core.SecureAgent.SecureAgentTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
@@ -29,11 +30,12 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
     private PublicKey destinyKey;
     private PublicKey pubCA;
     private int validation;
+    private SecureAgentPlatform Agent;
 
 
     public SenderCAChallenge(ACLMessage message, Agent amsMainPlatform, SecureCloudTPMService secureCloudTPMService,
                              PlatformID origin, PlatformID destiny, String challen, String onto, PublicKey pub,
-                             PublicKey publicSec, int val) {
+                             PublicKey publicSec, int val, SecureAgentPlatform agent) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;
@@ -45,6 +47,7 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
         destinyKey = pub;
         pubCA = publicSec;
         validation = val;
+        Agent = agent;
     }
 
 
@@ -64,12 +67,12 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
 
             Date date = new Date();
             long timeMilli = date.getTime();
-            PrivateInformationCA secretInfo = new PrivateInformationCA(Destiny,timeMilli,Challenge,Origin,validation);
+            PrivateInformationCA secretInfo = new PrivateInformationCA(Destiny,timeMilli,Challenge,Origin,validation,
+                                                                       Agent);
 
             byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(secretInfo));
             byte [] encryptedKeySecret = Agencia.encrypt(pubCA,secKey.getEncoded());
-            Pair<byte [],byte []> SecretPack = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
-
+            //Pair<byte [],byte []> SecretPack = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
 
             KeyGenerator generator2 = KeyGenerator.getInstance("AES");
             generator2.init(256);
