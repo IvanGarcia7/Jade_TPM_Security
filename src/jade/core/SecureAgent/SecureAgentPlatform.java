@@ -5,6 +5,7 @@ import jade.core.Agent;
 import jade.core.PlatformID;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
+import jade.core.migration.InterPlatformMobilityHelper;
 import java.security.PublicKey;
 import java.util.logging.Level;
 
@@ -13,6 +14,7 @@ public class SecureAgentPlatform extends Agent{
 
     private static final long serialVersionUID = 9058618378207435612L;
     private transient SecureAgentTPMHelper mobHelperCloudPlatform;
+
 
     /**
      * THIS FUNCTION, SENDS A REQUEST TO THE SECURE PLATFORM TO INCLUDE IT AS A RELIABLE HOST.
@@ -61,6 +63,8 @@ public class SecureAgentPlatform extends Agent{
             mobHelperCloudPlatform = (SecureAgentTPMHelper) getHelper(SecureAgentTPMHelper.NAME);
         }
     }
+
+
 
 }
 

@@ -33,5 +33,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="commons-codec-1.14" level="project" />
+    <orderEntry type="library" name="migration" level="project" />
   </component>
 </module>

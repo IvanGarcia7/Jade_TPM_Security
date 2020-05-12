@@ -3,8 +3,6 @@ package jade.core.SecureAgent;
 import jade.core.*;
 import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.SecureCloud.SecureChallengerPacket;
-import jade.core.SecureCloud.SecureCloudTPMHelper;
-import jade.core.SecureCloud.SecureInformationCloud;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.behaviours.Behaviour;
@@ -19,7 +17,6 @@ import jade.lang.acl.MessageTemplate;
 import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -505,10 +502,17 @@ public class SecureAgentTPMService extends BaseService {
 
                     System.out.println("*****************************************************************");
                     System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:"+requestAgent);
+                    System.out.println("AGENT NAME: "+requestAgent.getName());
+                    System.out.println("AGENT AID: "+requestAgent.getAID());
+                    System.out.println("AGENT AMS: "+requestAgent.getAMS());
                     System.out.println("*****************************************************************");
+                    System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
+                    System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
 
                     try{
+
                         requestAgent.doMove(packetReceived.getDestinyPlatform());
+
                     }catch(Exception e){
                         System.out.println("THE REQUESTED AGENT COULD NOT MAKE THE MIGRATION");
                         e.printStackTrace();

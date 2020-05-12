@@ -1070,6 +1070,7 @@ public class Agent implements Runnable, Serializable
 		}
 		catch(ServiceException se) {
 			// FIXME: Log a proper warning
+			se.printStackTrace();
 			return;
 		}
 	}
