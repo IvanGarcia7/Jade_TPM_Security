@@ -33,9 +33,10 @@ public class RequestSecureATT implements Serializable {
         PlatformCALocation = locationP;
     }
 
-    public RequestSecureATT(PlatformID origin, PlatformID destiny){
+    public RequestSecureATT(PlatformID origin, PlatformID destiny,SecureAgentPlatform agent){
         PlatformLocation = origin;
         PlatformCALocationDestiny=destiny;
+        Agente=agent;
     }
 
 

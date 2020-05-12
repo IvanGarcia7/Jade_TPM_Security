@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/Agent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderChallengeAgentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderChallengeAgentRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/RequestSecureATT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/RequestSecureATT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +69,8 @@
       <workItem from="1589014139758" duration="21827000" />
       <workItem from="1589100387889" duration="29628000" />
       <workItem from="1589221998804" duration="1067000" />
-      <workItem from="1589228561880" duration="3043000" />
+      <workItem from="1589228561880" duration="3243000" />
+      <workItem from="1589288507592" duration="705000" />
     </task>
     <servers />
   </component>
@@ -101,9 +97,10 @@
     <state x="-1920" y="-364" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.733/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587914537292" />
     <state x="-1541" y="-364" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587832564447" />
     <state x="-1541" y="-364" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1587839086555" />
-    <state x="319" y="223" key="com.intellij.ide.util.TipDialog" timestamp="1589228577894">
-      <screen x="0" y="23" width="1280" height="725" />
+    <state x="319" y="207" key="com.intellij.ide.util.TipDialog" timestamp="1589288509185">
+      <screen x="0" y="0" width="1280" height="751" />
     </state>
+    <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.751@0.0.1280.751" timestamp="1589288509185" />
     <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.23.1280.725@0.23.1280.725" timestamp="1589228577894" />
     <state x="319" y="224" key="com.intellij.ide.util.TipDialog/0.23.1280.729/-1920.-364.1920.1057@0.23.1280.729" timestamp="1588426973563" />
     <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.23.1280.729@0.23.1280.729" timestamp="1589100386412" />

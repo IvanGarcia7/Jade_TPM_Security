@@ -49,7 +49,8 @@ public class SenderMigrationRequest extends SimpleAchieveREInitiator {
             aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
 
             RequestSecureATT newPacket = new RequestSecureATT(myPackRequest.getPlatformLocationOrigin(),
-                                                              myPackRequest.getPlatformCALocationDestiny());
+                                                              myPackRequest.getPlatformCALocationDestiny(),
+                                                              myPackRequest.getAgente());
 
             byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(newPacket));
             byte [] encryptedKey = Agencia.encrypt(myPackRequest.getPublicPassword(),secKey.getEncoded());

@@ -507,7 +507,6 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:"+requestAgent);
                     System.out.println("*****************************************************************");
 
-
                     try{
                         requestAgent.doMove(packetReceived.getDestinyPlatform());
                     }catch(Exception e){
