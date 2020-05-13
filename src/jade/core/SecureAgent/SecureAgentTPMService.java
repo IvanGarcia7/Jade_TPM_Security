@@ -517,7 +517,17 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
                     System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
 
-                    requestAgent.doMove(packetReceived.getDestinyPlatform());
+
+
+                    AID amsMain = requestAgent.getAID();
+                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                    amsMainPlatform.doMove(packetReceived.getDestinyPlatform());
+                    actualcontainer.releaseLocalAgent(amsMain);
+
+
+                    //requestAgent.doSecureMigration2(packetReceived.getDestinyPlatform());
+
+                    //requestAgent.doMove(packetReceived.getDestinyPlatform());
 
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
 

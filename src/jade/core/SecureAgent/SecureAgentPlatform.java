@@ -57,6 +57,12 @@ public class SecureAgentPlatform extends Agent{
         }
     }
 
+
+    public void doSecureMigration2(PlatformID destiny){
+        super.doMove(destiny);
+    }
+
+
     /**
      * CALL THIS FUNCTION TO INITIALIZE THE CLOUD SERVICE
      * @throws ServiceException

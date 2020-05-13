@@ -1027,7 +1027,7 @@ public class Agent implements Runnable, Serializable
 	/////////////////////////////
 	private transient AgentMobilityHelper mobHelper;
 
-	private void initMobHelper() throws ServiceException {
+	public void initMobHelper() throws ServiceException {
 		if (mobHelper == null) {
 			mobHelper = (AgentMobilityHelper) getHelper(AgentMobilityHelper.NAME);
 			mobHelper.registerMovable(new Movable() {

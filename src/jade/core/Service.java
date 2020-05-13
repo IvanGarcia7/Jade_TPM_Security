@@ -135,10 +135,7 @@ public interface Service {
 		 */
 		VerticalCommand serve(HorizontalCommand cmd);
 
-
-
-
-	}
+    }
 
 	//#APIDOC_EXCLUDE_BEGIN
 	//#DOTNET_EXCLUDE_BEGIN
