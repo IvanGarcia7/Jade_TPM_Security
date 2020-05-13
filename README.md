@@ -7,8 +7,6 @@ making use of some of Infineon's functionalities.
 
 My implementation Services are in the following dirs:
 
-~~https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureInterTPM~~ *(DEPRECATED)*
-
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureCloud (NEW)
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/CloudAgents (NEW)
 * https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM 
