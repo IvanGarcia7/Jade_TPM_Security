@@ -14,6 +14,7 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_MIGRATE_ZONE2_PLATFORM   = "4";
     static final String REMOTE_REQUEST_MIGRATE_ZONE3_PLATFORM   = "5";
     static final String REMOTE_REQUEST_ERROR   = "6";
+    static final String REMOTE_REQUEST_DO_MIGRATION   = "7";
 
 
     //PUBLIC METHODS
@@ -23,4 +24,5 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     void doAttestateOrginAMS(VerticalCommand command);
     void doMigrateHostpotAMS(VerticalCommand command);
     void doMoveFinal(GenericCommand newCommand);
+    void doMoveFinalMigration(GenericCommand newCommand);
 }

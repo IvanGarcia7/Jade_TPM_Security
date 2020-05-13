@@ -22,6 +22,7 @@ public interface SecureAgentTPMHelper extends ServiceHelper {
     static final String REQUEST_MIGRATE_ZONE1_PLATFORM   = "MIGRATE_ZONE1_REQUEST";
     static final String REQUEST_MIGRATE_ZONE2_PLATFORM   = "MIGRATE_ZONE2_REQUEST";
     static final String REQUEST_MIGRATE_ZONE3_PLATFORM   = "MIGRATE_ZONE3_REQUEST";
+    static final String REQUEST_DO_MIGRATION   = "REQUEST_DO_MIGRATION";
     static final String REQUEST_ERROR   = "REQUEST_ERROR";
     static final String REQUEST_MOVE = "REQUEST_MOVE";
 

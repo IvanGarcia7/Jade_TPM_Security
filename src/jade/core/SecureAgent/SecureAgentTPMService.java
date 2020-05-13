@@ -1,10 +1,11 @@
 package jade.core.SecureAgent;
 
 import jade.core.*;
-import jade.core.SecureCloud.SecureCAConfirmation;
-import jade.core.SecureCloud.SecureChallengerPacket;
+import jade.core.SecureCloud.*;
+import jade.core.SecureInterTPM.SecureInterTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
+import jade.core.SecureTPM.SecureAgent;
 import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import javax.crypto.Cipher;
@@ -196,7 +197,14 @@ public class SecureAgentTPMService extends BaseService {
         MessageTemplate mt =
                 MessageTemplate.and(
                         MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-                        MessageTemplate.MatchAll());
+                        MessageTemplate.or(
+                                MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM),
+                                MessageTemplate.or(
+                                    MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM),
+                                        MessageTemplate.or(
+                                            MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM),
+                                             MessageTemplate.MatchOntology(SecureAgentTPMHelper.REQUEST_ERROR)))
+                        ));
         ResponseAgentACL resp = new ResponseAgentACL(ams, mt, SecureAgentTPMService.this);
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
@@ -407,7 +415,7 @@ public class SecureAgentTPMService extends BaseService {
                     RequestSecureATT requestSecureStart = new RequestSecureATT(pubKeyAgent,myPlatform,PCR_Signed);
 
                     //SEND THE INFORMATION TO THE SECURE PLATFORM
-                    AID amsMain = new AID("ams", false);
+                    AID amsMain = actualcontainer.getAMS();
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
@@ -509,14 +517,8 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
                     System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
 
-                    try{
+                    requestAgent.doMove(packetReceived.getDestinyPlatform());
 
-                        requestAgent.doMove(packetReceived.getDestinyPlatform());
-
-                    }catch(Exception e){
-                        System.out.println("THE REQUESTED AGENT COULD NOT MAKE THE MIGRATION");
-                        e.printStackTrace();
-                    }
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
 
                     Pair<byte [],byte []> confirmationPacket = (Pair<byte [],byte []>)command.getParams()[0];
@@ -533,6 +535,12 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("***********************************************************");
 
                     CAPermissionList.put(packetReceived.getToken(),packetReceived);
+                }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_DO_MIGRATION)){
+                    Pair<PublicKey,PlatformID> packet = (Pair<PublicKey, PlatformID>)command.getParams()[0];
+                    System.out.println("I AM IN THE PLATFORM AGENT CORRECT???");
+                    System.out.println(actualcontainer.getID().getName());
+                    System.out.println(actualcontainer.getAMS());
+                    System.out.println(actualcontainer.getID());
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -598,6 +606,12 @@ public class SecureAgentTPMService extends BaseService {
                     Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND IN THE DESTINY" +
                                     " PLATFORM", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
+                            SecureAgentTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
+                }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_DO_MIGRATION)){
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND IN THE ORIGIN" +
+                            " PLATFORM", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_DO_MIGRATION,
                             SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }

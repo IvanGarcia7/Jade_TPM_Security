@@ -2,10 +2,14 @@ package jade.core.SecureAgent;
 
 
 import jade.core.Agent;
+import jade.core.Location;
 import jade.core.PlatformID;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
 import jade.core.migration.InterPlatformMobilityHelper;
+import jade.core.mobility.AgentMobilityHelper;
+import jade.core.mobility.AgentMobilityService;
+
 import java.security.PublicKey;
 import java.util.logging.Level;
 
@@ -53,7 +57,6 @@ public class SecureAgentPlatform extends Agent{
         }
     }
 
-
     /**
      * CALL THIS FUNCTION TO INITIALIZE THE CLOUD SERVICE
      * @throws ServiceException
@@ -63,9 +66,6 @@ public class SecureAgentPlatform extends Agent{
             mobHelperCloudPlatform = (SecureAgentTPMHelper) getHelper(SecureAgentTPMHelper.NAME);
         }
     }
-
-
-
 }
 
 

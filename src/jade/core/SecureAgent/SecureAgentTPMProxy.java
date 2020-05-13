@@ -111,16 +111,33 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
     public void doMoveFinal(GenericCommand command) {
         try{
             Agencia.printLog("PROCEED TO MOVE THE AGENT", Level.INFO,SecureAgentTPMHelper.DEBUG,
-                              this.getClass().getName());
+                    this.getClass().getName());
             GenericCommand newCommand2 = new GenericCommand(SecureAgentTPMSlice.REMOTE_REQUEST_START,
                     SecureAgentTPMHelper.NAME, null);
             newCommand2.addParam(command.getParams()[0]);
             Node n = getNode();
             Agencia.printLog("-> SENDING THE ACTION TO MIGRATE THROUGH A HORIZONTAL COMMAND TO THE AMS "+
-                              "NODE "+ n.getName(), Level.INFO,SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+                    "NODE "+ n.getName(), Level.INFO,SecureAgentTPMHelper.DEBUG, this.getClass().getName());
             n.accept(command);
         }catch(Exception e){
             e.printStackTrace();
         }
     }
+
+    public void doMoveFinalMigration(GenericCommand command) {
+        try{
+            Agencia.printLog("PROCEED TO MOVE THE AGENT", Level.INFO,SecureAgentTPMHelper.DEBUG,
+                    this.getClass().getName());
+            GenericCommand newCommand2 = new GenericCommand(SecureAgentTPMSlice.REMOTE_REQUEST_DO_MIGRATION,
+                    SecureAgentTPMHelper.NAME, null);
+            newCommand2.addParam(command.getParams()[0]);
+            Node n = getNode();
+            Agencia.printLog("-> SENDING THE ACTION TO MIGRATE THROUGH A HORIZONTAL COMMAND TO THE AMS "+
+                    "NODE "+ n.getName(), Level.INFO,SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+            n.accept(command);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

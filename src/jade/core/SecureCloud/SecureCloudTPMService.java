@@ -187,7 +187,13 @@ public class SecureCloudTPMService extends BaseService {
         MessageTemplate mt =
                 MessageTemplate.and(
                         MessageTemplate.MatchPerformative(ACLMessage.REQUEST),
-                        MessageTemplate.MatchAll());
+                        MessageTemplate.or(
+                                MessageTemplate.MatchOntology(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM),
+                                MessageTemplate.or(
+                                        MessageTemplate.MatchOntology(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM),
+                                        MessageTemplate.MatchOntology(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)
+                                )
+                        ));
         ResponserCloudACL resp = new ResponserCloudACL(ams, mt, SecureCloudTPMService.this);
         actualcontainer.releaseLocalAgent(amsAID);
         return resp;
@@ -605,6 +611,8 @@ public class SecureCloudTPMService extends BaseService {
                                         System.out.println("**************************************************");
 
                                         //SENDING TO THE DESTINY FIRST
+
+                                        System.out.println("TIKA MASALA "+packet_privative.getAgent().getName());
 
                                         Agent amsMainPlatformDestiny = actualcontainer.acquireLocalAgent(amsMain);
                                         ACLMessage messageDestiny = new ACLMessage(ACLMessage.REQUEST);
