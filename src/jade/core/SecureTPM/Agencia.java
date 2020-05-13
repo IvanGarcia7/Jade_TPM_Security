@@ -420,6 +420,7 @@ public class Agencia{
      * @return
      * @throws IOException
      */
+    /*
     public static byte[] seal(byte [] entrada, byte [] agent) throws IOException{
         ProcessBuilder pb1 = new ProcessBuilder(
                 new String[]{
@@ -468,6 +469,7 @@ public class Agencia{
         byte[] yourBytes = Agencia.serialize(sealed);
         return yourBytes;
     }
+    */
 
     /**
      * Unseal take as a parameters one array ob bytes that represent the object sealed serialized,
@@ -484,6 +486,7 @@ public class Agencia{
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    /*
     public static byte [] unseal(byte[] entrada) throws FileNotFoundException, IOException, ClassNotFoundException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException{
         ProcessBuilder pb1 = new ProcessBuilder(
                 new String[]{
@@ -543,7 +546,7 @@ public class Agencia{
         byte [] salida = Agencia.decipherOwner(agent, clave);
         return salida;
     }
-
+*/
 
     /**
      * Seal take as a parameters one array ob bytes that represent the message
@@ -553,6 +556,7 @@ public class Agencia{
      * @return
      * @throws IOException
      */
+    /*
     public static byte[] seal_message(byte [] entrada) throws IOException{
         ProcessBuilder pb1 = new ProcessBuilder(
                 new String[]{
@@ -602,6 +606,7 @@ public class Agencia{
         return yourBytes;
     }
 
+*/
     /**
      * Unseal take as a parameters one array ob bytes that represent the object sealed serialized,
      * and return the decipher message serialized.
@@ -617,6 +622,8 @@ public class Agencia{
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
+    
+    /*
     public static byte [] unseal_message(byte[] entrada) throws FileNotFoundException, IOException, ClassNotFoundException, InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException{
         ProcessBuilder pb1 = new ProcessBuilder(
                 new String[]{
@@ -675,7 +682,7 @@ public class Agencia{
         return fileContent;
     }
 
-
+*/
     public static void setTimeout(int i) {
         time = i;
     }
