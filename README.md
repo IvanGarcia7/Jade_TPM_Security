@@ -18,13 +18,18 @@ Here are some **basic examples** to demonstrate how the library works.
 ## RASPBERRY:
 
 * START SECURE PLATFORM:
-java -cp TPM.jar:test.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService -agents CA:vom.CAPlatform
+
+java -cp TPM.jar:test.jar:migration.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService\;jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService -agents CA:vom.CAPlatform
+
 
 * START AGENT 2
-java -cp TPM.jar:test.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -services jade.core.SecureAgent.SecureAgentTPMService -agents A2:vom.CAAgent2
+
+java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36711\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureInterTPM.SecureInterTPMService\;jade.core.SecureAgent.SecureAgentTPMService -agents A2:vom.CAAgent2
 
 * START AGENT 1
-java -cp TPM.jar:test.jar jade.Boot -container-name P1 -gui -host localhost -port 1394 -services jade.core.SecureAgent.SecureAgentTPMService -agents A1:vom.CAAgent
+
+java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P1 -gui -host localhost -port 1394 -services jade.core.migration.InterPlatformMobilityService\;jade.core.mobility.AgentMobilityService\;jade.core.SecureInterTPM.SecureInterTPMService\;jade.core.SecureAgent.SecureAgentTPMService -agents A1:vom.CAAgent
+
 
 
 ### EXECUTE THE FOLLOWING CODE:
