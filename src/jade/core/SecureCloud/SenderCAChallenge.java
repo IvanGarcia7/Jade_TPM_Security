@@ -11,6 +11,7 @@ import jade.proto.SimpleAchieveREInitiator;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.swing.*;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,11 +32,12 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
     private PublicKey pubCA;
     private int validation;
     private SecureAgentPlatform Agent;
+    private JTextArea Printer;
 
 
     public SenderCAChallenge(ACLMessage message, Agent amsMainPlatform, SecureCloudTPMService secureCloudTPMService,
                              PlatformID origin, PlatformID destiny, String challen, String onto, PublicKey pub,
-                             PublicKey publicSec, int val, SecureAgentPlatform agent) {
+                             PublicKey publicSec, int val, SecureAgentPlatform agent, JTextArea printer) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;
@@ -48,6 +50,7 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
         pubCA = publicSec;
         validation = val;
         Agent = agent;
+        Printer = printer;
     }
 
 
@@ -112,6 +115,7 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
     //REDEFINED ALL THE HANDLERS TO KNOW WHAT HAPPENS WITH THE MESSAGE THAT THE PLATFORM RECEIVE FROM THE CA
 
     protected void handleInform(ACLMessage inform){
+        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+"\n");
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
     }
 

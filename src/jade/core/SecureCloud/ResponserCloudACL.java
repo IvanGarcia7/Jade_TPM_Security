@@ -11,6 +11,8 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
+
+import javax.swing.*;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -19,6 +21,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
 
 
     private BaseService myService;
+    private JTextArea Printer;
 
 
     public ResponserCloudACL(Agent ams, MessageTemplate mt, SecureCloudTPMService secureCloudTPMService){
@@ -33,7 +36,8 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
      */
     protected ACLMessage prepareResponse(ACLMessage request) {
 
-
+        SecureCloudTPMService myServiceHelper = (SecureCloudTPMService) myService;
+        Printer = myServiceHelper.getGUI();
         Agencia.printLog("PROCESSING THE REQUEST IN THE SECURE DESTINY RESPONSER AGENT", Level.INFO,
                 SecureAgentTPMHelper.DEBUG, this.getClass().getName());
         ACLMessage reply = null;
