@@ -9,6 +9,7 @@ import jade.proto.SimpleAchieveREInitiator;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.swing.*;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,11 +25,12 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
     private PublicKey pubCA;
     private PlatformID CAlocation;
     private SecureChallengerPacket packetResponser;
+    private JTextArea Printer;
 
 
     public SenderChallengeAgentRequest(ACLMessage message, Agent amsMainPlatform, AttestationSerialized PCR_Signed,
-                                        SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, PlatformID CAloc,
-                                        SecureChallengerPacket pSender) {
+                                       SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, PlatformID CAloc,
+                                       SecureChallengerPacket pSender, JTextArea printer) {
         super(amsMainPlatform,message);
         myMessage = message;
         myAgent = amsMainPlatform;
@@ -37,6 +39,7 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
         pubCA = pubSEC;
         CAlocation = CAloc;
         packetResponser = pSender;
+        Printer = printer;
     }
 
     /**
@@ -86,6 +89,7 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
+        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
     }
 
     protected void handleRefuse(ACLMessage inform){

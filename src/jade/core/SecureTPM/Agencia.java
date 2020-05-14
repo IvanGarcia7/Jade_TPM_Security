@@ -21,6 +21,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.swing.*;
 
 
 public class Agencia{
@@ -778,9 +779,10 @@ public class Agencia{
 
 
 
-    public static int init_platform(String path,String contextEK,String contextAK){
+    public static int init_platform(String path, String contextEK, String contextAK, JTextArea Printer){
         int valuereturn = 0;
-        System.out.println("EXECUTING THE INIT FUNCTION: ");
+        System.out.println("EXECUTING THE INIT ATT FUNCTION: ");
+        Printer.append("EXECUTING THE INIT ATT FUNCTION: \n");
         new File(path).mkdirs();
         String akpub_path = path+"/akpub.pem";
 
@@ -826,6 +828,7 @@ public class Agencia{
             BufferedReader reader = new BufferedReader(new InputStreamReader(p1.getInputStream()));
             String line;
             while((line=reader.readLine())!=null){
+                Printer.append(line+"\n");
                 output.append(line+"\n");
             }
             valuereturn = p1.waitFor();
@@ -834,12 +837,14 @@ public class Agencia{
                 Process p2 = pb2.start();
                 reader = new BufferedReader(new InputStreamReader(p1.getInputStream()));
                 while((line=reader.readLine())!=null){
+                    Printer.append(line+"\n");
                     output.append(line+"\n");
                 }
                 valuereturn = p2.waitFor();
                 System.out.println(output);
             }
         }catch(Exception e){
+            Printer.append("There are an error in the process \n");
             System.out.println("There are an error in the process");
             valuereturn = 1;
         }
@@ -847,8 +852,9 @@ public class Agencia{
     }
 
 
-    public static int attestation_files(String path,String context,String nonce,boolean debug){
+    public static int attestation_files(String path,String context,String nonce,boolean debug, JTextArea Printer){
         int valuereturn = 0;
+        Printer.append("EXECUTING THE SALIDA FUNCTION: \n");
         System.out.println("EXECUTING THE SALIDA FUNCTION: ");
         new File(path).mkdirs();
         String sing_path = path+"/sign.out";
@@ -874,6 +880,7 @@ public class Agencia{
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line;
                 while((line=reader.readLine())!=null){
+                    Printer.append(line+"\n");
                     output.append(line+"\n");
                 }
                 System.out.println(output);
@@ -881,6 +888,7 @@ public class Agencia{
             int exitVal = p.waitFor();
             System.out.println(exitVal);
         }catch(Exception e){
+            Printer.append("There are an error in the process \n");
             System.out.println("There are an error in the process");
             valuereturn = 1;
         }

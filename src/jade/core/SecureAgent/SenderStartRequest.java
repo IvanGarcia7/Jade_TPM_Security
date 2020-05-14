@@ -9,6 +9,7 @@ import jade.proto.SimpleAchieveREInitiator;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.swing.*;
 import java.security.PublicKey;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,16 +23,18 @@ public class SenderStartRequest extends SimpleAchieveREInitiator {
     private RequestSecureATT RequestStart;
     private RequestSecureATT CAInformation;
     private BaseService myService;
+    private JTextArea Printer;
 
     public SenderStartRequest(ACLMessage message, RequestSecureATT requestSecureStart,
                               RequestSecureATT SecureCAInformation, Agent amsMainPlatform,
-                              SecureAgentTPMService secureAgentTPMService) {
+                              SecureAgentTPMService secureAgentTPMService, JTextArea printer) {
         super(amsMainPlatform,message);
         myMessage = message;
         RequestStart = requestSecureStart;
         CAInformation = SecureCAInformation;
         myAgent = amsMainPlatform;
         myService = secureAgentTPMService;
+        Printer = printer;
     }
 
     /**
@@ -83,6 +86,7 @@ public class SenderStartRequest extends SimpleAchieveREInitiator {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
+        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
     }
 
     protected void handleRefuse(ACLMessage inform){

@@ -65,10 +65,6 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
             Cipher aesCipher = Cipher.getInstance("AES");
             aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
 
-            System.out.println("EL NOMBRE DEL AGENTE ES EL SIGUIENTE: "+Agent.getName());
-            System.out.println("EL NOMBRE DEL AGENTE ES EL SIGUIENTE: "+Agent.getAID());
-            System.out.println("EL NOMBRE DEL AGENTE ES EL SIGUIENTE: "+Agent.getLocalName());
-
             Date date = new Date();
             long timeMilli = date.getTime();
             PrivateInformationCA secretInfo = new PrivateInformationCA(Destiny,timeMilli,Challenge,Origin,validation,

@@ -10,6 +10,7 @@ import jade.proto.SimpleAchieveREInitiator;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.swing.*;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
@@ -20,16 +21,17 @@ public class SenderMigrationRequest extends SimpleAchieveREInitiator {
     private ACLMessage myMessage;
     private BaseService myService;
     private RequestSecureATT myPackRequest;
-
+    private JTextArea Printer;
 
     public SenderMigrationRequest(ACLMessage message, Agent amsMainPlatform,
-                                  SecureAgentTPMService secureAgentTPMService, RequestSecureATT PackRequest) {
+                                  SecureAgentTPMService secureAgentTPMService, RequestSecureATT PackRequest,
+                                  JTextArea printer) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;
         myService = secureAgentTPMService;
         myPackRequest = PackRequest;
-
+        Printer = printer;
     }
 
 
@@ -83,6 +85,7 @@ public class SenderMigrationRequest extends SimpleAchieveREInitiator {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
+        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
     }
 
     protected void handleRefuse(ACLMessage inform){

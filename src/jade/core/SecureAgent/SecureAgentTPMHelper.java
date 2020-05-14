@@ -3,6 +3,8 @@ package jade.core.SecureAgent;
 
 import jade.core.PlatformID;
 import jade.core.ServiceHelper;
+
+import javax.swing.*;
 import java.security.PublicKey;
 
 
