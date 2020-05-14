@@ -1,5 +1,4 @@
-package jade.core.vom;
-
+package jade.core.vomNew;
 import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.UUID;

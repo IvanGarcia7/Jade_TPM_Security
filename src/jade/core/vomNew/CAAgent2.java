@@ -1,5 +1,5 @@
-package jade.core.vom;
 
+package jade.core.vomNew;
 
 import java.security.KeyFactory;
 import java.security.PublicKey;

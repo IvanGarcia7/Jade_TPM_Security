@@ -1,4 +1,4 @@
-package jade.core.vom;
+package jade.core.vomNew;
 
 import javax.swing.JTextArea;
 

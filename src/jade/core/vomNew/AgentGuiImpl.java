@@ -1,5 +1,4 @@
-package jade.core.vom;
-
+package jade.core.vomNew;
 
 import jade.core.AID;
 import jade.core.PlatformID;
@@ -27,7 +26,6 @@ private CAAgent myAgent;
 	public AgentGuiImpl(CAAgent a) {
 		super();
 		myAgent =a;
-		a.setPrinter(logTA);
 		addWindowListener(new	WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				myAgent.doDelete();
@@ -233,7 +231,7 @@ private CAAgent myAgent;
 	  	}
 		} );
     
-    resetB = new JButton("Reset");
+    resetB = new JButton("RESET");
 		resetB.addActionListener(new ActionListener(){
 	  	public void actionPerformed(ActionEvent e) {
 	  		SAIDP.setText("");
@@ -244,7 +242,7 @@ private CAAgent myAgent;
 	  		CAK.setText("");
 	  	}
 		} );
-    exitB = new JButton("Exit");
+    exitB = new JButton("EXIT");
 		exitB.addActionListener(new ActionListener(){
 	  	public void actionPerformed(ActionEvent e) {
 	  		myAgent.doDelete();

@@ -1,4 +1,4 @@
-package jade.core.vom;
+package jade.core.vomNew;
 
 
 import javax.swing.JTextArea;
@@ -15,8 +15,4 @@ public class CAAgent extends SecureAgentPlatform {
 		this.setGUI(myGUI.getPrinter());
 	}
 
-	public void setPrinter(JTextArea logTA) {
-		// TODO Auto-generated method stub
-		
-	}
 }

@@ -3,6 +3,8 @@ package jade.core.SecureCloud;
 
 import jade.core.*;
 import jade.core.SecureTPM.Agencia;
+
+import javax.swing.*;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.logging.Level;
@@ -12,6 +14,7 @@ public class SecureCAPlatform extends Agent{
 
     private static final long serialVersionUID = 9058618378207435615L;
     private transient SecureCloudTPMHelper mobHelperCloud;
+    private JTextArea Printer;
 
 
     /**
@@ -73,6 +76,18 @@ public class SecureCAPlatform extends Agent{
         }
     }
 
+
+    public void setGUI(JTextArea printer){
+        Printer = printer;
+    }
+
+    public JTextArea getGUI(){
+        return Printer;
+    }
+
+    public void printArea(String text){
+        Printer.append(text+"\n");
+    }
 
     /**
      * CALL THIS FUNCTION TO INITIALIZE THE CLOUD SERVICE

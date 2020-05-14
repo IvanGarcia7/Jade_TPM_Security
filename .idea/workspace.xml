@@ -3,6 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/jade/core/BackEndContainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/BackEndContainer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/vom/AgentGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/AgentGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/vom/AgentGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/AgentGuiImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/vom/CAAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/CAAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/vom/CAAgent2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/CAAgent2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/vom/CAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/CAPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/vom/MAIN.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/MAIN.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +48,9 @@
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/jade/core/vom" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cTPlatforms" />
     </key>
@@ -77,7 +88,7 @@
       <workItem from="1589301406081" duration="2054000" />
       <workItem from="1589307258203" duration="7210000" />
       <workItem from="1589377153515" duration="13513000" />
-      <workItem from="1589471168190" duration="2775000" />
+      <workItem from="1589471168190" duration="4215000" />
     </task>
     <servers />
   </component>
