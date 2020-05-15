@@ -34,6 +34,10 @@ import jade.core.HorizontalCommand;
 import jade.core.LifeCycle;
 import jade.core.MainContainer;
 import jade.core.PlatformID;
+import jade.core.SecureAgent.SecureAgentPlatform;
+import jade.core.SecureCloud.SecureCAPlatform;
+import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
 import jade.core.UnreachableException;
 import jade.core.VerticalCommand;
 import jade.core.GenericCommand;
@@ -60,6 +64,9 @@ import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.io.FileInputStream;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Map.Entry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.JarEntry;
@@ -82,6 +89,9 @@ import jade.security.JADEPrincipal;
 import jade.security.JADESecurityException;
 import jade.util.Logger;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -265,7 +275,11 @@ public class InterPlatformMobilityService extends BaseService {
 		      PlatformID where = (PlatformID)params[1];
 		      AID name = (AID)params[0];
 		      
-		      Agent agent = _myContainer.acquireLocalAgent(name);
+		      SecureAgentPlatform agent = (SecureAgentPlatform) _myContainer.acquireLocalAgent(name);
+			  PublicKey destinyPub = agent.getLocDestiny();
+			  String token = agent.getToken();
+
+
 		      
 		      try{
 		        ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -274,8 +288,23 @@ public class InterPlatformMobilityService extends BaseService {
 		        if (logger.isLoggable(Logger.FINE))
 		          logger.log(Logger.FINE, "Source-Sink: handleInformMigrated: Agent serialized");
 		        byte[] instance = out.toByteArray();
-		        
-				//Get code source container of agent.
+
+
+
+		        KeyGenerator generator = KeyGenerator.getInstance("AES");
+		        generator.init(256);
+		        SecretKey secKey = generator.generateKey();
+		        Cipher aesCipher = Cipher.getInstance("AES");
+		        aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+
+		        Pair<String,byte []> ObjectSender = new Pair<String, byte []>(token,instance);
+
+		        byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(ObjectSender));
+		        byte [] encryptedKeySecret = Agencia.encrypt(destinyPub,secKey.getEncoded());
+		        Pair<byte [],byte []> migrationPacket = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
+
+
+				  //Get code source container of agent.
 				AgentMobilityService ams = (AgentMobilityService) myFinder.findService(AgentMobilityService.NAME);
 				String codesrc = ams.getClassSite(agent);
 		        if (codesrc == null) {
@@ -284,7 +313,7 @@ public class InterPlatformMobilityService extends BaseService {
 		        
 		        InterPlatformMobilitySlice mainSlice =
 		          (InterPlatformMobilitySlice)getSlice(MAIN_SLICE);
-		        mainSlice.transferInstance(instance, name, agent.getClass().getName(), codesrc, where);
+		        mainSlice.transferInstance(Agencia.serialize(migrationPacket), name, agent.getClass().getName(), codesrc, where);
 		        if (logger.isLoggable(Logger.FINE))
 		          logger.log(Logger.FINE, "Source-Sink: handleInformMigrated: Instance transfered to Main-Container");
 		
@@ -303,6 +332,18 @@ public class InterPlatformMobilityService extends BaseService {
 			Object[] params = cmd.getParams();
 			byte[] jar = (byte[]) params[0];
 			byte[] instance = (byte[]) params[1];
+
+
+			//Decrypt with the privateKey
+			AID amsMain = _myContainer.getAMS();
+			SecureCAPlatform amsMainPlatform = (SecureCAPlatform) _myContainer.acquireLocalAgent(amsMain);
+
+			//FETCH MY PRIVATE AND MY LIST OF WHITE PASS
+			//PrivateKey privateAMS = amsMainPlatform.getPrivateKey();
+
+
+
+
 			AID name = (AID) params[2];
 			JarClassLoader loader = null;
 			Deserializer des = null;

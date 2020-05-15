@@ -519,15 +519,14 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:"+requestAgent);
                     System.out.println("AGENT NAME: "+requestAgent.getName());
                     System.out.println("AGENT AID: "+requestAgent.getAID());
-                    System.out.println("AGENT AMS: "+requestAgent.getAMS());
                     System.out.println("*****************************************************************");
                     System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
                     System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
 
-
-
                     AID amsMain = requestAgent.getAID();
-                    Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
+                    SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
+                    amsMainPlatform.setLocationKey(packetReceived.getDestinyPublic());
+                    amsMainPlatform.setToken(packetReceived.getToken());
                     amsMainPlatform.doMove(packetReceived.getDestinyPlatform());
                     actualcontainer.releaseLocalAgent(amsMain);
 

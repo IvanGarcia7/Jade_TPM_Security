@@ -21,6 +21,25 @@ public class SecureAgentPlatform extends Agent{
     private transient SecureAgentTPMHelper mobHelperCloudPlatform;
     private JTextArea Printer;
 
+    private PublicKey LocationKey;
+    private String Token;
+
+
+    public PublicKey getLocDestiny(){
+        return LocationKey;
+    }
+
+    public String getToken(){
+        return Token;
+    }
+
+    public void setLocationKey(PublicKey destiny){
+        LocationKey = destiny;
+    }
+
+    public void setToken(String token){
+        Token = token;
+    }
 
     /**
      * THIS FUNCTION, SENDS A REQUEST TO THE SECURE PLATFORM TO INCLUDE IT AS A RELIABLE HOST.
