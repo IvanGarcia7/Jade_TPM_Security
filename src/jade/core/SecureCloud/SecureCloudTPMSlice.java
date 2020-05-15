@@ -18,6 +18,7 @@ public interface SecureCloudTPMSlice extends Service.Slice {
     static final String REMOTE_REQUEST_MIGRATE_ZONE3_PLATFORM   = "9";
     static final String REMOTE_REQUEST_ERROR   = "10";
     static final String REMOTE_REQUEST_ACCEPT       = "11";
+    static final String REMOTE_REQUEST_LIST_ACCEPTED = "12";
 
 
     //PUBLIC METHODS
@@ -28,4 +29,5 @@ public interface SecureCloudTPMSlice extends Service.Slice {
     void doInsertHostpotAMS(VerticalCommand command);
     void doStartAttestationHostpotAMS(VerticalCommand command);
     void doCheckAttestationHostpotORIGIN(VerticalCommand command);
+    void doRequestAcceptListAMS(VerticalCommand command);
 }

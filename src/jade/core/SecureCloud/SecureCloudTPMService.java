@@ -53,7 +53,8 @@ public class SecureCloudTPMService extends BaseService {
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
-            SecureCloudTPMHelper.REQUEST_ERROR
+            SecureCloudTPMHelper.REQUEST_ERROR,
+            SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED
     };
 
     //PERFORMATIVE PRINTER.
@@ -280,6 +281,26 @@ public class SecureCloudTPMService extends BaseService {
         }
 
 
+        public synchronized void listAcceptedPlatforms(SecureCAPlatform secureCAPlatform) {
+            Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED IN ORDER TO RETRIEVE" +
+                            "THE LIST OF SECURE PLATFORMS. NAME AGENT:" +
+                            secureCAPlatform.getAID(), Level.INFO, SecureCloudTPMHelper.DEBUG,
+                    this.getClass().getName());
+            Agencia.printLog("START THE LIST SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
+                    Level.INFO, true, this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED,
+                    SecureCloudTPMHelper.NAME, null);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS TO RETRIEVE THE LIST OF HOTSPOTS " +
+                    "REGISTERED", Level.INFO, true, this.getClass().getName());
+            try {
+                SecureCloudTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
         /**
          * THIS FUNCTION, TAKES AN INDEX, IN ORDER TO ESTABLISHED A DEVICE AS SECURE, BASED ON THE LIST OF HOTSPOTS
          * @param secureCAPlatform
@@ -334,7 +355,19 @@ public class SecureCloudTPMService extends BaseService {
                                            "SOURCE SINK");
                         ie.printStackTrace();
                     }
-                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
+                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED)){
+
+                    Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS AND ACCEPT ONE OF " +
+                            "THE LIST OF THE HOTSPOTS", Level.INFO, true, this.getClass().getName());
+                    try{
+                        obj.doRequestAcceptListAMS(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST LIST ADDRESS IN THE COMMAND " +
+                                "SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+
+                } else if(commandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
                     Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS AND ACCEPT ONE OF " +
                                     "THE LIST OF THE HOTSPOTS", Level.INFO, true, this.getClass().getName());
                     try{
@@ -438,19 +471,39 @@ public class SecureCloudTPMService extends BaseService {
                     System.out.println("*********************HOTSPOTS*****************************");
                     Printer.append("*********************HOTSPOTS*****************************\n");
 
-                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED)){
+
+                    Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST REQUEST INTO THE AMS " +
+                            "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
+
+                    Printer.append("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName()+"\n");
+                    Printer.append("*********************HOTSPOTS*****************************\n");
+
+                    System.out.println("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName());
+                    System.out.println("*********************HOTSPOTS*****************************");
+                    Iterator it = HotspotsRegister.entrySet().iterator();
+                    while(it.hasNext()){
+                        Map.Entry pair = (Map.Entry)it.next();
+                        Printer.append(pair.getKey() + " = " + pair.getValue()+"\n");
+                        System.out.println(pair.getKey() + " = " + pair.getValue());
+                    }
+                    System.out.println("*********************HOTSPOTS*****************************");
+                    Printer.append("*********************HOTSPOTS*****************************\n");
+
+                } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
                     Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST CLOUD REQUEST INTO THE AMS " +
                                     "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
                     String index = (String) command.getParams()[0];
-                    try{
-                        HotspotsRegister.put(index,pendingRedirects.get(index));
-                        pendingRedirects.remove(index);
-                        Printer.append("PLATFORM INSERTED CORRECTLY\n");
-                    }catch(Exception e){
-                        System.out.println("THE REQUEST PLATFORM IS NOT REGISTER IN THE PENDING LIST");
-                        e.printStackTrace();
+                    if(!HotspotsRegister.containsKey(index)){
+                        try{
+                            HotspotsRegister.put(index,pendingRedirects.get(index));
+                            pendingRedirects.remove(index);
+                            Printer.append("PLATFORM INSERTED CORRECTLY\n");
+                        }catch(Exception e){
+                            System.out.println("THE REQUEST PLATFORM IS NOT REGISTER IN THE PENDING LIST");
+                            e.printStackTrace();
+                        }
                     }
-
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
 
                     Pair<String,Object> requestInsert = (Pair<String,Object>)  command.getParams()[0];
@@ -823,8 +876,14 @@ public class SecureCloudTPMService extends BaseService {
                                     this.getClass().getName());
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_ACCEPT, SecureCloudTPMHelper.NAME,
                                                          null);
-                    commandResponse.addParam(command.getParams());
-                }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_INSERT_PLATFORM)) {
+                    commandResponse.addParam(command.getParams()[0]);
+                }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_LIST_ACCEPTED)){
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO REQUEST THE LIST OF THE HOST", Level.INFO, true,
+                            this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED,
+                            SecureCloudTPMHelper.NAME, null);
+                } else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_INSERT_PLATFORM)) {
                     Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
                                     "COMPONENT TO INSERT A NEW HOTSPOT IN THE SECURE PLATFORM", Level.INFO,
                                     true, this.getClass().getName());

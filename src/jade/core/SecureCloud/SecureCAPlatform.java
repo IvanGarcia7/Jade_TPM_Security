@@ -58,11 +58,30 @@ public class SecureCAPlatform extends Agent{
 
 
     /**
+     * THIS FUNCTION PRINTS THE LIST OF CONFIRMED HOTSPOTS.
+     */
+    public void doListACA(){
+        Agencia.printLog("REQUEST THE SECURE CLOUD PLATFORM DEVICES REGISTER",
+                Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+        try {
+            initmobHelperCloud();
+            Agencia.printLog("THE REQUEST LIST SERVICE HAS BEGUN TO RUN", Level.INFO,
+                    SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            mobHelperCloud.listAcceptedPlatforms(this);
+        } catch(ServiceException se) {
+            System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");
+            se.printStackTrace();
+        }
+    }
+
+
+    /**
      * THIS FUNCTION TAKES AN ADDRESS AND INSERT IN WITHIN RELIABLE PLATFORMS IF IT HAS BEEN
      * RECORDED PREVIOUSLY IN THE LIST OF PENDING.
      * @param index
      */
     public void doAcceptListCA(String index){
+        System.out.println("THE STRING AID IS THE FOLLOWING "+index);
         Agencia.printLog("REQUEST THE SECURE CLOUD PLATFORM DEVICES REGISTER",
                         Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
         try {

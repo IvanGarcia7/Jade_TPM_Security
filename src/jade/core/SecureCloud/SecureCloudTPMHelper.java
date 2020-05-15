@@ -20,6 +20,7 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
     static final String REQUEST_INSERT_PLATFORM = "INSERT_REQUEST";
     static final String REQUEST_ACCEPT_PLATFORM = "ACCEPT_REQUEST";
     static final String REQUEST_PACK_PLATFORM   = "PACK_REQUEST";
+    static final String REQUEST_LIST_ACCEPTED = "LIST_ACCEPTED";
     static final String REQUEST_MIGRATE_PLATFORM   = "MIGRATE_REQUEST";
     static final String REQUEST_MIGRATE_ZONE1_PLATFORM   = "MIGRATE_ZONE1_REQUEST";
     static final String REQUEST_MIGRATE_ZONE2_PLATFORM   = "MIGRATE_ZONE2_REQUEST";
@@ -34,4 +35,5 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
     void doStartCloud(SecureCAPlatform secureCAPlatform, PrivateKey priv, PublicKey pub, JTextArea Printer);
     void listPlatforms(SecureCAPlatform secureCAPlatform);
     void doAcceptCloud(SecureCAPlatform secureCAPlatform, String index);
+    void listAcceptedPlatforms(SecureCAPlatform secureCAPlatform);
 }
