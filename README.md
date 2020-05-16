@@ -23,16 +23,16 @@ java -cp TPM.jar:test.jar:migration.jar jade.Boot -gui -host localhost -port 808
 
 # START AGENT 2
 
-* Context EK: 0x81010019
-* Context AK: 0x8101001a
+* Context EK: 0x81010020
+* Context AK: 0x8101002a
 
 
 java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36711\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A2:vom.CAAgent
 
 # START AGENT 1
 
-* Context EK: 0x81010009
-* Context AK: 0x8101000a
+* Context EK: 0x81010030
+* Context AK: 0x8101003a
 * AID Destiny Test: ams@192.168.0.110:1364/JADE
 * Address Destiny Test: http://raspberrypi:45309/acc
 
