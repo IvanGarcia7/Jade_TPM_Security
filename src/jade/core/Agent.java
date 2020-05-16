@@ -93,15 +93,29 @@ public class Agent implements Runnable, Serializable
 
 	private PrivateKey privatekey;
 	java.util.Map<String, SecureCAConfirmation> CAPermissionList;
-
+	private PublicKey destinyKey;
+	private String token;
 
 	public PrivateKey getPrivateKey() {
     	return privatekey;
     }
 
-    public void setPrivateKey(PrivateKey key){
+	public PublicKey getDestinyKey() {
+		return destinyKey;
+	}
+
+	public void setDestinyKey(PublicKey pub) {
+		destinyKey = pub;
+	}
+
+	public void setPrivateKey(PrivateKey key){
     	privatekey = key;
 	}
+
+	public void setToken(String tok){
+		token = tok;
+	}
+
 
 	public java.util.Map<String, SecureCAConfirmation> request_pass() {
 		return CAPermissionList;
@@ -111,6 +125,9 @@ public class Agent implements Runnable, Serializable
 		CAPermissionList = map_req;
 	}
 
+	public String getToken() {
+		return token;
+	}
 
 
 	/**

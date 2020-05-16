@@ -4,20 +4,9 @@
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/Agent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/migration/AMSInitiator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/migration/AMSInitiator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/migration/AMSResponder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/migration/AMSResponder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilitySlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilitySlice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +86,7 @@
       <workItem from="1589377153515" duration="13513000" />
       <workItem from="1589471168190" duration="6962000" />
       <workItem from="1589556782276" duration="6559000" />
-      <workItem from="1589618188087" duration="12014000" />
+      <workItem from="1589618188087" duration="14985000" />
     </task>
     <servers />
   </component>

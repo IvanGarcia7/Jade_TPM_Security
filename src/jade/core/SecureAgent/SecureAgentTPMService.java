@@ -416,6 +416,13 @@ public class SecureAgentTPMService extends BaseService {
                         pubKeyAgent=pairAgent.getValue();
                     }
 
+
+                    System.out.println("MY PRIVATE KEY");
+                    System.out.println(privKeyAgent);
+                    System.out.println("MY PUBLIC KEY");
+                    System.out.println(pubKeyAgent);
+
+
                     AID amsAID = new AID("ams", false);
                     Agent ams = actualcontainer.acquireLocalAgent(amsAID);
                     ams.setPrivateKey(privKeyAgent);
@@ -547,6 +554,12 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("*****************************************************************");
                     System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
                     System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
+
+                    AID amsAID = new AID("ams", false);
+                    Agent ams = actualcontainer.acquireLocalAgent(amsAID);
+                    ams.setDestinyKey(packetReceived.getDestinyPublic());
+                    ams.setToken(packetReceived.getToken());
+                    actualcontainer.releaseLocalAgent(amsAID);
 
                     AID amsMain = requestAgent.getAID();
                     SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
