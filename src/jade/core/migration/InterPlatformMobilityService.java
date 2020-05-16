@@ -1,20 +1,16 @@
 /*****************************************************************
- JADE - Java Agent DEvelopment Framework is a framework to develop 
+ JADE - Java Agent DEvelopment Framework is a framework to develop
  multi-agent systems in compliance with the FIPA specifications.
- Copyright (C) 2000 CSELT S.p.A. 
-
+ Copyright (C) 2000 CSELT S.p.A.
  GNU Lesser General Public License
-
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
- License as published by the Free Software Foundation, 
- version 2.1 of the License. 
-
+ License as published by the Free Software Foundation,
+ version 2.1 of the License.
  This library is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  Lesser General Public License for more details.
-
  You should have received a copy of the GNU Lesser General Public
  License along with this library; if not, write to the
  Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -35,6 +31,7 @@ import jade.core.LifeCycle;
 import jade.core.MainContainer;
 import jade.core.PlatformID;
 import jade.core.SecureAgent.SecureAgentPlatform;
+import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.SecureCloud.SecureCAPlatform;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
@@ -64,12 +61,14 @@ import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.io.FileInputStream;
-import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.JarEntry;
+import java.util.logging.Level;
+
 import jade.core.management.AgentManagementService;
 import jade.core.management.AgentManagementSlice;
 import jade.core.management.CodeLocator;
@@ -92,20 +91,16 @@ import jade.util.Logger;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Date;
-import java.util.Iterator;
+import javax.crypto.spec.SecretKeySpec;
 
 
 /**
  * Description here
- * 
+ *
  * @author <a href="mailto:Joan.Ametller@uab.es">Joan Ametller Esquerra </a>
  * @author Carles Garrigues
  * @author <a href="mailto:Jordi.Cucurull@uab.es">Jordi Cucurull Juan</a>
- *  
+ *
  */
 public class InterPlatformMobilityService extends BaseService {
 
@@ -116,9 +111,9 @@ public class InterPlatformMobilityService extends BaseService {
 	public static final String MAIN_CONTAINER = "Main-Container";
 
 	public static final String MESSAGE_RESPONSE_TIMEOUT = "30000";
-	
+
 	public static final String MESSAGE_RESPONSE_TIMEOUT_RESPONDER = "60000";
-	
+
 	public static final String JAR_PATH = "jade_core_migration_InterPlatformMobilityService_JarPath";
 
 	private static final String[] OWNED_COMMANDS = new String[] {
@@ -126,7 +121,7 @@ public class InterPlatformMobilityService extends BaseService {
 			InterPlatformMobilityHelper.INFORM_MIGRATED,
 			InterPlatformMobilityHelper.LAUNCH_AGENT,
 			InterPlatformMobilityHelper.REMOVE_PREPOWERUP_AGENT};
-	
+
 	public static final String JAVA_SYSTEM_PROPERTY_CLASS_VERSION = "java.class.version";
 	public static final String LANGUAGE_PROPERTY_NAME = "java";
 	public static final String LANGUAGE_PROPERTY_FORMAT = "bytecode";
@@ -142,18 +137,18 @@ public class InterPlatformMobilityService extends BaseService {
 	public static final int MAX_SUPPORTED_PROTOCOL_MINOR_VERSION = 65536;
 	public static final int MIN_SUPPORTED_PROTOCOL_MAJOR_VERSION = 0;
 	public static final int MIN_SUPPORTED_PROTOCOL_MINOR_VERSION = 0;
-	
+
 	public static final String MIGRATION_TIMEOUT = "jade_core_migration_IPMS_migration_timeout";
-	
+
 	public static final String MIGRATION_TIMEOUT_RESPONDER = "jade_core_migration_IPMS_migration_timeout_responder";
 
 	public void init(AgentContainer ac, Profile p) throws ProfileException {
 		super.init(ac, p);
-		
+
 		_myContainer = ac;
 		_profile = p;
 		try {
-			
+
 			try {
 				_migrationTimeout = Integer.parseInt(p.getParameter(MIGRATION_TIMEOUT, MESSAGE_RESPONSE_TIMEOUT));
 			} catch (NumberFormatException nte) {
@@ -161,7 +156,7 @@ public class InterPlatformMobilityService extends BaseService {
 				if (logger.isLoggable(Logger.WARNING))
 					logger.log(Logger.WARNING, "Incorrect passed timeout value, setting to default value: "+ MESSAGE_RESPONSE_TIMEOUT);
 			}
-			
+
 			try {
 				_migrationTimeoutResponder = Integer.parseInt(p.getParameter(MIGRATION_TIMEOUT_RESPONDER, MESSAGE_RESPONSE_TIMEOUT_RESPONDER));
 			} catch (NumberFormatException nte) {
@@ -171,11 +166,11 @@ public class InterPlatformMobilityService extends BaseService {
 			}
 			if (_migrationTimeout!=Integer.parseInt(MESSAGE_RESPONSE_TIMEOUT)) {
 				if (logger.isLoggable(Logger.WARNING))
-					logger.log(Logger.WARNING, "Migration timeout redefined to: "+ _migrationTimeout);		
+					logger.log(Logger.WARNING, "Migration timeout redefined to: "+ _migrationTimeout);
 			}
 			if (_migrationTimeoutResponder!=Integer.parseInt(MESSAGE_RESPONSE_TIMEOUT_RESPONDER)) {
 				if (logger.isLoggable(Logger.WARNING))
-					logger.log(Logger.WARNING, "Migration timeout responder redefined to: "+ _migrationTimeoutResponder);		
+					logger.log(Logger.WARNING, "Migration timeout responder redefined to: "+ _migrationTimeoutResponder);
 			}
 
 			if ((_jarPath = p.getParameter(JAR_PATH, "")).equals(
@@ -190,16 +185,16 @@ public class InterPlatformMobilityService extends BaseService {
 
 				_jarPath = System.getProperty("user.dir")
 						+ File.separator + "jarManager" + File.separator;
-				
+
 				// Create the directory if not exists.
 				File f = new File(_jarPath);
 				if (!f.exists()) f.mkdir();
-				
+
 			}
-			
+
 			// Create the JarManager.
 			_jarManager = new JarManager(_jarPath);
-			
+
 		} catch (Exception e) {
 			if (logger.isLoggable(Logger.SEVERE))
 				logger.log(Logger.SEVERE, "Error initializing inter-platform migration service: "+ e);
@@ -210,7 +205,7 @@ public class InterPlatformMobilityService extends BaseService {
 
 	}
 
-	
+
 	public String getName() {
 		return InterPlatformMobilityHelper.NAME;
 	}
@@ -229,7 +224,7 @@ public class InterPlatformMobilityService extends BaseService {
 
 	public Filter getCommandFilter(boolean direction) {
 		if (direction == Filter.OUTGOING) {
-            return _outFilter;
+			return _outFilter;
 		} else return null;
 	}
 
@@ -245,10 +240,10 @@ public class InterPlatformMobilityService extends BaseService {
 		return OWNED_COMMANDS;
 	}
 
-/*	public String getAgentCodeSite(AID aid) {
-		return getLocator().getAgentCodeLocation(aid);
-	}
-*/
+	/*	public String getAgentCodeSite(AID aid) {
+            return getLocator().getAgentCodeLocation(aid);
+        }
+    */
 	private class CommandSourceSink implements Sink {
 
 		public void consume(VerticalCommand cmd) {
@@ -262,68 +257,49 @@ public class InterPlatformMobilityService extends BaseService {
 					InterPlatformMobilityHelper.LAUNCH_AGENT))
 				launchAgent(cmd);
 			else if (cmd.getName().equals(
-						InterPlatformMobilityHelper.REMOVE_PREPOWERUP_AGENT))
-					removePrePoweredUpAgent(cmd);
+					InterPlatformMobilityHelper.REMOVE_PREPOWERUP_AGENT))
+				removePrePoweredUpAgent(cmd);
 		}
 
 		//Serializes the agent and transfers its instance to Main-Container
 		private void handleInformMigrated(VerticalCommand cmd) {
-		      if (logger.isLoggable(Logger.FINE))
-		    	logger.log(Logger.FINE,"Source-Sink: handleInformMigrated invoked");
+			if (logger.isLoggable(Logger.FINE))
+				logger.log(Logger.FINE,"Source-Sink: handleInformMigrated invoked");
 
-		      Object[] params = cmd.getParams();
-		      PlatformID where = (PlatformID)params[1];
-		      AID name = (AID)params[0];
-		      
-		      SecureAgentPlatform agent = (SecureAgentPlatform) _myContainer.acquireLocalAgent(name);
-			  PublicKey destinyPub = agent.getLocDestiny();
-			  String token = agent.getToken();
+			Object[] params = cmd.getParams();
+			PlatformID where = (PlatformID)params[1];
+			AID name = (AID)params[0];
 
+			Agent agent = _myContainer.acquireLocalAgent(name);
 
-		      
-		      try{
-		        ByteArrayOutputStream out = new ByteArrayOutputStream();
-		        ObjectOutputStream encoder = new ObjectOutputStream(out);
-		        encoder.writeObject(agent);
-		        if (logger.isLoggable(Logger.FINE))
-		          logger.log(Logger.FINE, "Source-Sink: handleInformMigrated: Agent serialized");
-		        byte[] instance = out.toByteArray();
+			try{
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				ObjectOutputStream encoder = new ObjectOutputStream(out);
+				encoder.writeObject(agent);
+				if (logger.isLoggable(Logger.FINE))
+					logger.log(Logger.FINE, "Source-Sink: handleInformMigrated: Agent serialized");
+				byte[] instance = out.toByteArray();
 
-
-
-		        KeyGenerator generator = KeyGenerator.getInstance("AES");
-		        generator.init(256);
-		        SecretKey secKey = generator.generateKey();
-		        Cipher aesCipher = Cipher.getInstance("AES");
-		        aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-
-		        Pair<String,byte []> ObjectSender = new Pair<String, byte []>(token,instance);
-
-		        byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(ObjectSender));
-		        byte [] encryptedKeySecret = Agencia.encrypt(destinyPub,secKey.getEncoded());
-		        Pair<byte [],byte []> migrationPacket = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
-
-
-				  //Get code source container of agent.
+				//Get code source container of agent.
 				AgentMobilityService ams = (AgentMobilityService) myFinder.findService(AgentMobilityService.NAME);
 				String codesrc = ams.getClassSite(agent);
-		        if (codesrc == null) {
-		        	codesrc = _myContainer.getID().getName();
-		        }
-		        
-		        InterPlatformMobilitySlice mainSlice =
-		          (InterPlatformMobilitySlice)getSlice(MAIN_SLICE);
-		        mainSlice.transferInstance(Agencia.serialize(migrationPacket), name, agent.getClass().getName(), codesrc, where);
-		        if (logger.isLoggable(Logger.FINE))
-		          logger.log(Logger.FINE, "Source-Sink: handleInformMigrated: Instance transfered to Main-Container");
-		
-		      }catch(Exception e){
-		        if (logger.isLoggable(Logger.SEVERE))
-		          logger.log(Logger.SEVERE, "Source-Sink: handleInformMigrated: error while migrating: "+ e);
-		        cmd.setReturnValue(e);
-		      }
-		      _myContainer.releaseLocalAgent(name);
-		    }
+				if (codesrc == null) {
+					codesrc = _myContainer.getID().getName();
+				}
+
+				InterPlatformMobilitySlice mainSlice =
+						(InterPlatformMobilitySlice)getSlice(MAIN_SLICE);
+				mainSlice.transferInstance(instance, name, agent.getClass().getName(), codesrc, where);
+				if (logger.isLoggable(Logger.FINE))
+					logger.log(Logger.FINE, "Source-Sink: handleInformMigrated: Instance transfered to Main-Container");
+
+			}catch(Exception e){
+				if (logger.isLoggable(Logger.SEVERE))
+					logger.log(Logger.SEVERE, "Source-Sink: handleInformMigrated: error while migrating: "+ e);
+				cmd.setReturnValue(e);
+			}
+			_myContainer.releaseLocalAgent(name);
+		}
 		// Add an entry to CodeLocator table
 		// Create agent
 		private void launchAgent(VerticalCommand cmd) {
@@ -332,22 +308,10 @@ public class InterPlatformMobilityService extends BaseService {
 			Object[] params = cmd.getParams();
 			byte[] jar = (byte[]) params[0];
 			byte[] instance = (byte[]) params[1];
-
-
-			//Decrypt with the privateKey
-			AID amsMain = _myContainer.getAMS();
-			SecureCAPlatform amsMainPlatform = (SecureCAPlatform) _myContainer.acquireLocalAgent(amsMain);
-
-			//FETCH MY PRIVATE AND MY LIST OF WHITE PASS
-			//PrivateKey privateAMS = amsMainPlatform.getPrivateKey();
-
-
-
-
 			AID name = (AID) params[2];
 			JarClassLoader loader = null;
 			Deserializer des = null;
-			
+
 			try {
 				//Register jar in JarManager and deserialize agent instance
 				String jarfile = _jarManager.registerAgent(name, jar);
@@ -361,7 +325,7 @@ public class InterPlatformMobilityService extends BaseService {
 						instance), loader);
 				Agent agent = (Agent) des.readObject();
 				des.close();
-				
+
 				if (logger.isLoggable(Logger.FINE))
 					logger.log(Logger.FINE,
 							"Source-Sink: launchAgent: Agent de-serialized");
@@ -369,7 +333,7 @@ public class InterPlatformMobilityService extends BaseService {
 				AID agentID = new AID(name.getName(), AID.ISGUID);
 				NodeDescriptor myNodeDescriptor = _myContainer
 						.getNodeDescriptor();
-				
+
 				//Create agent and inform the platform
 				_myContainer.initAgent(agentID, agent, myNodeDescriptor
 						.getOwnerPrincipal(), myNodeDescriptor
@@ -390,10 +354,10 @@ public class InterPlatformMobilityService extends BaseService {
 						logger.log(Logger.WARNING,
 								"Source-Sink: launchAgent: Error closing file descriptors: "+ioe);
 				}
-				
+
 				//Remove agent from CodeLocator if the migration cannot be completed.
 				getLocator().removeAgent(name);
-				
+
 				//Return error result.
 				cmd.setReturnValue(e);
 			}
@@ -407,15 +371,15 @@ public class InterPlatformMobilityService extends BaseService {
 			AID name = (AID) params[0];
 
 			try {
-				
+
 				AID agentID = new AID(name.getName(), AID.ISGUID);
-				
+
 				//Remove agent from the platform
 				_myContainer.getMain().deadAgent(agentID, false);
 
 				//Remove agent references.
 				getLocator().removeAgent(agentID);
-				
+
 				if (logger.isLoggable(Logger.FINE))
 					logger.log(Logger.FINE,
 							"Source-Sink: removePrePoweredUpAgent: Agent removed");
@@ -426,7 +390,7 @@ public class InterPlatformMobilityService extends BaseService {
 				cmd.setReturnValue(e);
 			}
 		}
-		
+
 		private void handleInformMigrationResult(VerticalCommand cmd) {
 			if (logger.isLoggable(Logger.FINE))
 				logger.log(Logger.FINE,
@@ -457,15 +421,15 @@ public class InterPlatformMobilityService extends BaseService {
 				}
 
 				/*if (result.equals(MIGRATION_OK)) {
-					
+
 					//remove agent from platform
 					if (logger.isLoggable(Logger.FINE))
 						logger
 								.log(Logger.FINE,
 										"Source-Sink: handleInformMigrationResult removing agent from platform");
-					
+
 					_myContainer.getMain().deadAgent(name, false);
-					
+
 				}*/
 			} catch (Exception e) {
 				if (logger.isLoggable(Logger.WARNING))
@@ -488,9 +452,9 @@ public class InterPlatformMobilityService extends BaseService {
 			Object[] params = cmd.getParams();
 			AID name = (AID) params[0];
 			try {
-				
+
 				_myContainer.removeLocalAgent(name);
-				
+
 				//Remove agent references whether agent have his code on
 				//his living container.
 				/*if (getLocator().isRegistered(name)) {
@@ -500,7 +464,7 @@ public class InterPlatformMobilityService extends BaseService {
 										+ name.getName());
 					getLocator().removeAgent(name);
 				} else {
-					
+
 					//In case of agent do not has his code here, we obtain from mobility service
 					//the code location and send a deleteAgentReferences command to it.
 					AgentMobilityService ams = (AgentMobilityService) myFinder.findService(AgentMobilityService.NAME);
@@ -516,7 +480,7 @@ public class InterPlatformMobilityService extends BaseService {
 						codeSlice = (InterPlatformMobilitySlice) getFreshSlice(codeContainerName);
 						codeSlice.deleteAgentReferences(name);
 					}
-					
+
 				}*/
 			} catch (Exception e) {
 				if (logger.isLoggable(Logger.WARNING))
@@ -534,13 +498,13 @@ public class InterPlatformMobilityService extends BaseService {
 				Object[] params = cmd.getParams();
 				if ((params[1] instanceof PlatformID)
 						&& (params[0] instanceof AID)) {
-					
+
 					if (!testLocalMigration(cmd))
 						handleInformMoved(cmd);
-					return false;	
-				} 
+					return false;
+				}
 			}
-			
+
 			if (cmd.getName().equals(
 					AgentManagementSlice.INFORM_STATE_CHANGED)) {
 				Object[] params = cmd.getParams();
@@ -551,7 +515,7 @@ public class InterPlatformMobilityService extends BaseService {
 				//Check for AMS creation to install AMSResponder behaviour.
 				if ((from.getValue() == Agent.AP_INITIATED)&&
 						(to.getValue() == Agent.AP_ACTIVE)) {
-					
+
 					if (aid.getLocalName().equals("ams")) {
 						if (_profile.getBooleanProperty(Profile.MAIN, false)) {
 							AID amsAID = new AID("ams", false);
@@ -559,23 +523,23 @@ public class InterPlatformMobilityService extends BaseService {
 							MessageTemplate mt = MessageTemplate.and(MessageTemplate
 									.MatchOntology(MigrationOntology.NAME), MessageTemplate
 									.MatchPerformative(ACLMessage.REQUEST));
-							ams.addBehaviour(new AMSResponder(ams, mt, _migrationTimeoutResponder));
+							ams.addBehaviour(new AMSResponder(ams, mt, _migrationTimeoutResponder, _myContainer));
 							_myContainer.releaseLocalAgent(amsAID);
 						}
 					}
 				}
-				
+
 				//If an agent dies eliminate all references to it.
 				if ((from.getValue() == Agent.AP_ACTIVE)&&
 						(to.getValue() == Agent.AP_DELETED)) {
-					
+
 					String codeContainerName = null;
-					
+
 					try {
-					AgentMobilityService ams = (AgentMobilityService) myFinder.findService(AgentMobilityService.NAME);
-					Agent agent = _myContainer.acquireLocalAgent(aid);
-					codeContainerName = ams.getClassSite(agent);
-					_myContainer.releaseLocalAgent(aid);
+						AgentMobilityService ams = (AgentMobilityService) myFinder.findService(AgentMobilityService.NAME);
+						Agent agent = _myContainer.acquireLocalAgent(aid);
+						codeContainerName = ams.getClassSite(agent);
+						_myContainer.releaseLocalAgent(aid);
 					} catch (ServiceException se) {
 						if (logger.isLoggable(Logger.WARNING))
 							logger.log(Logger.WARNING,
@@ -585,16 +549,16 @@ public class InterPlatformMobilityService extends BaseService {
 							logger.log(Logger.WARNING,
 									"CommandOutgoingFilter: Error getting agent code location from MobilityService.");
 					}
-					
+
 					if (codeContainerName == null) {
 						codeContainerName = MAIN_CONTAINER;
 					}
-					
+
 					try {
-						InterPlatformMobilitySlice slice = 
-							(InterPlatformMobilitySlice) getSlice(codeContainerName);
+						InterPlatformMobilitySlice slice =
+								(InterPlatformMobilitySlice) getSlice(codeContainerName);
 						slice.deleteAgentReferences(aid);
-						
+
 					} catch (ServiceException se) {
 						if (logger.isLoggable(Logger.WARNING))
 							logger.log(Logger.WARNING,
@@ -604,11 +568,11 @@ public class InterPlatformMobilityService extends BaseService {
 							logger.log(Logger.WARNING,
 									"CommandOutgoingFilter: Error deleting agent references.");
 					}
-					
-					
+
+
 					return true;
 				}
-				
+
 				if (from.getValue() != AgentMobilityService.AP_TRANSIT)
 					return true;
 
@@ -617,55 +581,55 @@ public class InterPlatformMobilityService extends BaseService {
 				} else if (to.getValue() == Agent.AP_DELETED) {
 				}
 			}
-			
-			if (cmd.getName().equals(MessagingSlice.SET_PLATFORM_ADDRESSES)) {	
-				
+
+			if (cmd.getName().equals(MessagingSlice.SET_PLATFORM_ADDRESSES)) {
+
 				if (!_codeLocatorMonitored) {
-					
+
 					//Associate to CodeLocator events.
 					getLocator().subscribeToEvents(new CodeLocatorMonitor());
 					_codeLocatorMonitored = true;
 				}
 			}
-						
+
 			return true;
 		}
 
 		private boolean testLocalMigration(VerticalCommand vcmd) {
-			
-			if (logger.isLoggable(Logger.FINE))
-		    	logger.log(Logger.FINE,"CommandOutgoingFilter: testLocalMigration invoked");
-			
-			Object[] params = vcmd.getParams();
-		    PlatformID where = (PlatformID)params[1];
-		    AID name = (AID)params[0];
 
-		    //Test for a migration to the same platform.
-		    if (where.getName().equals(_myContainer.getPlatformID())) {
-		    	
-		      	//Test whether this is the Main Container.
-		      	if (_myContainer.getMain()!=null) {
-	      			Agent agent = _myContainer.acquireLocalAgent(name);
-	      			agent.restoreBufferedState();
-	      			_myContainer.releaseLocalAgent(name);
-		      		
-		      	} else {
-		      		//Moving agent to Main-Container of the local platform.
-		    	    try {
-		    	    	Agent agent = _myContainer.acquireLocalAgent(name);
-		      			AgentMobilityHelper amh = ((AgentMobilityHelper) agent.getHelper(AgentMobilityHelper.NAME));
-		      			agent.restoreBufferedState();
-		      			_myContainer.releaseLocalAgent(name);
-		      			amh.move(new ContainerID(MAIN_CONTAINER,null));
-		    	    } catch (ServiceException se) {
-		    	    	if (logger.isLoggable(Logger.SEVERE))
-		                    logger.log(Logger.SEVERE, "CommandOutgoingFilter: testLocalMigration: error moving agent to Main Container of local platform");
-		    	    }
-		      	}
-		    	return true;
-		    } else return false;
+			if (logger.isLoggable(Logger.FINE))
+				logger.log(Logger.FINE,"CommandOutgoingFilter: testLocalMigration invoked");
+
+			Object[] params = vcmd.getParams();
+			PlatformID where = (PlatformID)params[1];
+			AID name = (AID)params[0];
+
+			//Test for a migration to the same platform.
+			if (where.getName().equals(_myContainer.getPlatformID())) {
+
+				//Test whether this is the Main Container.
+				if (_myContainer.getMain()!=null) {
+					Agent agent = _myContainer.acquireLocalAgent(name);
+					agent.restoreBufferedState();
+					_myContainer.releaseLocalAgent(name);
+
+				} else {
+					//Moving agent to Main-Container of the local platform.
+					try {
+						Agent agent = _myContainer.acquireLocalAgent(name);
+						AgentMobilityHelper amh = ((AgentMobilityHelper) agent.getHelper(AgentMobilityHelper.NAME));
+						agent.restoreBufferedState();
+						_myContainer.releaseLocalAgent(name);
+						amh.move(new ContainerID(MAIN_CONTAINER,null));
+					} catch (ServiceException se) {
+						if (logger.isLoggable(Logger.SEVERE))
+							logger.log(Logger.SEVERE, "CommandOutgoingFilter: testLocalMigration: error moving agent to Main Container of local platform");
+					}
+				}
+				return true;
+			} else return false;
 		}
-		
+
 		private void handleInformMoved(VerticalCommand vcmd) {
 
 			if (logger.isLoggable(Logger.FINE))
@@ -733,12 +697,12 @@ public class InterPlatformMobilityService extends BaseService {
 				gCmd.addParam(name);
 
 				result = gCmd;
-			} 
+			}
 			return result;
 		}
 
 		private Object createAMSBehaviour(byte[] instance, AID name, String className,
-				String codesrc, PlatformID where) {
+										  String codesrc, PlatformID where) {
 
 			try {
 				// get agent code from jar
@@ -778,7 +742,7 @@ public class InterPlatformMobilityService extends BaseService {
 							+ _migrationTimeout));
 
 					AMSInitiator b = new AMSInitiator(ams, msg, instance,
-							rawJar, where, name);
+							rawJar, where, name, _myContainer);
 					ams.addBehaviour(b);
 					_myContainer.releaseLocalAgent(amsAID);
 				} else {
@@ -806,10 +770,10 @@ public class InterPlatformMobilityService extends BaseService {
 			try {
 				byte[] rawJar = null;
 				String location = _jarManager.getAgentCodeLocation(name);
-				
+
 				if (logger.isLoggable(Logger.FINE))
 					logger.log(Logger.FINE, "Location of agent's code: " + location);
-				
+
 				// Check if the JAR file is registered in the Jar manager.
 				if (location != null) {
 					File jar = new File(location);
@@ -819,8 +783,8 @@ public class InterPlatformMobilityService extends BaseService {
 								"ServiceCompo handleGetAgentCode jar returned, size: "
 										+ rawJar.length);
 					return rawJar;
-				
-				// If Jar is not registered in the Jar Manager...
+
+					// If Jar is not registered in the Jar Manager...
 				} else {
 					if (getLocator().isRegistered(name)) {
 						ClassLoader cl;
@@ -829,37 +793,37 @@ public class InterPlatformMobilityService extends BaseService {
 							String newJarFile = _jarManager.registerAgent(name, new File(sourceJarFile));
 							File f = new File(newJarFile);
 							getLocator().updateAgent(name, new JarClassLoader(f, cl.getParent()));
-							
+
 						} else {
-							
+
 							if (logger.isLoggable(Logger.FINE))
 								logger
 										.log(Logger.FINE,
 												"ServiceCompo handleGetAgentCode jar doesn't exist but there is an alternative ClassLoader");
-		
+
 							// create jar agent
 							String newJarFile = createJar(name, Class.forName(className));
 							File f = new File(newJarFile);
 							getLocator().updateAgent(name, new JarClassLoader(f, cl.getParent()));
 						}
-						
+
 					} else {
 						if (logger.isLoggable(Logger.FINE))
 							logger
 									.log(Logger.FINE,
 											"ServiceCompo handleGetAgentCode jar doesn't exist");
-	
+
 						// create jar agent
 						Class agentMainClass = Class.forName(className);
 						String newJarFileName = createJar(name, agentMainClass);
-						
+
 						// Create classloader.
 						File jarFile = new File(newJarFileName);
-						JarClassLoader loader = new JarClassLoader(jarFile, 
+						JarClassLoader loader = new JarClassLoader(jarFile,
 								agentMainClass.getClassLoader());
-						getLocator().registerAgent(name, loader);					
+						getLocator().registerAgent(name, loader);
 					}
-					
+
 					// load and return the new jar
 					location = _jarManager.getAgentCodeLocation(name);
 					if (location != null) {
@@ -888,7 +852,7 @@ public class InterPlatformMobilityService extends BaseService {
 		// This method treats H_INFORMMIGRATIONRESULT commands sent by
 		// the Main-Container slice.
 		private VerticalCommand handleInformMigrationResult(AID name, String res) {
-			
+
 			GenericCommand result = null;
 			Agent instance = _myContainer.acquireLocalAgent(name);
 			//AID lockName = instance.getAID();
@@ -908,12 +872,11 @@ public class InterPlatformMobilityService extends BaseService {
 							return false;
 						}
 					});
-					
+
 					result = new GenericCommand(
 							InterPlatformMobilityHelper.DELETE_AGENT_REFERENCES,
 							InterPlatformMobilityHelper.NAME, null);
 					result.addParam(instance.getAID());
-
 				} catch (Exception e) {
 					if(logger.isLoggable(Logger.SEVERE))
 						logger.log(Logger.SEVERE, "Error changing agent's state");
@@ -944,14 +907,14 @@ public class InterPlatformMobilityService extends BaseService {
 			return InterPlatformMobilityService.this;
 		}
 	}
-	
+
 	//FIXME: Hauriem de tenir una classe wrapper per el codelocator
 	// i ocultar la variable _locator per un millor disseny
 	private CodeLocator getLocator(){
 		try{
 			if(_locator==null)
-			  return ((AgentManagementService)
-				myFinder.findService(AgentManagementService.NAME)).getCodeLocator();
+				return ((AgentManagementService)
+						myFinder.findService(AgentManagementService.NAME)).getCodeLocator();
 			else
 				return _locator;
 		}catch(Exception e){
@@ -983,13 +946,13 @@ public class InterPlatformMobilityService extends BaseService {
 	private AgentContainer _myContainer;
 
 	private CodeLocator _locator;
-	
+
 	private String _jarPath;
-	
+
 	private JarManager _jarManager;
-	
+
 	private boolean _codeLocatorMonitored = false;
-	
+
 	protected int _migrationTimeout;
 	protected int _migrationTimeoutResponder;
 
@@ -1054,10 +1017,10 @@ public class InterPlatformMobilityService extends BaseService {
 					InterPlatformMobilityHelper.REMOVE_PREPOWERUP_AGENT,
 					InterPlatformMobilityHelper.NAME, null);
 			cmd.addParam(name);
-			
+
 			submit(cmd);
 		}
-		
+
 		//This method is currently not used
 		public void informMigrated(PlatformID where, AID name)
 				throws ServiceException {
@@ -1147,18 +1110,18 @@ public class InterPlatformMobilityService extends BaseService {
 		private JarClassLoader _loader;
 
 	}
-	
+
 	private class CodeLocatorMonitor extends CodeLocatorListener {
 
 		/**
-		 * Method executed each time an agent present in the 
+		 * Method executed each time an agent present in the
 		 * CodeLocator is cloned.
 		 */
 		public ClassLoader handleCloneAgent(AID oldName, AID newName, ClassLoader cl) {
-			
+
 			// The new agent is taken into account.
 			_jarManager.cloneAgent(oldName, newName);
-			
+
 			// ClassLoader is not replicated because in case of JarClassLoader
 			// is automatically done by Jade.
 			return null;
@@ -1171,7 +1134,7 @@ public class InterPlatformMobilityService extends BaseService {
 		public void handleRemoveAgent(AID name, ClassLoader cl) {
 			_jarManager.removeAgentRef(name);
 		}
-		
+
 	}
 
 }

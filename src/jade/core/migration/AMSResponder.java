@@ -25,11 +25,8 @@ Boston, MA  02111-1307, USA.
  
 package jade.core.migration;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Vector;
+import java.security.PrivateKey;
+import java.util.*;
 
 import jade.content.ContentManager;
 import jade.content.lang.sl.SLCodec;
@@ -37,6 +34,10 @@ import jade.content.onto.basic.Action;
 import jade.content.Concept;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.AgentContainer;
+import jade.core.SecureCloud.SecureCAConfirmation;
+import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
 import jade.core.ServiceException;
 import jade.core.migration.ontology.MigrationOntology;
 import jade.core.migration.ontology.MobileAgentDescription;
@@ -52,6 +53,11 @@ import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
 import jade.util.Logger;
 import org.apache.commons.codec.binary.Base64;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
  * Description here
  * 
@@ -73,10 +79,12 @@ public class AMSResponder extends SimpleAchieveREResponder {
 	public static final String ERR_MSG_WITHOUT_DATA = "Received message without agent data.";
 	public static final String ERR_MSG_WITHOUT_AID = "Received message without agent identification.";
 	public static final String ERR_MSG_BAD_FORMED = "Received malformed message.";
+
+	private AgentContainer mycontainer;
 	
-  public AMSResponder(Agent a,MessageTemplate mt,int timeout){
+  public AMSResponder(Agent a, MessageTemplate mt, int timeout, AgentContainer _myContainer){
 	super(a,mt);
-	
+	mycontainer = _myContainer;
 	a.getContentManager().registerLanguage(new SLCodec(),
       FIPANames.ContentLanguage.FIPA_SL0);
 	a.getContentManager().registerOntology(MigrationOntology.getInstance());
@@ -275,8 +283,67 @@ public class AMSResponder extends SimpleAchieveREResponder {
 	
 		        mad = null;
 		        request = null;
-		
-		        try{
+
+
+				/*
+				AID amsAID = new AID("ams", false);
+				Agent ams = mycontainer.acquireLocalAgent(amsAID);
+
+				//FETCH MY PRIVATE AND MY LIST OF WHITE PASS
+				PrivateKey privateAMS = ams.getPrivateKey();
+				Pair<byte [], byte []> PairReceive = null;
+				byte [] decryptedKey = null;
+				try {
+					PairReceive = (Pair<byte[], byte[]>) Agencia.deserialize(instance);
+					byte[] OTP = PairReceive.getKey();
+					byte[] content = PairReceive.getValue();
+					decryptedKey = Agencia.decrypt(privateAMS, OTP);
+
+					SecretKey originalKey = new SecretKeySpec(decryptedKey, 0, decryptedKey.length,
+							"AES");
+					Cipher aesCipher = Cipher.getInstance("AES");
+					aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
+					byte[] byteObject = aesCipher.doFinal(content);
+					Pair<String, byte[]> contentdecrypt = (Pair<String, byte[]>) Agencia.deserialize(byteObject);
+
+					String challenge = contentdecrypt.getKey();
+
+					//SEE IF I HAVE PERMISSION
+					Map<String, SecureCAConfirmation> pass_request = ams.request_pass();
+
+					System.out.println("*********************HOTSPOTS*****************************");
+					Iterator it = pass_request.entrySet().iterator();
+					while(it.hasNext()){
+						Map.Entry pair = (Map.Entry)it.next();
+						System.out.println(pair.getKey() + " = " + pair.getValue());
+					}
+					System.out.println("*********************HOTSPOTS*****************************");
+
+					//See if the token is in the list
+					SecureCAConfirmation myPacket = pass_request.get(challenge);
+
+					Date time = myPacket.getTimestamp();
+
+					Calendar c = Calendar.getInstance();
+					Date timeChallenge = new Date(c.getTimeInMillis());
+
+					if (time.compareTo(timeChallenge) < 0) {
+						System.out.println("THE REQUEST PASS THE TIMESTAMP CHALLENGUE");
+						instance = contentdecrypt.getValue();
+					} else {
+						instance = null;
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+
+
+				mycontainer.releaseLocalAgent(amsAID);
+
+*/
+
+
+				try{
 		          
 		          
 		          //create agent without powering it up

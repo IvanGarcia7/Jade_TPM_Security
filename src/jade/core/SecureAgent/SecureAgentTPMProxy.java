@@ -140,4 +140,26 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
         }
     }
 
+
+    public void doMigrateHostpotAcepted(VerticalCommand command) {
+        try{
+            Agencia.printLog("PROCEED TO DO THE MIGRATION WITH THE AMS OF THE MAIN PLATFORM IN THE PROXY",
+                    Level.INFO,SecureAgentTPMHelper.DEBUG,this.getClass().getName());
+            GenericCommand newCommand = new GenericCommand(SecureAgentTPMSlice.REMOTE_REQUEST_MIGRATE_ZONE3_PLATFORM,
+                    SecureAgentTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
+            Node n = getNode();
+            Agencia.printLog("-> SENDING THE CONFIRMATION TO MIGRATE THROUGH A HORIZONTAL COMMAND TO THE " +
+                            "AMS NODE "+ n.getName(), Level.INFO,SecureAgentTPMHelper.DEBUG,
+                    this.getClass().getName());
+            n.accept(newCommand);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 }

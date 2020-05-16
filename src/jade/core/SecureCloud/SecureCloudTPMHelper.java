@@ -36,4 +36,5 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
     void listPlatforms(SecureCAPlatform secureCAPlatform);
     void doAcceptCloud(SecureCAPlatform secureCAPlatform, String index);
     void listAcceptedPlatforms(SecureCAPlatform secureCAPlatform);
+    PrivateKey getPrivKey();
 }

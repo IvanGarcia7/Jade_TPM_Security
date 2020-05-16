@@ -4,6 +4,7 @@ package jade.core.SecureAgent;
 import jade.core.Agent;
 import jade.core.Location;
 import jade.core.PlatformID;
+import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
 import jade.core.migration.InterPlatformMobilityHelper;
@@ -11,7 +12,9 @@ import jade.core.mobility.AgentMobilityHelper;
 import jade.core.mobility.AgentMobilityService;
 
 import javax.swing.*;
+import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Map;
 import java.util.logging.Level;
 
 
@@ -39,6 +42,14 @@ public class SecureAgentPlatform extends Agent{
 
     public void setToken(String token){
         Token = token;
+    }
+
+    public PrivateKey getPrivateKey(){
+        return mobHelperCloudPlatform.getPrivKey();
+    }
+
+    public Map<String, SecureCAConfirmation> request_pass(){
+        return mobHelperCloudPlatform.getPassList();
     }
 
     /**

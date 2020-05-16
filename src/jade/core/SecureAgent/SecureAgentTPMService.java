@@ -234,6 +234,14 @@ public class SecureAgentTPMService extends BaseService {
             myMovable = m;
         }
 
+        public PrivateKey getPrivKey(){
+            return privKeyAgent;
+        }
+
+        public Map<String, SecureCAConfirmation> getPassList(){
+            return CAPermissionList;
+        }
+
 
         /**
          * THIS FUNCTION TRY TO INITIALIZE THE PLATFORM, SO ITS GENERATE A KEY PAIR, AND A SIGNED KEY.
@@ -348,6 +356,17 @@ public class SecureAgentTPMService extends BaseService {
                                            "SOURCE SINK");
                         ie.printStackTrace();
                     }
+                }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
+                    Agencia.printLog("PROCESSING THE COMMAND TO MIGRATE THE AGENT WITH THE AMS OF THE MAIN " +
+                                    "PLATFORM TO ATTESTATE THE DESTINY", Level.INFO, SecureAgentTPMHelper.DEBUG,
+                            this.getClass().getName());
+                    try{
+                        obj.doMigrateHostpotAcepted(command);
+                    }catch(Exception ie){
+                        System.out.println("THERE ARE AN ERROR PROCESSING REQUEST DESTINY ADDRESS IN THE COMMAND " +
+                                "SOURCE SINK");
+                        ie.printStackTrace();
+                    }
                 }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_MOVE)){
                     Agencia.printLog("PROCESSING THE COMMAND TO MOVE THE AGENT", Level.INFO,
                                      SecureAgentTPMHelper.DEBUG, this.getClass().getName());
@@ -390,11 +409,17 @@ public class SecureAgentTPMService extends BaseService {
                     RequestSecureATT SecureCAInformation = new RequestSecureATT(CAKey, CALocation);
 
                     //CREATE KEY PAIR FROM MY PLATFORM AGENT
-                    Pair<PrivateKey,PublicKey> pairAgent = Agencia.genKeyPairAgent();
+                    if(privKeyAgent==null || pubKeyAgent==null){
+                        Pair<PrivateKey,PublicKey> pairAgent = Agencia.genKeyPairAgent();
+                        //SAVE INTO THE CONTEXT OF THE PLATFORM
+                        privKeyAgent=pairAgent.getKey();
+                        pubKeyAgent=pairAgent.getValue();
+                    }
 
-                    //SAVE INTO THE CONTEXT OF THE PLATFORM
-                    privKeyAgent=pairAgent.getKey();
-                    pubKeyAgent=pairAgent.getValue();
+                    AID amsAID = new AID("ams", false);
+                    Agent ams = actualcontainer.acquireLocalAgent(amsAID);
+                    ams.setPrivateKey(privKeyAgent);
+                    actualcontainer.releaseLocalAgent(amsAID);
 
                     //SAVE THE ACTUAL LOCATION OF THE PLATFORM
                     Location actualLocation = actualcontainer.here();
@@ -551,6 +576,12 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("***********************************************************");
 
                     CAPermissionList.put(packetReceived.getToken(),packetReceived);
+
+                    AID amsAID = new AID("ams", false);
+                    Agent ams = actualcontainer.acquireLocalAgent(amsAID);
+                    ams.set_request_pass(CAPermissionList);
+                    actualcontainer.releaseLocalAgent(amsAID);
+
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_DO_MIGRATION)){
                     Pair<PublicKey,PlatformID> packet = (Pair<PublicKey, PlatformID>)command.getParams()[0];
                     System.out.println("I AM IN THE PLATFORM AGENT CORRECT???");

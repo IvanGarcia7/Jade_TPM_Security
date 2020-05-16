@@ -2,10 +2,13 @@ package jade.core.SecureAgent;
 
 
 import jade.core.PlatformID;
+import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.ServiceHelper;
 
 import javax.swing.*;
+import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Map;
 
 
 public interface SecureAgentTPMHelper extends ServiceHelper {
@@ -36,5 +39,6 @@ public interface SecureAgentTPMHelper extends ServiceHelper {
     void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, PlatformID caLocation, PublicKey pubKey,
                            String contextEK, String contextAK);
     void doStartMigration(SecureAgentPlatform secureAgentPlatform, PlatformID destiny);
-
+    PrivateKey getPrivKey();
+    Map<String, SecureCAConfirmation> getPassList();
 }

@@ -25,14 +25,16 @@ Boston, MA  02111-1307, USA.
  
 package jade.core.migration;
 
+import java.security.PublicKey;
 import java.util.Vector;
 
+import jade.core.*;
+import jade.core.SecureAgent.SecureAgentPlatform;
+import jade.core.SecureTPM.Agencia;
+import jade.core.SecureTPM.Pair;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
 import jade.util.Logger;
-import jade.core.Agent;
-import jade.core.AID;
-import jade.core.PlatformID;
 import jade.content.ContentManager;
 import jade.core.migration.ontology.MobileAgentDescription;
 import jade.core.migration.ontology.MobileAgentLanguage;
@@ -45,8 +47,12 @@ import jade.domain.FIPANames;
 import jade.content.lang.sl.SLCodec;
 import jade.core.migration.ontology.MigrationOntology;
 import jade.content.onto.basic.Action;
-import jade.core.ServiceException;
 import jade.core.migration.ontology.PowerupAction;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
 /**
  * Description here
  * 
@@ -56,8 +62,10 @@ import jade.core.migration.ontology.PowerupAction;
  * 
  */
 public class AMSInitiator extends SimpleAchieveREInitiator{
+
+    private AgentContainer myContainer;
 	
-  public AMSInitiator(Agent a, ACLMessage msg, byte[] instance, byte[] jar, PlatformID dest, AID name){
+  public AMSInitiator(Agent a, ACLMessage msg, byte[] instance, byte[] jar, PlatformID dest, AID name, AgentContainer _myContainer){
     super(a, msg);
     _jar = jar;
     _instance = instance;
@@ -68,7 +76,7 @@ public class AMSInitiator extends SimpleAchieveREInitiator{
     _cm.registerLanguage(new SLCodec(),
                 FIPANames.ContentLanguage.FIPA_SL0);
     _cm.registerOntology(MigrationOntology.getInstance());
-
+    myContainer = _myContainer;
   }
   
   /**
@@ -116,7 +124,35 @@ public class AMSInitiator extends SimpleAchieveREInitiator{
   	//Add instance, code and properties of the mobile agent in
   	//the MobileAgentDescription.
   	MobileAgentDescription mad = new MobileAgentDescription();
-    mad.setData(new String(Base64.encodeBase64(_instance)));
+
+
+
+/*
+      try{
+          SecureAgentPlatform agent = (SecureAgentPlatform) myContainer.acquireLocalAgent(name);
+          PublicKey destinyPub = agent.getLocDestiny();
+          String token = agent.getToken();
+
+
+          KeyGenerator generator = KeyGenerator.getInstance("AES");
+          generator.init(256);
+          SecretKey secKey = generator.generateKey();
+          Cipher aesCipher = Cipher.getInstance("AES");
+          aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+          Pair<String,byte []> ObjectSender = new Pair<String, byte []>(token,instance);
+
+          byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(ObjectSender));
+          byte [] encryptedKeySecret = Agencia.encrypt(destinyPub,secKey.getEncoded());
+          Pair<byte [],byte []> migrationPacket = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
+          _instance = Agencia.serialize(migrationPacket);
+
+      }catch(Exception e){
+          e.printStackTrace();
+      }
+
+*/
+
+      mad.setData(new String(Base64.encodeBase64(_instance)));
     mad.setCode(new String(Base64.encodeBase64(_jar)));
     mad.setName(name);
     mad.setAgentProfile(mapf);

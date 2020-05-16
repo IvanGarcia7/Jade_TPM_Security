@@ -227,6 +227,11 @@ public class SecureCloudTPMService extends BaseService {
         }
 
 
+        public PrivateKey getPrivKey(){
+            return privateKeyCA;
+        }
+
+
         /**
          * THIS FUNCTION TRY TO INITIALIZE THE SECURE PLATFORM, ACCORDING TO A KEY PAIR INTRODUCED AS
          * PARAMETERS IN ORDER TO SIMULATE IT. FIRST OF ALL, I NEED TO CONTACT WITH THE AMS OF THE MAIN

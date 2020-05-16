@@ -15,7 +15,11 @@ public class SecureCAPlatform extends Agent{
     private static final long serialVersionUID = 9058618378207435615L;
     private transient SecureCloudTPMHelper mobHelperCloud;
     private JTextArea Printer;
-    private PrivateKey myPrivKey;
+
+
+    public PrivateKey getPrivateKey(){
+        return mobHelperCloud.getPrivKey();
+    }
     
 
 

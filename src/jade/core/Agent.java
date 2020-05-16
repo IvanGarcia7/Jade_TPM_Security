@@ -26,10 +26,12 @@ package jade.core;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 
+import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.util.Logger;
 import jade.util.leap.Serializable;
 import jade.util.leap.Iterator;
 
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Hashtable;
 import java.util.Enumeration;
@@ -87,6 +89,29 @@ public class Agent implements Runnable, Serializable
 	private static final long     serialVersionUID = 3487495895819000L;
 	
 	private Logger log = Logger.getJADELogger(this.getClass().getName());
+
+
+	private PrivateKey privatekey;
+	java.util.Map<String, SecureCAConfirmation> CAPermissionList;
+
+
+	public PrivateKey getPrivateKey() {
+    	return privatekey;
+    }
+
+    public void setPrivateKey(PrivateKey key){
+    	privatekey = key;
+	}
+
+	public java.util.Map<String, SecureCAConfirmation> request_pass() {
+		return CAPermissionList;
+	}
+
+	public void set_request_pass(java.util.Map<String, SecureCAConfirmation> map_req){
+		CAPermissionList = map_req;
+	}
+
+
 
 	/**
 	 Inner class Interrupted.
