@@ -182,6 +182,7 @@ public class SecureCAGuiImpl extends JFrame implements SecureCAGui{
 		p.add(CLEAR);
 		p.add(exitB);
 
+
 		p.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		getContentPane().add(p, BorderLayout.SOUTH);
 

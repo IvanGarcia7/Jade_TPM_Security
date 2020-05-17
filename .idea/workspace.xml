@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/AgentGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/AgentGuiImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/CAAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/CAAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/SecureCAGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/vomNew/SecureCAGuiImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

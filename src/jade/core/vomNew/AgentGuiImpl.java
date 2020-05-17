@@ -221,6 +221,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui{
 		} );
 
 
+		JPanel rootPanel2 = p;
 
 
 		MIGRATE = new JButton("MIGRATE");
@@ -236,6 +237,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui{
 				PlatformID destination2 = new PlatformID(remoteAMSDestiny);
 				myAgent.doSecureMigration(destination2);
 				rootPanel.setVisible(false);
+				rootPanel2.setVisible(false);
 
 			}
 		} );
