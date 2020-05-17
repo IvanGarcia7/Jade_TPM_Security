@@ -12,6 +12,9 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
+
+import jade.core.vomNew.AgentGui;
+import jade.core.vomNew.AgentGuiImpl;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.nio.file.Files;
@@ -77,6 +80,7 @@ public class SecureAgentTPMService extends BaseService {
 
     //PRINTER
     private JTextArea Printer;
+    private AgentGui myGui;
 
     //PERMITS ASSIGNED BY THE AC
     Map<String, SecureCAConfirmation> CAPermissionList = new HashMap<String,SecureCAConfirmation>();
@@ -253,7 +257,8 @@ public class SecureAgentTPMService extends BaseService {
         @Override
         public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, PlatformID caLocation,
                                                    PublicKey pubKey, String contextEK, String contextAK){
-            Printer = secureAgentPlatform.getGUI();
+            Printer = secureAgentPlatform.getGUI().getPrinter();
+            myGui = secureAgentPlatform.getGUI();
             Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED BY THE AGENT: " +
                               secureAgentPlatform.getAID(), Level.INFO, SecureAgentTPMHelper.DEBUG,
                               this.getClass().getName());
@@ -562,6 +567,7 @@ public class SecureAgentTPMService extends BaseService {
                     actualcontainer.releaseLocalAgent(amsAID);
 
                     AID amsMain = requestAgent.getAID();
+
                     SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
                     amsMainPlatform.setLocationKey(packetReceived.getDestinyPublic());
                     amsMainPlatform.setToken(packetReceived.getToken());

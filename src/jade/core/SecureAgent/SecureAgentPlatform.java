@@ -2,16 +2,11 @@ package jade.core.SecureAgent;
 
 
 import jade.core.Agent;
-import jade.core.Location;
 import jade.core.PlatformID;
 import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
-import jade.core.migration.InterPlatformMobilityHelper;
-import jade.core.mobility.AgentMobilityHelper;
-import jade.core.mobility.AgentMobilityService;
-
-import javax.swing.*;
+import jade.core.vomNew.AgentGui;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Map;
@@ -22,10 +17,11 @@ public class SecureAgentPlatform extends Agent{
 
     private static final long serialVersionUID = 9058618378207435612L;
     private transient SecureAgentTPMHelper mobHelperCloudPlatform;
-    private JTextArea Printer;
+
 
     private PublicKey LocationKey;
     private String Token;
+    private AgentGui Printer;
 
 
     public PublicKey getLocDestiny(){
@@ -96,16 +92,16 @@ public class SecureAgentPlatform extends Agent{
         super.doMove(destiny);
     }
 
-    public void setGUI(JTextArea printer){
+    public void setGUI(AgentGui printer){
         Printer = printer;
     }
 
-    public JTextArea getGUI(){
+    public AgentGui getGUI(){
         return Printer;
     }
 
     public void printArea(String text){
-        Printer.append(text+"\n");
+        Printer.getPrinter().append(text+"\n");
     }
 
 

@@ -1,5 +1,6 @@
 package jade.core.vomNew;
 
+
 import jade.core.AID;
 import jade.core.PlatformID;
 import java.awt.*;
@@ -16,7 +17,7 @@ import java.util.Base64;
  J2SE (Swing-based) implementation of the GUI of the agent that
  tries to buy books on behalf of its user
  */
-public class AgentGuiImpl extends JFrame implements AgentGui {
+public class AgentGuiImpl extends JFrame implements AgentGui{
 	private CAAgent myAgent;
 
 	private JTextField SAIDP, AIDP, SADDP, ADDP, CEK, CAK;
@@ -25,12 +26,12 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 
 	public AgentGuiImpl(CAAgent a) {
 		super();
-		myAgent = a;
-		addWindowListener(new WindowAdapter() {
+		myAgent =a;
+		addWindowListener(new	WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				myAgent.doDelete();
 			}
-		});
+		} );
 
 		JPanel rootPanel = new JPanel();
 		rootPanel.setLayout(new GridBagLayout());
@@ -61,6 +62,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 		rootPanel.add(SAIDP, gridBagConstraints);
 
 
+
 		l = new JLabel("SECURE ADDRESS PLATFORM:");
 		l.setHorizontalAlignment(SwingConstants.LEFT);
 		gridBagConstraints = new GridBagConstraints();
@@ -80,6 +82,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 		gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
 		gridBagConstraints.insets = new Insets(5, 3, 0, 3);
 		rootPanel.add(SADDP, gridBagConstraints);
+
 
 
 		///////////
@@ -106,6 +109,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 		rootPanel.add(AIDP, gridBagConstraints);
 
 
+
 		l = new JLabel("ADDRESS PLATFORM:");
 		l.setHorizontalAlignment(SwingConstants.LEFT);
 		gridBagConstraints = new GridBagConstraints();
@@ -125,6 +129,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 		gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
 		gridBagConstraints.insets = new Insets(5, 3, 0, 3);
 		rootPanel.add(ADDP, gridBagConstraints);
+
 
 
 		///////////
@@ -151,6 +156,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 		rootPanel.add(CEK, gridBagConstraints);
 
 
+
 		l = new JLabel("CONTEXT AK:");
 		l.setHorizontalAlignment(SwingConstants.LEFT);
 		gridBagConstraints = new GridBagConstraints();
@@ -172,6 +178,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 		rootPanel.add(CAK, gridBagConstraints);
 
 
+
 		rootPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));
 		getContentPane().add(rootPanel, BorderLayout.NORTH);
 
@@ -189,7 +196,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 
 		p = new JPanel();
 		INIT = new JButton("START");
-		INIT.addActionListener(new ActionListener() {
+		INIT.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				logTA.selectAll();
 				logTA.replaceSelection("");
@@ -209,13 +216,15 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 				AID remoteAMS = new AID(SAIDP.getText(), AID.ISGUID);
 				remoteAMS.addAddresses(SADDP.getText());
 				PlatformID destination = new PlatformID(remoteAMS);
-				myAgent.doInitializeAgent(destination, pubKey, CEK.getText(), CAK.getText());
+				myAgent.doInitializeAgent(destination,pubKey,CEK.getText(),CAK.getText());
 			}
-		});
+		} );
+
+
 
 
 		MIGRATE = new JButton("MIGRATE");
-		MIGRATE.addActionListener(new ActionListener() {
+		MIGRATE.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				logTA.selectAll();
 				logTA.replaceSelection("");
@@ -226,11 +235,13 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 				remoteAMSDestiny.addAddresses(ADDP.getText());
 				PlatformID destination2 = new PlatformID(remoteAMSDestiny);
 				myAgent.doSecureMigration(destination2);
+				rootPanel.setVisible(false);
+
 			}
-		});
+		} );
 
 		resetB = new JButton("CLEAR");
-		resetB.addActionListener(new ActionListener() {
+		resetB.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				logTA.selectAll();
 				logTA.replaceSelection("");
@@ -242,18 +253,18 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 				//CEK.setText("");
 				//CAK.setText("");
 			}
-		});
+		} );
 
 
 		exitB = new JButton("EXIT");
-		exitB.addActionListener(new ActionListener() {
+		exitB.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				logTA.selectAll();
 				logTA.replaceSelection("");
 				logTA.setText("");
 				myAgent.doDelete();
 			}
-		});
+		} );
 
 		exitB.setPreferredSize(resetB.getPreferredSize());
 
@@ -272,7 +283,7 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 
 
 	public void notifyUser(String message) {
-		logTA.append(message + "\n");
+		logTA.append(message+"\n");
 	}
 
 
@@ -291,5 +302,6 @@ public class AgentGuiImpl extends JFrame implements AgentGui {
 		logTA.setForeground(Color.BLACK);
 		return logTA;
 	}
-}
 
+
+}
