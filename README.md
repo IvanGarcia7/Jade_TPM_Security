@@ -18,7 +18,7 @@ Here are some **basic examples** to demonstrate how the library works.
 
 # START SECURE PLATFORM:
 
-java -cp TPM.jar:test.jar:migration.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService\;jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService -agents CA:vom.CAPlatform
+java -cp TPM.jar:migration.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService\;jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService -agents CA:vom.CAPlatform
 
 
 # START AGENT 2
@@ -27,7 +27,7 @@ java -cp TPM.jar:test.jar:migration.jar jade.Boot -gui -host localhost -port 808
 * Context AK: 0x8101002a
 
 
-java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36711\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A2:vom.CAAgent
+java -cp commons.jar:TPM.jar:migration.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36711\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A2:vom.CAAgent
 
 # START AGENT 1
 
@@ -37,7 +37,7 @@ java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P2
 * Address Destiny Test: http://raspberrypi:45309/acc
 
 
-java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P1 -gui -host localhost -port 1564 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36811\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A1:vom.CAAgent
+java -cp commons.jar:TPM.jar:migration.jar jade.Boot -container-name P1 -gui -host localhost -port 1564 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36811\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A1:vom.CAAgent
 
 
 
