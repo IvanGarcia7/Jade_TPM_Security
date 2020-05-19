@@ -683,7 +683,7 @@ public class SecureCloudTPMService extends BaseService {
                                     Date date = new Date();
                                     long timeMilli = date.getTime();
 
-                                    if(time_rec+Agencia.getTimeout()+10000<=timeMilli){
+                                    if(time_rec+Agencia.getTimeout()+10000>timeMilli){
 
                                         if(packet_privative.getValidation()==1){
 
@@ -695,16 +695,6 @@ public class SecureCloudTPMService extends BaseService {
                                             System.out.println("BOTH PLATFORMS CONFIRMED");
                                             System.out.println("**************************************************");
 
-                                            /**
-                                             * NECESITA REVISION PARA SER COMPLETADO CORRECTAMENTE
-                                             * EN ESTA PARTE, LO QUE HE PENSADO ES GENERARO UN ID FIRMADO, JUNTO
-                                             * CON UN TIMESTAMP Y ENVIARSELO A AMBAS PARTES, POR ELLO, CUANDO
-                                             * LA PLATAFORMA ORIGEN DESEE ENVIAR A LA DE DESTINO, INCLUIRA ESTE ID
-                                             * JUNTO CON EL AGENTE, CUANDO LLEGUE A LA PLATAFORMA DESTINO, MIRARA EN LA
-                                             * LISTA SI EXISTE ESE ID, Y COMPARARA EL TIEMPO OBTENIDO EN EL PAQUETE
-                                             * ES COMO SI FUERA UN PERIODO DE GRACIA DEFINIDO O LIMITADO EN CIERTA MEDIDA
-                                             * POR LA AGENCIA.
-                                             */
 
                                             AID amsMain = new AID("ams", false);
                                             PublicKey destinypub = HotspotsRegister.get(origin.getID()).getKeyPub();
