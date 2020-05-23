@@ -126,14 +126,12 @@ public class AMSInitiator extends SimpleAchieveREInitiator{
   	MobileAgentDescription mad = new MobileAgentDescription();
 
 
-      try{
-          AID amsAID = new AID("ams", false);
-          Agent agent = myContainer.acquireLocalAgent(amsAID);
-          PublicKey destinyPub = agent.getDestinyKey();
-          String token = agent.getToken();
 
-          System.out.println("THE PUBLICKEY IS THE FOLLOWING");
-          System.out.println(destinyPub);
+/*
+      try{
+          SecureAgentPlatform agent = (SecureAgentPlatform) myContainer.acquireLocalAgent(name);
+          PublicKey destinyPub = agent.getLocDestiny();
+          String token = agent.getToken();
 
 
           KeyGenerator generator = KeyGenerator.getInstance("AES");
@@ -141,21 +139,20 @@ public class AMSInitiator extends SimpleAchieveREInitiator{
           SecretKey secKey = generator.generateKey();
           Cipher aesCipher = Cipher.getInstance("AES");
           aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-          Pair<String,byte []> ObjectSender = new Pair<String, byte []>(token,_instance);
+          Pair<String,byte []> ObjectSender = new Pair<String, byte []>(token,instance);
 
           byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(ObjectSender));
           byte [] encryptedKeySecret = Agencia.encrypt(destinyPub,secKey.getEncoded());
           Pair<byte [],byte []> migrationPacket = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
           _instance = Agencia.serialize(migrationPacket);
-          myContainer.releaseLocalAgent(amsAID);
 
       }catch(Exception e){
           e.printStackTrace();
       }
 
+*/
 
-
-    mad.setData(new String(Base64.encodeBase64(_instance)));
+      mad.setData(new String(Base64.encodeBase64(_instance)));
     mad.setCode(new String(Base64.encodeBase64(_jar)));
     mad.setName(name);
     mad.setAgentProfile(mapf);

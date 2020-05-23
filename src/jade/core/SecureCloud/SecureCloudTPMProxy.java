@@ -29,6 +29,8 @@ public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureClo
             GenericCommand newCommand = new GenericCommand(SecureCloudTPMSlice.REMOTE_REQUEST_START,
                                                            SecureCloudTPMHelper.NAME, null);
             newCommand.addParam(command.getParams()[0]);
+            newCommand.addParam(command.getParams()[1]);
+            newCommand.addParam(command.getParams()[2]);
             Node n = getNode();
             Agencia.printLog("-> SENDING THE REQUEST COMMUNICATION THROUGH A HORIZONTAL COMMAND TO THE AMS NODE "+
                             n.getName(), Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());

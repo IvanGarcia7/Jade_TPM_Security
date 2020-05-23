@@ -13,14 +13,17 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import jade.core.vomNew.AgentGui;
-import jade.core.vomNew.AgentGuiImpl;
+import jade.domain.AMSService;
+import jade.domain.FIPAAgentManagement.AMSAgentDescription;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -44,6 +47,8 @@ public class SecureAgentTPMService extends BaseService {
     //DEFINE INPUT AND OUTPUT SINKS.
     private Sink OutputSink = new SecureAgentTPMService.CommandSourceSink();
     private Sink InputSink = new SecureAgentTPMService.CommandTargetSink();
+
+    private Map<AID,SecureAgentPlatform> requestersList=new HashMap<AID,SecureAgentPlatform>();
 
     //REQUEST THE COMMANDS THAT I HAVE IMPLEMENTED AND SAVE INTO A LIST.
     private String[] actualCommands = new String[]{
@@ -80,7 +85,6 @@ public class SecureAgentTPMService extends BaseService {
 
     //PRINTER
     private JTextArea Printer;
-    private AgentGui myGui;
 
     //PERMITS ASSIGNED BY THE AC
     Map<String, SecureCAConfirmation> CAPermissionList = new HashMap<String,SecureCAConfirmation>();
@@ -257,8 +261,7 @@ public class SecureAgentTPMService extends BaseService {
         @Override
         public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, PlatformID caLocation,
                                                    PublicKey pubKey, String contextEK, String contextAK){
-            Printer = secureAgentPlatform.getGUI().getPrinter();
-            myGui = secureAgentPlatform.getGUI();
+            Printer = secureAgentPlatform.getGUI();
             Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED BY THE AGENT: " +
                               secureAgentPlatform.getAID(), Level.INFO, SecureAgentTPMHelper.DEBUG,
                               this.getClass().getName());
@@ -421,17 +424,16 @@ public class SecureAgentTPMService extends BaseService {
                         pubKeyAgent=pairAgent.getValue();
                     }
 
-
-                    System.out.println("MY PRIVATE KEY");
-                    System.out.println(privKeyAgent);
-                    System.out.println("MY PUBLIC KEY");
-                    System.out.println(pubKeyAgent);
-
-
                     AID amsAID = new AID("ams", false);
                     Agent ams = actualcontainer.acquireLocalAgent(amsAID);
                     ams.setPrivateKey(privKeyAgent);
+                    System.out.println("HELLO FROM THE START");
+                    System.out.println(ams.getName());
+                    System.out.println(ams.getAID());
+                    System.out.println("HELLO FROM THE START");
                     actualcontainer.releaseLocalAgent(amsAID);
+
+
 
                     //SAVE THE ACTUAL LOCATION OF THE PLATFORM
                     Location actualLocation = actualcontainer.here();
@@ -477,6 +479,7 @@ public class SecureAgentTPMService extends BaseService {
                             command.getParams()[0];
                     PlatformID DestinyPlatform = (PlatformID) migratePair.getValue();
                     SecureAgentPlatform requestAgentPlatform = (SecureAgentPlatform) migratePair.getKey();
+                    requestersList.put(requestAgentPlatform.getAID(),requestAgentPlatform);
                     AID MYams =  actualcontainer.getAMS();
                     PlatformID myPlatform = new PlatformID(MYams);
 
@@ -550,7 +553,7 @@ public class SecureAgentTPMService extends BaseService {
                     SecureCAConfirmation packetReceived = (SecureCAConfirmation) Agencia.deserialize(byteObject);
 
                     //MIGRATE THE AGENT
-                    SecureAgentPlatform requestAgent = packetReceived.getAgent();
+                    SecureAgentPlatform requestAgent = requestersList.get(packetReceived.getAgent().getAID());
 
                     System.out.println("*****************************************************************");
                     System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:"+requestAgent);
@@ -560,19 +563,27 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
                     System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
 
-                    AID amsAID = new AID("ams", false);
-                    Agent ams = actualcontainer.acquireLocalAgent(amsAID);
-                    ams.setDestinyKey(packetReceived.getDestinyPublic());
-                    ams.setToken(packetReceived.getToken());
-                    actualcontainer.releaseLocalAgent(amsAID);
+                    //AID amsMain = requestAgent.getAID();
+                    //SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
 
-                    AID amsMain = requestAgent.getAID();
 
-                    SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
-                    amsMainPlatform.setLocationKey(packetReceived.getDestinyPublic());
-                    amsMainPlatform.setToken(packetReceived.getToken());
-                    amsMainPlatform.doMove(packetReceived.getDestinyPlatform());
-                    actualcontainer.releaseLocalAgent(amsMain);
+                    System.out.println(actualcontainer.getAMS());
+                    System.out.println(actualcontainer.getID());
+                    System.out.println(actualcontainer.here());
+
+                    System.out.println("**************************RESET***********************************");
+                    System.out.println(requestAgent.getAID());
+                    System.out.println(requestAgent.getAMS());
+                    System.out.println(requestAgent.getLocalName());
+                    System.out.println(requestAgent.getName());
+
+                    System.out.println("**************************RESET***********************************");
+
+
+                    requestAgent.setLocationKey(packetReceived.getDestinyPublic());
+                    requestAgent.setToken(packetReceived.getToken());
+                    requestAgent.doMove(packetReceived.getDestinyPlatform());
+                    //actualcontainer.releaseLocalAgent(amsMain);
 
 
                     //requestAgent.doSecureMigration2(packetReceived.getDestinyPlatform());

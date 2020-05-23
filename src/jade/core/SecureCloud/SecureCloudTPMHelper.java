@@ -32,7 +32,7 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
 
 
     //PUBLIC METHODS
-    void doStartCloud(SecureCAPlatform secureCAPlatform, PrivateKey priv, PublicKey pub, JTextArea Printer);
+    void doStartCloud(SecureCAPlatform secureCAPlatform, PrivateKey priv, PublicKey pub, JTextArea Printer, String username, String password);
     void listPlatforms(SecureCAPlatform secureCAPlatform);
     void doAcceptCloud(SecureCAPlatform secureCAPlatform, String index);
     void listAcceptedPlatforms(SecureCAPlatform secureCAPlatform);

@@ -285,17 +285,12 @@ public class AMSResponder extends SimpleAchieveREResponder {
 		        request = null;
 
 
-
+				/*
 				AID amsAID = new AID("ams", false);
 				Agent ams = mycontainer.acquireLocalAgent(amsAID);
 
 				//FETCH MY PRIVATE AND MY LIST OF WHITE PASS
 				PrivateKey privateAMS = ams.getPrivateKey();
-
-				System.out.println("THE PRIVATEKEY IS THE FOLLOWING");
-				System.out.println(privateAMS);
-
-
 				Pair<byte [], byte []> PairReceive = null;
 				byte [] decryptedKey = null;
 				try {
@@ -332,12 +327,12 @@ public class AMSResponder extends SimpleAchieveREResponder {
 					Calendar c = Calendar.getInstance();
 					Date timeChallenge = new Date(c.getTimeInMillis());
 
-					//if (time.compareTo(timeChallenge) < 0) {
+					if (time.compareTo(timeChallenge) < 0) {
 						System.out.println("THE REQUEST PASS THE TIMESTAMP CHALLENGUE");
 						instance = contentdecrypt.getValue();
-					//} else {
-					//	instance = null;
-					//}
+					} else {
+						instance = null;
+					}
 				}catch(Exception e){
 					e.printStackTrace();
 				}
@@ -345,7 +340,7 @@ public class AMSResponder extends SimpleAchieveREResponder {
 
 				mycontainer.releaseLocalAgent(amsAID);
 
-
+*/
 
 
 				try{
