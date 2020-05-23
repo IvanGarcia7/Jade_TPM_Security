@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
-    </list>
+    <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,12 +111,13 @@
       <screen x="0" y="0" width="1280" height="756" />
     </state>
     <state x="402" y="101" key="DetectedRootsChooserDialog/0.0.1280.756@0.0.1280.756" timestamp="1589292177805" />
-    <state x="-1728" y="-364" key="SettingsEditor" timestamp="1589387705911">
-      <screen x="-1920" y="-364" width="1920" height="994" />
+    <state x="128" y="0" key="SettingsEditor" timestamp="1590272344273">
+      <screen x="0" y="0" width="1280" height="763" />
     </state>
     <state x="128" y="0" key="SettingsEditor/0.0.1280.751@0.0.1280.751" timestamp="1589319660939" />
     <state x="128" y="0" key="SettingsEditor/0.0.1280.756@0.0.1280.756" timestamp="1589292313324" />
     <state x="128" y="0" key="SettingsEditor/0.0.1280.758@0.0.1280.758" timestamp="1589291505341" />
+    <state x="128" y="0" key="SettingsEditor/0.0.1280.763@0.0.1280.763" timestamp="1590272344273" />
     <state x="-1728" y="-364" key="SettingsEditor/0.23.1280.777/-1920.-364.1920.994@-1920.-364.1920.994" timestamp="1589387705911" />
     <state x="319" y="209" key="com.intellij.ide.util.TipDialog" timestamp="1589894381175">
       <screen x="0" y="0" width="1280" height="761" />
