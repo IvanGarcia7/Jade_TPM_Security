@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="" />
+    <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -88,11 +91,12 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="515" y="179" key="#com.intellij.ide.util.MemberChooser" timestamp="1588625404942">
-      <screen x="0" y="0" width="1280" height="753" />
+    <state x="515" y="181" key="#com.intellij.ide.util.MemberChooser" timestamp="1590272722025">
+      <screen x="0" y="0" width="1280" height="763" />
     </state>
     <state x="515" y="179" key="#com.intellij.ide.util.MemberChooser/0.0.1280.753@0.0.1280.753" timestamp="1588625404942" />
     <state x="-1147" y="-131" key="#com.intellij.ide.util.MemberChooser/0.0.1280.754/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1587591008547" />
+    <state x="515" y="181" key="#com.intellij.ide.util.MemberChooser/0.0.1280.763@0.0.1280.763" timestamp="1590272722025" />
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.729/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588605305483" />
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587827055013" />
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.737/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514801371" />
