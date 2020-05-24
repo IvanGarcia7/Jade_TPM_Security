@@ -102,6 +102,28 @@ public class SecureCAPlatform extends Agent{
     }
 
 
+
+    /**
+     * THIS FUNCTION TAKES AN ADDRESS AND DELETE IN WITHIN RELIABLE PLATFORMS IF IT HAS BEEN
+     * RECORDED PREVIOUSLY IN THE LIST OF PENDING.
+     * @param index
+     */
+    public void doDeleteListCA(String index){
+        System.out.println("THE STRING AID IS THE FOLLOWING "+index);
+        Agencia.printLog("REQUEST THE SECURE CLOUD PLATFORM DEVICES REGISTER",
+                Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+        try {
+            initmobHelperCloud();
+            Agencia.printLog("THE ACCEPT LIST SERVICE HAS BEGUN TO RUN", Level.INFO,
+                    SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            mobHelperCloud.doDeleteCloud(this,index);
+        } catch(ServiceException se) {
+            System.out.println("THE SECURE PLATFORM HAS NOT BEEN ABLE TO START");
+            se.printStackTrace();
+        }
+    }
+
+
     public void setGUI(JTextArea printer){
         Printer = printer;
     }

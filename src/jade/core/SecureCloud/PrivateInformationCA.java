@@ -1,6 +1,7 @@
 package jade.core.SecureCloud;
 
 
+import jade.core.AID;
 import jade.core.Location;
 import jade.core.PlatformID;
 import jade.core.SecureAgent.SecureAgentPlatform;
@@ -16,11 +17,11 @@ public class PrivateInformationCA implements Serializable {
     private String Challenge;
     private PlatformID Origin;
     private int validation;
-    private SecureAgentPlatform Agent;
+    private AID Agent;
 
 
     public PrivateInformationCA(PlatformID dest, long time, String challenge, PlatformID origin, int bitStatus,
-                                SecureAgentPlatform agent){
+                                AID agent){
         destiny = dest;
         Timestamp = time;
         Challenge = challenge;
@@ -46,6 +47,6 @@ public class PrivateInformationCA implements Serializable {
     public int getValidation() {
         return validation;
     }
-    public SecureAgentPlatform getAgent() { return Agent; }
+    public AID getAgent() { return Agent; }
 
 }

@@ -47,8 +47,7 @@ public class SecureAgentTPMService extends BaseService {
     //DEFINE INPUT AND OUTPUT SINKS.
     private Sink OutputSink = new SecureAgentTPMService.CommandSourceSink();
     private Sink InputSink = new SecureAgentTPMService.CommandTargetSink();
-
-    private Map<AID,SecureAgentPlatform> requestersList=new HashMap<AID,SecureAgentPlatform>();
+    
 
     //REQUEST THE COMMANDS THAT I HAVE IMPLEMENTED AND SAVE INTO A LIST.
     private String[] actualCommands = new String[]{
@@ -479,12 +478,12 @@ public class SecureAgentTPMService extends BaseService {
                             command.getParams()[0];
                     PlatformID DestinyPlatform = (PlatformID) migratePair.getValue();
                     SecureAgentPlatform requestAgentPlatform = (SecureAgentPlatform) migratePair.getKey();
-                    requestersList.put(requestAgentPlatform.getAID(),requestAgentPlatform);
+                   
                     AID MYams =  actualcontainer.getAMS();
                     PlatformID myPlatform = new PlatformID(MYams);
 
                     RequestSecureATT PackRequest = new RequestSecureATT(CAKey,CALocation,DestinyPlatform,
-                                                                        myPlatform,requestAgentPlatform);
+                                                                        myPlatform,requestAgentPlatform.getAID());
 
                     AID amsMain = new AID("ams", false);
                     Agent amsMainPlatform = actualcontainer.acquireLocalAgent(amsMain);
@@ -552,38 +551,38 @@ public class SecureAgentTPMService extends BaseService {
                     byte[] byteObject = aesCipher.doFinal(confirmationPacket.getValue());
                     SecureCAConfirmation packetReceived = (SecureCAConfirmation) Agencia.deserialize(byteObject);
 
-                    //MIGRATE THE AGENT
-                    SecureAgentPlatform requestAgent = requestersList.get(packetReceived.getAgent().getAID());
+                    
+                    AID amsMain = packetReceived.getAgent();
+                    SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
 
+                   
                     System.out.println("*****************************************************************");
-                    System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:"+requestAgent);
-                    System.out.println("AGENT NAME: "+requestAgent.getName());
-                    System.out.println("AGENT AID: "+requestAgent.getAID());
+                    System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:");
+                    System.out.println("AGENT NAME: "+amsMainPlatform.getName());
+                    System.out.println("AGENT AID: "+amsMainPlatform.getAID());
                     System.out.println("*****************************************************************");
                     System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
                     System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
 
-                    //AID amsMain = requestAgent.getAID();
-                    //SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
-
+                   
 
                     System.out.println(actualcontainer.getAMS());
                     System.out.println(actualcontainer.getID());
                     System.out.println(actualcontainer.here());
 
                     System.out.println("**************************RESET***********************************");
-                    System.out.println(requestAgent.getAID());
-                    System.out.println(requestAgent.getAMS());
-                    System.out.println(requestAgent.getLocalName());
-                    System.out.println(requestAgent.getName());
+                    System.out.println(amsMainPlatform.getAID());
+                    System.out.println(amsMainPlatform.getAMS());
+                    System.out.println(amsMainPlatform.getLocalName());
+                    System.out.println(amsMainPlatform.getName());
 
                     System.out.println("**************************RESET***********************************");
 
 
-                    requestAgent.setLocationKey(packetReceived.getDestinyPublic());
-                    requestAgent.setToken(packetReceived.getToken());
-                    requestAgent.doMove(packetReceived.getDestinyPlatform());
-                    //actualcontainer.releaseLocalAgent(amsMain);
+                    amsMainPlatform.setLocationKey(packetReceived.getDestinyPublic());
+                    amsMainPlatform.setToken(packetReceived.getToken());
+                    amsMainPlatform.doMove(packetReceived.getDestinyPlatform());
+                    actualcontainer.releaseLocalAgent(amsMain);
 
 
                     //requestAgent.doSecureMigration2(packetReceived.getDestinyPlatform());

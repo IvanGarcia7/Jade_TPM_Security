@@ -31,13 +31,13 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
     private PublicKey destinyKey;
     private PublicKey pubCA;
     private int validation;
-    private SecureAgentPlatform Agent;
+    private AID Agent;
     private JTextArea Printer;
 
 
     public SenderCAChallenge(ACLMessage message, Agent amsMainPlatform, SecureCloudTPMService secureCloudTPMService,
                              PlatformID origin, PlatformID destiny, String challen, String onto, PublicKey pub,
-                             PublicKey publicSec, int val, SecureAgentPlatform agent, JTextArea printer) {
+                             PublicKey publicSec, int val, AID agent, JTextArea printer) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;

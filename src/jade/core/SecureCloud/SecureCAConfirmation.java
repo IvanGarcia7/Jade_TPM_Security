@@ -1,6 +1,7 @@
 package jade.core.SecureCloud;
 
 
+import jade.core.AID;
 import jade.core.PlatformID;
 import jade.core.SecureAgent.SecureAgentPlatform;
 import java.io.Serializable;
@@ -14,9 +15,9 @@ public class SecureCAConfirmation implements Serializable {
     private PlatformID DestinyPlatform;
     private String Token;
     private Date Timestamp;
-    private SecureAgentPlatform Agent;
+    private AID Agent;
 
-    public SecureCAConfirmation(PublicKey key, PlatformID destiny, String token, Date time, SecureAgentPlatform agent){
+    public SecureCAConfirmation(PublicKey key, PlatformID destiny, String token, Date time, AID agent){
         DestinyPublic = key;
         DestinyPlatform = destiny;
         Token = token;
@@ -29,6 +30,6 @@ public class SecureCAConfirmation implements Serializable {
     public PlatformID getDestinyPlatform(){ return DestinyPlatform; }
     public String getToken(){ return Token; }
     public Date getTimestamp() { return Timestamp; }
-    public SecureAgentPlatform getAgent() { return Agent; }
+    public AID getAgent() { return Agent; }
 
 }

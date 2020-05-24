@@ -99,6 +99,22 @@ public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureClo
         }
     }
 
+    @Override
+    public void doRequestDeleteAMS(VerticalCommand command) {
+        try{
+            Agencia.printLog("PROCEED TO DO THE REQUEST DELETE WITH THE AMS OF THE MAIN PLATFORM IN THE " +
+                    "PROXY", Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            GenericCommand newCommand = new GenericCommand(SecureCloudTPMSlice.REMOTE_REQUEST_DELETE,
+                    SecureCloudTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
+            Node n = getNode();
+            Agencia.printLog("-> SENDING THE REQUEST DELETE THROUGH A HORIZONTAL COMMAND TO THE AMS NODE "+
+                    n.getName(), Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            n.accept(newCommand);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
     /**

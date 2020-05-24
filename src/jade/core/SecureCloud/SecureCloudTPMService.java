@@ -74,7 +74,8 @@ public class SecureCloudTPMService extends BaseService {
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
             SecureCloudTPMHelper.REQUEST_ERROR,
-            SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED
+            SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED,
+            SecureCloudTPMHelper.REQUEST_DELETE
     };
 
     //PERFORMATIVE PRINTER.
@@ -352,6 +353,36 @@ public class SecureCloudTPMService extends BaseService {
                 e.printStackTrace();
             }
         }
+
+
+
+
+        /**
+         * THIS FUNCTION, TAKES AN INDEX, IN ORDER TO ESTABLISHED A DEVICE AS SECURE, BASED ON THE LIST OF HOTSPOTS
+         * @param secureCAPlatform
+         * @param index
+         */
+        public void doDeleteCloud(SecureCAPlatform secureCAPlatform, String index) {
+            Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED IN ORDER TO ACCEPT "+
+                            "ONE AGENT. NAME AGENT:" + secureCAPlatform.getAID(), Level.INFO,
+                    SecureCloudTPMHelper.DEBUG, this.getClass().getName());
+            Agencia.printLog("START THE ACCEPT SERVICE TO COMMUNICATE WITH THE AMS OF THE MAIN PLATFORM",
+                    Level.INFO, true, this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_DELETE, SecureCloudTPMHelper.NAME,
+                    null);
+            command.addParam(index);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS TO ACCEPT ONE PLATFORM IN THE LIST OF " +
+                    "HOTSPOTS REGISTERED", Level.INFO, true, this.getClass().getName());
+            try {
+                SecureCloudTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
     }
 
 
@@ -374,7 +405,18 @@ public class SecureCloudTPMService extends BaseService {
                         System.out.println("THERE ARE AN ERROR PROCESSING START COMMAND IN THE COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
-                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_LIST)){
+                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_DELETE)){
+
+                        Agencia.printLog("PROCESSING THE COMMAND TO DELETE WITH THE AMS AND START THE " +
+                                "PLATFORM IN THE SECURE CA", Level.INFO, true, this.getClass().getName());
+                        try{
+                            obj.doRequestDeleteAMS(command);
+                        }catch(Exception ie) {
+                            System.out.println("THERE ARE AN ERROR PROCESSING START COMMAND IN THE COMMAND SOURCE SINK");
+                            ie.printStackTrace();
+                        }
+
+                } else if(commandName.equals(SecureCloudTPMHelper.REQUEST_LIST)){
                     Agencia.printLog("PROCESSING THE COMMAND TO COMMUNICATE WITH THE AMS AND PRINT THE LIST " +
                                     "OF THE HOTSPOTS", Level.INFO, true, this.getClass().getName());
                     try{
@@ -516,7 +558,8 @@ public class SecureCloudTPMService extends BaseService {
                     Iterator it = pendingRedirects.entrySet().iterator();
                     while(it.hasNext()){
                         Map.Entry pair = (Map.Entry)it.next();
-                        Printer.append(pair.getKey() + " = " + pair.getValue()+"\n");
+                        SecureInformationCloud packet = (SecureInformationCloud) pair.getValue();
+                        Printer.append(pair.getKey() + " = " + packet.getSha256()+"\n");
                         System.out.println(pair.getKey() + " = " + pair.getValue());
                     }
                     System.out.println("*********************HOTSPOTS*****************************");
@@ -545,6 +588,16 @@ public class SecureCloudTPMService extends BaseService {
                     System.out.println("*********************HOTSPOTS*****************************");
                     Printer.append("*********************HOTSPOTS*****************************\n");
 
+                } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_DELETE)){
+                        Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST DELETE REQUEST INTO THE AMS " +
+                                "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
+
+                        collection.findOneAndDelete(Filters.eq("_id",command.getParams()[0]));
+
+                        System.out.println("*********************HOTSPOT DELETE*****************************");
+                        Printer.append("*********************HOTSPOT DELETE*****************************\n");
+
+
                 } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
                     Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST CLOUD REQUEST INTO THE AMS " +
                                     "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
@@ -566,6 +619,7 @@ public class SecureCloudTPMService extends BaseService {
                                 pendingRedirects.remove(index);
                             }
                     }else{
+                        /*REVIEW
                         //ESTA METIDO TENGO QUE VER SI EL HASH ES EL MISMO
                         String hashStore = FindHotspot.getString("SHA256");
                         if(content.getSha256().equals(hashStore)){
@@ -586,6 +640,8 @@ public class SecureCloudTPMService extends BaseService {
                             Printer.append("THE PLATFORM IS UPDATE CORRECTLY IN THE CA");
                             pendingRedirects.remove(index);
                         }
+                        */
+
                     }
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
 
@@ -1030,6 +1086,13 @@ public class SecureCloudTPMService extends BaseService {
                                     this.getClass().getName());
                     commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_ACCEPT, SecureCloudTPMHelper.NAME,
                                                          null);
+                    commandResponse.addParam(command.getParams()[0]);
+                }else if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_DELETE)) {
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO DELETE ONE OF THE LIST OF THE HOST", Level.INFO, true,
+                            this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_DELETE, SecureCloudTPMHelper.NAME,
+                            null);
                     commandResponse.addParam(command.getParams()[0]);
                 }else if(commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_LIST_ACCEPTED)){
                     Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +

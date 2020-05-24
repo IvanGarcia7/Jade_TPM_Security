@@ -30,12 +30,12 @@ public class SenderCAConfirmation extends SimpleAchieveREInitiator {
     private PrivateKey CAKey;
     private String Challenge;
     private Date Time;
-    private SecureAgentPlatform Agent;
+    private AID Agent;
 
 
     public SenderCAConfirmation(ACLMessage message, Agent amsMainPlatform, PlatformID or, PlatformID dr,
                                 String requestMigrateZone2Platform, PublicKey destinypub, PublicKey destinypubremote,
-                                PrivateKey CA, String token, Date time, SecureAgentPlatform agent) {
+                                PrivateKey CA, String token, Date time, AID agent) {
 
         super(amsMainPlatform,message);
         myMessage=message;
