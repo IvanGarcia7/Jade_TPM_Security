@@ -47,6 +47,24 @@
                      </HBox.margin>
                   </ImageView>
                   <Separator prefWidth="200.0" visible="false" />
+                  <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onInformationButtonClicked" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/information.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="9.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Separator prefWidth="200.0" visible="false" />
+                  <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onCLEARButton" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/CLEAR.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="8.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Separator prefWidth="200.0" visible="false" />
                   <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onExitButtonClicked" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Images/exit.png" />
@@ -60,7 +78,7 @@
             </HBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="userPanel" layoutY="86.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" visible="false">
+      <AnchorPane fx:id="userPanel" layoutY="86.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <AnchorPane layoutX="20.0" layoutY="28.0" prefHeight="280.0" prefWidth="522.0" style="-fx-background-color: #85c0cc;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
                <children>
@@ -94,22 +112,22 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <ImageView fx:id="userArrow" fitHeight="30.0" fitWidth="90.0" layoutX="83.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+      <ImageView fx:id="userArrow" fitHeight="30.0" fitWidth="90.0" layoutX="63.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
          <image>
             <Image url="@Images/arrow.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="printerArrow" fitHeight="30.0" fitWidth="90.0" layoutX="208.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+      <ImageView fx:id="printerArrow" fitHeight="30.0" fitWidth="90.0" layoutX="140.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
          <image>
             <Image url="@Images/arrow.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="crudArrow" fitHeight="30.0" fitWidth="90.0" layoutX="327.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+      <ImageView fx:id="crudArrow" fitHeight="30.0" fitWidth="90.0" layoutX="225.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
          <image>
             <Image url="@Images/arrow.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="exitArrow" fitHeight="30.0" fitWidth="90.0" layoutX="444.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+      <ImageView fx:id="exitArrow" fitHeight="30.0" fitWidth="90.0" layoutX="480.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
          <image>
             <Image url="@Images/arrow.png" />
          </image>
@@ -142,7 +160,7 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="crudPanel" layoutX="20.0" layoutY="106.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
+      <AnchorPane fx:id="crudPanel" layoutX="20.0" layoutY="106.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
          <children>
             <AnchorPane layoutX="20.0" layoutY="28.0" prefHeight="261.0" prefWidth="522.0" style="-fx-background-color: #85c0cc;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
                <opaqueInsets>
@@ -172,5 +190,28 @@
             </JFXButton>
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="crudPanelInformation" layoutX="30.0" layoutY="116.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
+         <children>
+            <AnchorPane layoutX="20.0" layoutY="28.0" prefHeight="261.0" prefWidth="522.0" style="-fx-background-color: #85c0cc;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <children>
+                  <Separator layoutY="24.0" prefHeight="3.0" prefWidth="522.0" style="-fx-background-color: #000000;" />
+                  <Label layoutX="184.0" layoutY="2.0" text="INFORMATION" textAlignment="CENTER">
+                     <font>
+                        <Font name="SansSerif Regular" size="20.0" />
+                     </font>
+                  </Label>
+                  <JFXTextArea fx:id="PListInformation" layoutY="27.0" prefHeight="312.0" prefWidth="523.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <ImageView fx:id="userArrowInformation" fitHeight="30.0" fitWidth="90.0" layoutX="312.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+         <image>
+            <Image url="@Images/arrow.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

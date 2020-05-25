@@ -470,10 +470,10 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("GENERATING THE TEMPORAL DIRECTORY: ");
 
                     //GENERATE THE PRIVATE AND PUBLIC AIK TO SIGN THE INFORMATION
-                    Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK, PrinterStatus);
+                    Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK, PrinterStart);
 
                     //GENERATE THE SIGNED FILES, AND SERIALIZE INTO AN OBJECT TO SEND IT AFTER TO THE SECURE PLATFORM
-                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true, PrinterStatus);
+                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true, PrinterStart);
                     File AIKFile = new File("./"+actualLocation.getName()+"/akpub.pem");
                     AIKPub = Files.readAllBytes(AIKFile.toPath());
                     AttestationSerialized PCR_Signed = new AttestationSerialized("./"+
@@ -487,7 +487,7 @@ public class SecureAgentTPMService extends BaseService {
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
                             new SenderStartRequest(message, requestSecureStart, SecureCAInformation, amsMainPlatform,
-                                              SecureAgentTPMService.this, PrinterStatus)
+                                              SecureAgentTPMService.this, PrinterStart)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
 

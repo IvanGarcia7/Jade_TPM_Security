@@ -32,10 +32,12 @@ public class SecureCAGuiImpl  extends SecureCAController implements Initializabl
     @FXML private ImageView printerArrow;
     @FXML private ImageView crudArrow;
     @FXML private ImageView exitArrow;
+    @FXML private ImageView userArrowInformation;
 
     @FXML private AnchorPane userPanel;
     @FXML private AnchorPane printerPanel;
     @FXML private AnchorPane crudPanel;
+    @FXML private AnchorPane crudPanelInformation;
 
     @FXML private JFXTextField userText;
     @FXML private JFXPasswordField passwordText;
@@ -51,6 +53,7 @@ public class SecureCAGuiImpl  extends SecureCAController implements Initializabl
     @FXML private JFXTextArea PList;
     @FXML private JFXTextArea AreaList;
     @FXML private JFXTextArea AreaStart;
+    @FXML private JFXTextArea PListInformation;
     //private static CAPlatform myAgentA;
 
 
@@ -72,6 +75,7 @@ public class SecureCAGuiImpl  extends SecureCAController implements Initializabl
                 myAgent.setPrinterList(AreaList);
                 myAgent.setCRUDPrinter(PList);
                 myAgent.setStartPrinter(AreaStart);
+                myAgent.setInformationPrinter(PListInformation);
                 AreaStart.appendText(userText.getText()+"\n");
                 AreaStart.appendText(passwordText.getText()+"\n");
                 myAgent.doInitializeCA(pubKeyPriv,pubKey,userText.getText(),passwordText.getText());
@@ -122,6 +126,9 @@ public class SecureCAGuiImpl  extends SecureCAController implements Initializabl
         printerArrow.setVisible(false);
         crudArrow.setVisible(false);
         exitArrow.setVisible(false);
+
+        crudPanelInformation.setVisible(false);
+        userArrowInformation.setVisible(false);
     }
 
     public void onPrinterButtonClicked(MouseEvent event){
@@ -133,6 +140,9 @@ public class SecureCAGuiImpl  extends SecureCAController implements Initializabl
         userArrow.setVisible(false);
         crudArrow.setVisible(false);
         exitArrow.setVisible(false);
+
+        crudPanelInformation.setVisible(false);
+        userArrowInformation.setVisible(false);
     }
 
     public void onCRUDButtonClicked(MouseEvent event){
@@ -144,6 +154,39 @@ public class SecureCAGuiImpl  extends SecureCAController implements Initializabl
         printerPanel.setVisible(false);
         printerArrow.setVisible(false);
         exitArrow.setVisible(false);
+
+        crudPanelInformation.setVisible(false);
+        userArrowInformation.setVisible(false);
+    }
+
+
+    public void onInformationButtonClicked(MouseEvent event){
+        crudPanelInformation.setVisible(true);
+        userArrowInformation.setVisible(true);
+
+        crudPanel.setVisible(false);
+        crudArrow.setVisible(false);
+        userPanel.setVisible(false);
+        userArrow.setVisible(false);
+        printerPanel.setVisible(false);
+        printerArrow.setVisible(false);
+        exitArrow.setVisible(false);
+    }
+
+
+    public void onCLEARButton(MouseEvent event){
+        PList.selectAll();
+        PList.replaceSelection("");
+        PList.setText("");
+        AreaList.selectAll();
+        AreaList.replaceSelection("");
+        AreaList.setText("");
+        AreaStart.selectAll();
+        AreaStart.replaceSelection("");
+        AreaStart.setText("");
+        PListInformation.selectAll();
+        PListInformation.replaceSelection("");
+        PListInformation.setText("");
     }
 
 

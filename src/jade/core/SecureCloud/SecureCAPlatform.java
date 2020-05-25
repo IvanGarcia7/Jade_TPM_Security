@@ -20,6 +20,8 @@ public class SecureCAPlatform extends Agent{
     private JFXTextArea PrinterList;
     private JFXTextArea PrinterCRUD;
     private JFXTextArea PrinterStart;
+    private JFXTextArea PrinterInformation;
+
 
 
     public PrivateKey getPrivateKey(){
@@ -39,6 +41,10 @@ public class SecureCAPlatform extends Agent{
         PrinterStart = PrinterB;
     }
 
+    public void setInformationPrinter(JFXTextArea pListInformation) {
+        PrinterInformation = pListInformation;
+    }
+
 
 
     /**
@@ -55,7 +61,7 @@ public class SecureCAPlatform extends Agent{
             initmobHelperCloud();
             Agencia.printLog("THE INITIALIZATION OF THE CA HAS BEGUN TO RUN",
                             Level.INFO,SecureCloudTPMHelper.DEBUG,this.getClass().getName());
-            mobHelperCloud.doStartCloud(this,priv,pub, Printer,PrinterList,PrinterCRUD,PrinterStart,username,password);
+            mobHelperCloud.doStartCloud(this,priv,pub, PrinterInformation,PrinterList,PrinterCRUD,PrinterStart,username,password);
         } catch(ServiceException se) {
             System.out.println("THERE ARE AN ERROR IN THE doInitializeCA");
             se.printStackTrace();
@@ -161,6 +167,7 @@ public class SecureCAPlatform extends Agent{
             mobHelperCloud = (SecureCloudTPMHelper) getHelper(SecureCloudTPMHelper.NAME);
         }
     }
+
 
 }
 

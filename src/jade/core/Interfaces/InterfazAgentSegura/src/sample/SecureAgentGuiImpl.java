@@ -47,7 +47,7 @@ public class SecureAgentGuiImpl  extends SecureAgentController implements Initia
     @FXML private JFXTextField userAID;
     @FXML private JFXTextField userAdd;
     @FXML private JFXTextField AIDTextHop;
-    @FXML private JFXTextField AIDTextHopadd;
+    @FXML private JFXTextField AIDTextHopADD;
     @FXML private JFXTextField EKText;
     @FXML private JFXTextField AIKText;
 
@@ -102,11 +102,11 @@ public class SecureAgentGuiImpl  extends SecureAgentController implements Initia
 
     public void onAddButton(ActionEvent event){
 
-        if(AIDTextHop.getText().isEmpty() || AIDTextHopadd.getText().isEmpty()){
-            AreaList.appendText("PLEASE INSERT AN AID");
+        if(AIDTextHop.getText().isEmpty() || AIDTextHopADD.getText().isEmpty()){
+            AreaList.appendText("PLEASE INSERT AN AID AND AN ADDRESS");
         }else{
             AID remoteAMSDestiny = new AID(AIDTextHop.getText(), AID.ISGUID);
-            remoteAMSDestiny.addAddresses(AIDTextHopadd.getText());
+            remoteAMSDestiny.addAddresses(AIDTextHopADD.getText());
             PlatformID destination2 = new PlatformID(remoteAMSDestiny);
             hops.add(destination2);
             selectedList.appendText(destination2.getID()+"\n");
@@ -158,7 +158,17 @@ public class SecureAgentGuiImpl  extends SecureAgentController implements Initia
     }
 
 
-
+    public void onCLEARButton(MouseEvent event){
+        AreaStart.selectAll();
+        AreaStart.replaceSelection("");
+        AreaStart.setText("");
+        selectedList.selectAll();
+        selectedList.replaceSelection("");
+        selectedList.setText("");
+        AreaList.selectAll();
+        AreaList.replaceSelection("");
+        AreaList.setText("");
+    }
 
 
 

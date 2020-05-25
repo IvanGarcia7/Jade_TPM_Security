@@ -37,6 +37,15 @@
                             </HBox.margin>
                         </ImageView>
                         <Separator prefWidth="200.0" visible="false" />
+                  <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onCLEARButton" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/CLEAR.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="9.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Separator prefWidth="200.0" visible="false" />
                         <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onExitButtonClicked" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@Images/exit.png" />
@@ -50,7 +59,7 @@
                 </HBox>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="userPanel" layoutY="89.0" prefHeight="398.0" prefWidth="510.0" style="-fx-background-color: #0f6b7d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <AnchorPane fx:id="userPanel" layoutY="89.0" prefHeight="398.0" prefWidth="510.0" style="-fx-background-color: #0f6b7d;" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <AnchorPane layoutX="20.0" layoutY="28.0" prefHeight="280.0" prefWidth="522.0" style="-fx-background-color: #85c0cc;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
                     <children>
@@ -96,22 +105,22 @@
                 </JFXButton>
             </children>
         </AnchorPane>
-        <ImageView fx:id="userArrow" fitHeight="30.0" fitWidth="90.0" layoutX="114.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+        <ImageView fx:id="userArrow" fitHeight="30.0" fitWidth="90.0" layoutX="82.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
             <image>
                 <Image url="@Images/arrow.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="printerArrow" fitHeight="30.0" fitWidth="90.0" layoutX="266.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+        <ImageView fx:id="printerArrow" fitHeight="30.0" fitWidth="90.0" layoutX="207.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
             <image>
                 <Image url="@Images/arrow.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="crudArrow" fitHeight="30.0" fitWidth="90.0" layoutX="413.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+        <ImageView fx:id="crudArrow" fitHeight="30.0" fitWidth="90.0" layoutX="446.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
             <image>
                 <Image url="@Images/arrow.png" />
             </image>
         </ImageView>
-        <AnchorPane fx:id="printerPanel" layoutX="10.0" layoutY="96.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
+        <AnchorPane fx:id="printerPanel" layoutX="10.0" layoutY="96.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
             <children>
                 <AnchorPane layoutX="20.0" layoutY="28.0" prefHeight="261.0" prefWidth="529.0" style="-fx-background-color: #85c0cc;" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="13.0">
                     <opaqueInsets>
@@ -144,8 +153,10 @@
                         <Font size="20.0" />
                     </font>
                 </JFXButton>
-            <JFXTextField fx:id="AIDTextHop" focusColor="BLACK" layoutX="20.0" layoutY="345.0" prefHeight="27.0" prefWidth="290.0" unFocusColor="WHITE" />
-            <Label layoutX="20.0" layoutY="307.0" text="PLATFORM AID:" textFill="WHITE" />
+            <JFXTextField fx:id="AIDTextHop" focusColor="BLACK" layoutX="20.0" layoutY="306.0" prefHeight="27.0" prefWidth="290.0" unFocusColor="WHITE" />
+            <Label layoutX="20.0" layoutY="301.0" text="PLATFORM AID:" textFill="WHITE" />
+            <Label layoutX="20.0" layoutY="346.0" text="PLATFORM ADDRESS:" textFill="WHITE" />
+            <JFXTextField fx:id="AIDTextHopADD" focusColor="BLACK" layoutX="20.0" layoutY="350.0" prefHeight="27.0" prefWidth="290.0" unFocusColor="WHITE" />
             </children>
         </AnchorPane>
     </children>
