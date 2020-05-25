@@ -218,7 +218,7 @@ private jade.core.vomNew.CAAgent myAgent;
 			AID remoteAMS = new AID(SAIDP.getText(), AID.ISGUID);
 			remoteAMS.addAddresses(SADDP.getText());
 			PlatformID destination = new PlatformID(remoteAMS);
-			myAgent.doInitializeAgent(destination,pubKey,CEK.getText(),CAK.getText());	
+			//myAgent.doInitializeAgent(destination,pubKey,CEK.getText(),CAK.getText());	
 	  	}
 		} );
     	

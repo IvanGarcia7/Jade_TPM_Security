@@ -1,6 +1,7 @@
 package jade.core.SecureAgent;
 
 
+import com.jfoenix.controls.JFXTextArea;
 import jade.core.*;
 import jade.core.SecureCloud.SecureChallengerPacket;
 import jade.core.SecureTPM.Agencia;
@@ -25,12 +26,12 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
     private PublicKey pubCA;
     private PlatformID CAlocation;
     private SecureChallengerPacket packetResponser;
-    private JTextArea Printer;
+    private JFXTextArea Printer;
 
 
     public SenderChallengeAgentRequest(ACLMessage message, Agent amsMainPlatform, AttestationSerialized PCR_Signed,
                                        SecureAgentTPMService secureAgentTPMService, PublicKey pubSEC, PlatformID CAloc,
-                                       SecureChallengerPacket pSender, JTextArea printer) {
+                                       SecureChallengerPacket pSender, JFXTextArea printer) {
         super(amsMainPlatform,message);
         myMessage = message;
         myAgent = amsMainPlatform;
@@ -89,7 +90,7 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
-        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
+        Printer.appendText("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
     }
 
     protected void handleRefuse(ACLMessage inform){

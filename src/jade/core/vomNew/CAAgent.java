@@ -15,7 +15,7 @@ public class CAAgent extends SecureAgentPlatform {
 	public void setup() {
 		myGUI = new AgentGuiImpl(this);
 		myGUI.show();
-		this.setGUI(myGUI.getPrinter());
+		//this.setGUI(myGUI.getPrinter());
 	}
 	
 	public void afterMove() {

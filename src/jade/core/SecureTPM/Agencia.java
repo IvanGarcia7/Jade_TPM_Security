@@ -1,5 +1,6 @@
 package jade.core.SecureTPM;
 
+import com.jfoenix.controls.JFXTextArea;
 import jade.core.SecureAgent.AttestationSerialized;
 import jade.core.SecureAgent.RequestSecureATT;
 
@@ -779,10 +780,10 @@ public class Agencia{
 
 
 
-    public static int init_platform(String path, String contextEK, String contextAK, JTextArea Printer){
+    public static int init_platform(String path, String contextEK, String contextAK, JFXTextArea Printer){
         int valuereturn = 0;
         System.out.println("EXECUTING THE INIT ATT FUNCTION: ");
-        Printer.append("EXECUTING THE INIT ATT FUNCTION: \n");
+        Printer.appendText("EXECUTING THE INIT ATT FUNCTION: \n");
         new File(path).mkdirs();
         String akpub_path = path+"/akpub.pem";
 
@@ -828,7 +829,7 @@ public class Agencia{
             BufferedReader reader = new BufferedReader(new InputStreamReader(p1.getInputStream()));
             String line;
             while((line=reader.readLine())!=null){
-                Printer.append(line+"\n");
+                Printer.appendText(line+"\n");
                 output.append(line+"\n");
             }
             valuereturn = p1.waitFor();
@@ -837,14 +838,14 @@ public class Agencia{
                 Process p2 = pb2.start();
                 reader = new BufferedReader(new InputStreamReader(p1.getInputStream()));
                 while((line=reader.readLine())!=null){
-                    Printer.append(line+"\n");
+                    Printer.appendText(line+"\n");
                     output.append(line+"\n");
                 }
                 valuereturn = p2.waitFor();
                 System.out.println(output);
             }
         }catch(Exception e){
-            Printer.append("There are an error in the process \n");
+            Printer.appendText("There are an error in the process \n");
             System.out.println("There are an error in the process");
             valuereturn = 1;
         }
@@ -852,9 +853,9 @@ public class Agencia{
     }
 
 
-    public static int attestation_files(String path,String context,String nonce,boolean debug, JTextArea Printer){
+    public static int attestation_files(String path,String context,String nonce,boolean debug, JFXTextArea Printer){
         int valuereturn = 0;
-        Printer.append("EXECUTING THE SALIDA FUNCTION: \n");
+        Printer.appendText("EXECUTING THE SALIDA FUNCTION: \n");
         System.out.println("EXECUTING THE SALIDA FUNCTION: ");
         new File(path).mkdirs();
         String sing_path = path+"/sign.out";
@@ -880,7 +881,7 @@ public class Agencia{
                 BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 String line;
                 while((line=reader.readLine())!=null){
-                    Printer.append(line+"\n");
+                    Printer.appendText(line+"\n");
                     output.append(line+"\n");
                 }
                 System.out.println(output);
@@ -888,19 +889,19 @@ public class Agencia{
             int exitVal = p.waitFor();
             System.out.println(exitVal);
         }catch(Exception e){
-            Printer.append("There are an error in the process \n");
+            Printer.appendText("There are an error in the process \n");
             System.out.println("There are an error in the process");
             valuereturn = 1;
         }
         return valuereturn;
     }
 
-    public static int check_attestation_files(String path,String nonce,boolean debug, JTextArea Printer){
+    public static int check_attestation_files(String path,String nonce,boolean debug, JFXTextArea Printer){
         int valuereturn = 0;
         String sing_path = path+"/sign.out";
         String pcr_path = path+"/pcr.out";
         String quote_path = path+"/quote.out";
-        Printer.append("EXECUTING THE CHECK FUNCTION: \n");
+        Printer.appendText("EXECUTING THE CHECK FUNCTION: \n");
         System.out.println("EXECUTING THE CHECK FUNCTION: ");
         String akpub_path = path+"/akpub.pem";
         ProcessBuilder pb1 = new ProcessBuilder(
@@ -935,7 +936,7 @@ public class Agencia{
         return valuereturn;
     }
 
-    public static String computeSHA256(String pathPCRFile, JTextArea Printer) throws Exception{
+    public static String computeSHA256(String pathPCRFile, JFXTextArea Printer) throws Exception{
         FileInputStream fis = new FileInputStream(pathPCRFile);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] byteArray = new byte[1024];
@@ -949,7 +950,7 @@ public class Agencia{
         for(int i=0; i< bytes.length ;i++){
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
-        Printer.append(sb.toString()+"\n");
+        Printer.appendText(sb.toString()+"\n");
         System.out.println(sb.toString());
         return sb.toString();
     }

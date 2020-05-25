@@ -1,6 +1,7 @@
 package jade.core.SecureCloud;
 
 
+import com.jfoenix.controls.JFXTextArea;
 import jade.core.*;
 import jade.core.SecureTPM.Agencia;
 
@@ -16,11 +17,28 @@ public class SecureCAPlatform extends Agent{
     private transient SecureCloudTPMHelper mobHelperCloud;
     private JTextArea Printer;
 
+    private JFXTextArea PrinterList;
+    private JFXTextArea PrinterCRUD;
+    private JFXTextArea PrinterStart;
+
 
     public PrivateKey getPrivateKey(){
         return mobHelperCloud.getPrivKey();
     }
-    
+
+
+    public void setPrinterList(JFXTextArea PrinterA){
+        PrinterList = PrinterA;
+    }
+
+    public void setCRUDPrinter(JFXTextArea PrinterB){
+        PrinterCRUD = PrinterB;
+    }
+
+    public void setStartPrinter(JFXTextArea PrinterB){
+        PrinterStart = PrinterB;
+    }
+
 
 
     /**
@@ -37,7 +55,7 @@ public class SecureCAPlatform extends Agent{
             initmobHelperCloud();
             Agencia.printLog("THE INITIALIZATION OF THE CA HAS BEGUN TO RUN",
                             Level.INFO,SecureCloudTPMHelper.DEBUG,this.getClass().getName());
-            mobHelperCloud.doStartCloud(this,priv,pub, Printer,username,password);
+            mobHelperCloud.doStartCloud(this,priv,pub, Printer,PrinterList,PrinterCRUD,PrinterStart,username,password);
         } catch(ServiceException se) {
             System.out.println("THERE ARE AN ERROR IN THE doInitializeCA");
             se.printStackTrace();
@@ -132,9 +150,7 @@ public class SecureCAPlatform extends Agent{
         return Printer;
     }
 
-    public void printArea(String text){
-        Printer.append(text+"\n");
-    }
+
 
     /**
      * CALL THIS FUNCTION TO INITIALIZE THE CLOUD SERVICE

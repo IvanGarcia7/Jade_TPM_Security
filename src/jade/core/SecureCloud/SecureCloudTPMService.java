@@ -1,5 +1,6 @@
 package jade.core.SecureCloud;
 
+import com.jfoenix.controls.JFXTextArea;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import jade.core.*;
@@ -86,6 +87,9 @@ public class SecureCloudTPMService extends BaseService {
 
     //PRINTER
     private JTextArea Printer;
+    private JFXTextArea PrinterListComplete;
+    private JFXTextArea PrinterCRUDComplete;
+    private JFXTextArea PrinterStartComplete;
 
     //SECURE CLOUD KEY PAIR FROM A SECURE PLATFORM;
     private PrivateKey privateKeyCA;
@@ -262,8 +266,11 @@ public class SecureCloudTPMService extends BaseService {
          * @param secureCAPlatform
          */
         public synchronized void doStartCloud(SecureCAPlatform secureCAPlatform,PrivateKey priv, PublicKey pub,
-                                              JTextArea printer,String username, String password) {
+                                              JTextArea printer,JFXTextArea printerList,JFXTextArea printerCRUD,JFXTextArea printerStar,String username, String password) {
             Printer = printer;
+            PrinterListComplete = printerList;
+            PrinterCRUDComplete = printerCRUD;
+            PrinterStartComplete = printerStar;
             Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED NAME AGENT:" +
                              secureCAPlatform.getAID(), Level.INFO, SecureCloudTPMHelper.DEBUG,
                              this.getClass().getName());
@@ -506,27 +513,28 @@ public class SecureCloudTPMService extends BaseService {
                     String password = (String)command.getParams()[2];
 
                     try{
-                        System.out.println("USERNAME: "+username);
-
+                        //System.out.println("USERNAME: "+username);
+                        //System.out.println("PASSWORD: "+password);
                         MongoClientURI mongoCientURI = new MongoClientURI("mongodb+srv://"+username+":"+password+"@jadecluster-lf67e.mongodb.net/test?retryWrites=true&w=majority");
                         MongoClient mongoClient = new MongoClient(mongoCientURI);
                         MongoDatabase database = mongoClient.getDatabase("hotspot");
                         collection = database.getCollection("hotspot");
-                        System.out.println("NUMBER OF INSTANCES: "+collection.count());
+                        System.out.println("NUMBER OF INSTANCE: "+collection.count());
 
 
-                        Printer.append("INITIALIZING THE KEY PAIR RECEIVE\n");
+                        PrinterStartComplete.appendText("INITIALIZING THE KEY PAIR RECEIVE\n");
                         System.out.println("INITIALIZING THE KEY PAIR RECEIVE");
                         privateKeyCA = keyPairReceive.getKey();
                         publicKeyCA  = keyPairReceive.getValue();
 
-                        Printer.append("NAME OF THE CONTAINER: "+actualcontainer.getID().getName()+"\n");
-                        Printer.append("*********************PUBLIC*****************************\n");
-                        Printer.append("PUBLIC KEY: "+publicKeyCA+"\n");
-                        Printer.append("*********************PUBLIC*****************************\n");
-                        Printer.append("*********************SECRET*****************************\n");
-                        Printer.append("PRIVATE KEY: "+privateKeyCA+"\n");
-                        Printer.append("*********************SECRET*****************************\n");
+
+                        PrinterStartComplete.appendText("NAME OF THE CONTAINER: "+actualcontainer.getID().getName()+"\n");
+                        PrinterStartComplete.appendText("*********************PUBLIC*****************************\n");
+                        PrinterStartComplete.appendText("PUBLIC KEY: "+publicKeyCA+"\n");
+                        PrinterStartComplete.appendText("*********************PUBLIC*****************************\n");
+                        PrinterStartComplete.appendText("*********************SECRET*****************************\n");
+                        PrinterStartComplete.appendText("PRIVATE KEY: "+privateKeyCA+"\n");
+                        PrinterStartComplete.appendText("*********************SECRET*****************************\n");
 
                         System.out.println("NAME OF THE CONTAINER: "+actualcontainer.getID().getName());
                         System.out.println("*********************PUBLIC*****************************");
@@ -540,7 +548,7 @@ public class SecureCloudTPMService extends BaseService {
 
                     }catch(Exception e){
                         System.out.println("THERE ARE AN ERROR INIT THE PLATFORM, CHECK USERNAME AND VALUE");
-                        Printer.append("THERE ARE AN ERROR INIT THE PLATFORM, CHECK USERNAME AND VALUE");
+                        PrinterStartComplete.appendText("THERE ARE AN ERROR INIT THE PLATFORM, CHECK USERNAME AND VALUE");
                     }
 
 
@@ -550,8 +558,8 @@ public class SecureCloudTPMService extends BaseService {
                     Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST REQUEST INTO THE AMS " +
                                     "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
 
-                    Printer.append("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName()+"\n");
-                    Printer.append("*********************HOTSPOTS*****************************\n");
+                    PrinterListComplete.appendText("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName()+"\n");
+                    PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
 
                     System.out.println("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName());
                     System.out.println("*********************HOTSPOTS*****************************");
@@ -559,19 +567,19 @@ public class SecureCloudTPMService extends BaseService {
                     while(it.hasNext()){
                         Map.Entry pair = (Map.Entry)it.next();
                         SecureInformationCloud packet = (SecureInformationCloud) pair.getValue();
-                        Printer.append(pair.getKey() + " = " + packet.getSha256()+"\n");
+                        PrinterListComplete.appendText(pair.getKey() + " = " + packet.getSha256()+"\n");
                         System.out.println(pair.getKey() + " = " + pair.getValue());
                     }
                     System.out.println("*********************HOTSPOTS*****************************");
-                    Printer.append("*********************HOTSPOTS*****************************\n");
+                    PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
 
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED)){
 
                     Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST REQUEST INTO THE AMS " +
                             "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
 
-                    Printer.append("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName()+"\n");
-                    Printer.append("*********************HOTSPOTS*****************************\n");
+                    PrinterListComplete.appendText("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName()+"\n");
+                    PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
 
                     System.out.println("NAME OF THE REGISTER HOTSPOTS IN: "+actualcontainer.getID().getName());
                     System.out.println("*********************HOTSPOTS*****************************");
@@ -581,12 +589,12 @@ public class SecureCloudTPMService extends BaseService {
                     MongoCursor<Document> cursor = collection.find().iterator();
                     while(cursor.hasNext()) {
                         Document str = cursor.next();
-                       Printer.append(str.get("_id")+" = "+str.get("SHA256")+"\n");
+                        PrinterListComplete.appendText(str.get("_id")+" = "+str.get("SHA256")+"\n");
                     }
 
 
                     System.out.println("*********************HOTSPOTS*****************************");
-                    Printer.append("*********************HOTSPOTS*****************************\n");
+                    PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
 
                 } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_DELETE)){
                         Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST DELETE REQUEST INTO THE AMS " +
@@ -595,7 +603,7 @@ public class SecureCloudTPMService extends BaseService {
                         collection.findOneAndDelete(Filters.eq("_id",command.getParams()[0]));
 
                         System.out.println("*********************HOTSPOT DELETE*****************************");
-                        Printer.append("*********************HOTSPOT DELETE*****************************\n");
+                        PrinterListComplete.appendText("*********************HOTSPOT DELETE*****************************\n");
 
 
                 } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
@@ -615,7 +623,7 @@ public class SecureCloudTPMService extends BaseService {
                                 hotspotNew.append("PLATFORM_LOCATION", Agencia.serialize(content.getPlatformLocation()));
                                 hotspotNew.append("SHA256", content.getSha256());
                                 collection.insertOne(hotspotNew);
-                                Printer.append("PLATFORM INSERTED CORRECTLY\n");
+                                PrinterCRUDComplete.appendText("PLATFORM INSERTED CORRECTLY\n");
                                 pendingRedirects.remove(index);
                             }
                     }else{
@@ -649,10 +657,10 @@ public class SecureCloudTPMService extends BaseService {
                     RequestSecureATT packSecure = (RequestSecureATT) requestInsert.getValue();
 
 
-                    Printer.append("*********************NEW REQUEST*****************************\n");
-                    Printer.append("LOCATION -> "+requestInsert.getKey()+"\n");
-                    Printer.append("PUBLIC PASSWORD -> "+packSecure.getPublicPassword()+"\n");
-                    Printer.append("*********************NEW REQUEST*****************************\n");
+                    PrinterListComplete.appendText("*********************NEW REQUEST*****************************\n");
+                    PrinterListComplete.appendText("LOCATION -> "+requestInsert.getKey()+"\n");
+                    PrinterListComplete.appendText("PUBLIC PASSWORD -> "+packSecure.getPublicPassword()+"\n");
+                    PrinterListComplete.appendText("*********************NEW REQUEST*****************************\n");
 
                     System.out.println("*********************NEW REQUEST*****************************");
                     System.out.println("LOCATION -> "+requestInsert.getKey());
@@ -669,29 +677,29 @@ public class SecureCloudTPMService extends BaseService {
                     }else if(findHostpotNew!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
                     }else{
-                        Printer.append("PCRS LIST:\n");
+                        PrinterListComplete.appendText("PCRS LIST:\n");
                         System.out.println("PCRS LIST:");
 
                         String temPath = "./temp";
                         new File(temPath).mkdir();
-                        Printer.append("DESERIALIZE THEIR INFORMATION\n");
+                        PrinterListComplete.appendText("DESERIALIZE THEIR INFORMATION\n");
                         System.out.println("DESERIALIZE THEIR INFORMATION");
                         AttestationSerialized packetReceive = packSecure.getPCR_Signed();
                         Agencia.deserializeATT(temPath,packetReceive);
 
-                        int result = Agencia.check_attestation_files(temPath,"",true, Printer);
+                        int result = Agencia.check_attestation_files(temPath,"",true, PrinterCRUDComplete);
                         if(result==0){
                             Iterator it = null;
-                            Printer.append("COMPUTING THE HASH:\n");
+                            PrinterListComplete.appendText("COMPUTING THE HASH:\n");
                             System.out.println("COMPUTING THE HASH:");
-                            String hash = Agencia.computeSHA256(temPath+"/pcr.out", Printer);
+                            String hash = Agencia.computeSHA256(temPath+"/pcr.out", PrinterCRUDComplete);
 
                             SecureInformationCloud saveRequest = new SecureInformationCloud(
                                     packSecure.getPublicPassword(),hash,packetReceive.getAIKPub(),
                                     packSecure.getPlatformLocationOrigin());
                             Agencia.deleteFolder(new File(temPath));
 
-                            Printer.append("ADDING THE REQUEST IN THE PENDING LIST\n");
+                            PrinterListComplete.appendText("ADDING THE REQUEST IN THE PENDING LIST\n");
                             System.out.println("ADDING THE REQUEST IN THE PENDING LIST");
                             pendingRedirects.put(packSecure.getPlatformLocationOrigin().getID(),saveRequest);
 
@@ -700,19 +708,19 @@ public class SecureCloudTPMService extends BaseService {
 
 
                             it = pendingRedirects.entrySet().iterator();
-                            Printer.append("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST\n");
+                            PrinterListComplete.appendText("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST\n");
                             System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
 
-                            Printer.append("*********************HOTSPOTS*****************************\n");
-                            System.out.println("*********************HOTSPOTS*****************************");
-                            while(it.hasNext()){
-                                Map.Entry pair = (Map.Entry)it.next();
-                                SecureInformationCloud iteration = (SecureInformationCloud)pair.getValue();
-                                Printer.append(pair.getKey() + " = " + iteration.getSha256()+"\n");
-                                System.out.println(pair.getKey() + " = " + iteration.getSha256());
-                            }
-                            Printer.append("*********************HOTSPOTS*****************************\n");
-                            System.out.println("*********************HOTSPOTS*****************************");
+                            //PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
+                            //System.out.println("*********************HOTSPOTS*****************************");
+                            //while(it.hasNext()){
+                            //    Map.Entry pair = (Map.Entry)it.next();
+                            //    SecureInformationCloud iteration = (SecureInformationCloud)pair.getValue();
+                            //    Printer.append(pair.getKey() + " = " + iteration.getSha256()+"\n");
+                            //    System.out.println(pair.getKey() + " = " + iteration.getSha256());
+                            //}
+                            //Printer.append("*********************HOTSPOTS*****************************\n");
+                            //System.out.println("*********************HOTSPOTS*****************************");
                         }else{
                             System.out.println("ERROR READING THE ATTESTATION DATA.");
                         }
@@ -731,13 +739,13 @@ public class SecureCloudTPMService extends BaseService {
 
                     if(originCheck!=null && destinyCheck!=null){
 
-                        Printer.append("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE\n");
+                        PrinterCRUDComplete.appendText("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE\n");
                         System.out.println("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE");
                         String challenge = Agencia.getRandomChallenge();
 
-                        Printer.append("**************************************************\n");
-                        Printer.append("THE CHALLENGE IS THE FOLLOWING "+challenge+"\n");
-                        Printer.append("**************************************************\n");
+                        PrinterCRUDComplete.appendText("**************************************************\n");
+                        PrinterCRUDComplete.appendText("THE CHALLENGE IS THE FOLLOWING "+challenge+"\n");
+                        PrinterCRUDComplete.appendText("**************************************************\n");
 
                         System.out.println("**************************************************");
                         System.out.println("THE CHALLENGE IS THE FOLLOWING "+challenge);
@@ -770,7 +778,7 @@ public class SecureCloudTPMService extends BaseService {
                                 new SenderCAChallenge(message, amsMainPlatform,
                                         SecureCloudTPMService.this,RegisterOrigin,RegisterDestiny,
                                         challenge,SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,destinypub,
-                                        publicKeyCA,0, packetReceived.getAgente(),Printer)
+                                        publicKeyCA,0, packetReceived.getAgente(),PrinterCRUDComplete)
                         );
                         actualcontainer.releaseLocalAgent(amsMain);
                     }else{
@@ -808,17 +816,17 @@ public class SecureCloudTPMService extends BaseService {
                             }
                             Agencia.deserializeATTWAIK(temPath,packetReceive);
                             int result = Agencia.check_attestation_files(temPath,packet_privative.getChallenge(),
-                                    false, Printer);
+                                    false, PrinterCRUDComplete);
                             if(result==0) {
                                 System.out.println("COMPUTING THE HASH");
-                                String hash = Agencia.computeSHA256(temPath + "/pcr.out", Printer);
+                                String hash = Agencia.computeSHA256(temPath + "/pcr.out", PrinterCRUDComplete);
                                 String hashSaved =hotspotSaved.getString("SHA256");
 
                                 if(!hashSaved.equals(hash)){
 
-                                    Printer.append("**************************************************\n");
-                                    Printer.append("THE PLATFORM IS CORRUPTED BY A MALWARE\n");
-                                    Printer.append("**************************************************\n");
+                                    PrinterCRUDComplete.appendText("**************************************************\n");
+                                    PrinterCRUDComplete.appendText("THE PLATFORM IS CORRUPTED BY A MALWARE\n");
+                                    PrinterCRUDComplete.appendText("**************************************************\n");
 
                                     System.out.println("**************************************************");
                                     System.out.println("THE PLATFORM IS CORRUPTED BY A MALWARE");
@@ -844,9 +852,9 @@ public class SecureCloudTPMService extends BaseService {
 
                                     if(packet_privative.getValidation()==1){
 
-                                        Printer.append("**************************************************\n");
-                                        Printer.append("BOTH PLATFORMS CONFIRMED\n");
-                                        Printer.append("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("BOTH PLATFORMS CONFIRMED\n");
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
 
                                         System.out.println("**************************************************");
                                         System.out.println("BOTH PLATFORMS CONFIRMED");
@@ -888,10 +896,10 @@ public class SecureCloudTPMService extends BaseService {
                                         Date timeChallenge = new Date(c.getTimeInMillis()+Agencia.getTimeout());
 
 
-                                        Printer.append("**************************************************\n");
-                                        Printer.append("TOKEN GENERATED: "+challenge+"\n");
-                                        Printer.append("TIMESTAMP: "+timeChallenge+"\n");
-                                        Printer.append("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("TOKEN GENERATED: "+challenge+"\n");
+                                        PrinterCRUDComplete.appendText("TIMESTAMP: "+timeChallenge+"\n");
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
 
 
                                         System.out.println("**************************************************");
@@ -928,10 +936,10 @@ public class SecureCloudTPMService extends BaseService {
 
                                     }else{
                                         //SEND ATT REQUEST TO THE SECOND PLATFORM
-                                        Printer.append("**************************************************\n");
-                                        Printer.append("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE " +
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("THE PLATFORM IS RELIABLE, PROCEEDING TO SEND A CHALLENGE " +
                                                 "TO THE DESTINY\n");
-                                        Printer.append("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
 
 
                                         System.out.println("**************************************************");
@@ -941,9 +949,9 @@ public class SecureCloudTPMService extends BaseService {
 
                                         String challenge = Agencia.getRandomChallenge();
 
-                                        Printer.append("**************************************************\n");
-                                        Printer.append("THE CHALLENGE IS THE FOLLOWING "+challenge+"\n");
-                                        Printer.append("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
+                                        PrinterCRUDComplete.appendText("THE CHALLENGE IS THE FOLLOWING "+challenge+"\n");
+                                        PrinterCRUDComplete.appendText("**************************************************\n");
 
                                         System.out.println("**************************************************");
                                         System.out.println("THE CHALLENGE IS THE FOLLOWING "+challenge);
@@ -986,16 +994,16 @@ public class SecureCloudTPMService extends BaseService {
                                                         SecureCloudTPMService.this,RegisterDestiny,
                                                         RegisterOrigin ,challenge,
                                                         SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
-                                                        destinypub,publicKeyCA,1, packet_privative.getAgent(), Printer)
+                                                        destinypub,publicKeyCA,1, packet_privative.getAgent(), PrinterCRUDComplete)
                                         );
                                         actualcontainer.releaseLocalAgent(amsMain);
                                     }
                                 }
                             }else{
 
-                                Printer.append("**************************************************\n");
-                                Printer.append("ERROR READING THE INFORMATION, IGNORE THE MESSAGE\n");
-                                Printer.append("**************************************************\n");
+                                PrinterCRUDComplete.appendText("**************************************************\n");
+                                PrinterCRUDComplete.appendText("ERROR READING THE INFORMATION, IGNORE THE MESSAGE\n");
+                                PrinterCRUDComplete.appendText("**************************************************\n");
 
 
                                 System.out.println("**************************************************");
@@ -1019,18 +1027,18 @@ public class SecureCloudTPMService extends BaseService {
                                 actualcontainer.releaseLocalAgent(amsMain);
                             }
                         }else{
-                            Printer.append("THERE ARE AN ERROR. IGNORING THE REQUEST, A POSSIBLE ATTACKER IS" +
+                            PrinterCRUDComplete.appendText("THERE ARE AN ERROR. IGNORING THE REQUEST, A POSSIBLE ATTACKER IS" +
                                     "REQUESTING TO MIGRATE\n");
                             System.out.println("THERE ARE AN ERROR. IGNORING THE REQUEST, A POSSIBLE ATTACKER IS" +
                                                "REQUESTING TO MIGRATE");
                         }
                     }else{
-                        Printer.append("ERROR TIMEOUT IGNORING THE REQUEST \n");
+                        PrinterCRUDComplete.appendText("ERROR TIMEOUT IGNORING THE REQUEST \n");
                         System.out.println("ERROR TIMEOUT IGNORING THE REQUEST ");
                     }
                 }
             }catch(Exception ex){
-                Printer.append("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK\n");
+                PrinterCRUDComplete.appendText("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK\n");
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
                 ex.printStackTrace();
             }
@@ -1182,13 +1190,13 @@ public class SecureCloudTPMService extends BaseService {
                     if(((Long)command.getParams()[1]-packet_Priv.getTimestamp())<=Agencia.getTimeout()){
                         Pair<String,Object> requestZone1Processed = new Pair<String,Object>(requestZone1.getKey(),
                                                                                             pairProcessed);
-                        Printer.append("Checking the values\n");
-                        Printer.append("I receive the following time "+packet_Priv.getTimestamp()+"\n");
-                        System.out.println("Checking the values");
+                        PrinterCRUDComplete.appendText("Checking the values\n");
+                        PrinterCRUDComplete.appendText("I receive the following time "+packet_Priv.getTimestamp()+"\n");
+                        PrinterCRUDComplete.appendText("Checking the values");
                         System.out.println("I receive the following time "+packet_Priv.getTimestamp());
                         commandResponse.addParam(requestZone1Processed);
                     }else{
-                        Printer.append("THE AGENCIA IS TIMEOUT, IGNORING THE REQUEST\n");
+                        PrinterCRUDComplete.appendText("THE AGENCIA IS TIMEOUT, IGNORING THE REQUEST\n");
                         System.out.println("THE AGENCIA IS TIMEOUT, IGNORING THE REQUEST");
                         commandResponse.addParam(null);
                     }

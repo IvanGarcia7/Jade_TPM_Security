@@ -25,7 +25,7 @@ public class CAAgent2 extends SecureAgentPlatform {
 			remoteAMS.addAddresses("http://raspberrypi:7778/acc");
 			// Create the Location object
 			PlatformID destination = new PlatformID(remoteAMS);
-			doInitializeAgent(destination,pubKey,"0x81010019","0x8101001a");
+			//doInitializeAgent(destination,pubKey,"0x81010019","0x8101001a");
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

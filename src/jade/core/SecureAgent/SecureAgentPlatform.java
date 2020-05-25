@@ -1,6 +1,7 @@
 package jade.core.SecureAgent;
 
 
+import com.jfoenix.controls.JFXTextArea;
 import jade.core.Agent;
 import jade.core.Location;
 import jade.core.PlatformID;
@@ -22,7 +23,7 @@ public class SecureAgentPlatform extends Agent{
 
     private static final long serialVersionUID = 9058618378207435612L;
     private transient SecureAgentTPMHelper mobHelperCloudPlatform;
-    private JTextArea Printer;
+
 
     private PublicKey LocationKey;
     private String Token;
@@ -59,13 +60,14 @@ public class SecureAgentPlatform extends Agent{
      * @param contextEK THE INDEX WHERE THE EK IS LOADED INTO THE TPM
      * @param contextAK THE INDEX WHERE THE PRIVATE AIK IS LOADED INTO THE TPM
      */
-    public void doInitializeAgent(PlatformID CALocation, PublicKey pubKey, String contextEK, String contextAK){
+    public void doInitializeAgent(PlatformID CALocation, PublicKey pubKey, String contextEK, String contextAK, JFXTextArea PrinterStar,
+                                  JFXTextArea PrinterList, JFXTextArea PrinterStatus){
         try {
-            printArea("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN");
+            PrinterStatus.appendText("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN");
             initmobHelperCloud();
             Agencia.printLog("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN",
                     Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
-            mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey, contextEK,  contextAK);
+            mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey, contextEK,  contextAK,PrinterStar,PrinterList,PrinterStatus);
         } catch(ServiceException se) {
             System.out.println("THERE ARE AN ERROR IN THE doInitializeAgent");
             se.printStackTrace();
@@ -78,7 +80,7 @@ public class SecureAgentPlatform extends Agent{
      * @param destiny THE PLATFORM ID WHERE I NEED TO MIGRATE
      */
     public void doSecureMigration(PlatformID destiny){
-        printArea("EXECUTING THE MIGRATION PROCESS");
+        //PrinterStatus.appendText("EXECUTING THE MIGRATION PROCESS");
         System.out.println("EXECUTING THE MIGRATION PROCESS");
         try {
             initmobHelperCloud();
@@ -96,17 +98,6 @@ public class SecureAgentPlatform extends Agent{
         super.doMove(destiny);
     }
 
-    public void setGUI(JTextArea printer){
-        Printer = printer;
-    }
-
-    public JTextArea getGUI(){
-        return Printer;
-    }
-
-    public void printArea(String text){
-        Printer.append(text+"\n");
-    }
 
 
     /**

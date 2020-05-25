@@ -1,6 +1,7 @@
 package jade.core.SecureAgent;
 
 
+import com.jfoenix.controls.JFXTextArea;
 import jade.core.PlatformID;
 import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.ServiceHelper;
@@ -37,7 +38,8 @@ public interface SecureAgentTPMHelper extends ServiceHelper {
     //PUBLIC METHODS
 
     void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, PlatformID caLocation, PublicKey pubKey,
-                           String contextEK, String contextAK);
+                           String contextEK, String contextAK, JFXTextArea PrinterStar,
+                           JFXTextArea PrinterList, JFXTextArea PrinterStatus);
     void doStartMigration(SecureAgentPlatform secureAgentPlatform, PlatformID destiny);
     PrivateKey getPrivKey();
     Map<String, SecureCAConfirmation> getPassList();
