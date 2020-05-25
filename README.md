@@ -52,5 +52,9 @@ java -cp commons.jar:TPM.jar:migration.jar:jfoenix-9.0.8.jar --module-path /usr/
 
 java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P1 -gui -host localhost -port 1564 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36811\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A1:vom.CAAgent
 
+## NEW VERSION
+
+java -cp commons.jar:TPM.jar:migration.jar:jfoenix-9.0.8.jar --module-path /usr/share/openjfx/lib --add-modules javafx.controls,javafx.fxml jade.Boot -container-name P1 -gui -host localhost -port 1264 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:32711\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A1:jade.core.Interfaces.InterfazAgentSegura.src.vom.CAAgent
+
 
 
