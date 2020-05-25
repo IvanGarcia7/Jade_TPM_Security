@@ -36,6 +36,12 @@ java -cp TPM.jar:mongo.jar:jfoenix-9.0.8.jar --module-path /usr/share/openjfx/li
 
 java -cp commons.jar:TPM.jar:test.jar:migration.jar jade.Boot -container-name P2 -gui -host localhost -port 1364 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36711\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A2:vom.CAAgent
 
+## NEW VERSION
+
+java -cp commons.jar:TPM.jar:migration.jar:jfoenix-9.0.8.jar --module-path /usr/share/openjfx/lib --add-modules javafx.controls,javafx.fxml  jade.Boot -container-name P2 -gui -host localhost -port 1364 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36711\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A2:jade.core.Interfaces.InterfazAgentSegura.src.vom.CAAgent
+
+
+
 # START AGENT 1
 
 * Context EK: 0x81010009
