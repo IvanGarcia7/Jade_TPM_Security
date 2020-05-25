@@ -21,6 +21,12 @@ Here are some **basic examples** to demonstrate how the library works.
 
 java -cp TPM.jar:test.jar:migration.jar jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService\;jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService -agents CA:vom.CAPlatform
 
+## NEW VERSION
+
+java -cp TPM.jar:mongo.jar:jfoenix-9.0.8.jar --module-path /usr/share/openjfx/lib  --add-modules javafx.controls,javafx.fxml   jade.Boot -gui -host localhost -port 8080 -services jade.core.SecureCloud.SecureCloudTPMService -agents CA:jade.core.Interfaces.InterfazCASegura.src.vom.CAPlatform
+
+
+
 
 # START AGENT 2
 
