@@ -56,6 +56,7 @@ public class SecureAgentGuiImpl  extends SecureAgentController implements Initia
     @FXML private JFXButton startButton;
     @FXML private JFXButton AddButton;
     @FXML private JFXButton migrateButton;
+    @FXML private JFXButton deleteButton1;
 
 
 
@@ -111,6 +112,41 @@ public class SecureAgentGuiImpl  extends SecureAgentController implements Initia
             hops.add(destination2);
             selectedList.appendText(destination2.getID()+"\n");
             selectedList.appendText("*********************\n");
+        }
+    }
+
+
+    public void onDeletesButton(ActionEvent event){
+
+        if(AIDTextHop.getText().isEmpty() || AIDTextHopADD.getText().isEmpty()){
+            AreaList.appendText("PLEASE INSERT AN AID AND AN ADDRESS");
+        }else{
+
+            //RECORRO LA LISTA Y VEO SI ALGUNA TIENE EL AID IGUAL
+            boolean progress = true;
+            int index = 0;
+
+            AID remoteAMSDestiny = new AID(AIDTextHop.getText(), AID.ISGUID);
+            remoteAMSDestiny.addAddresses(AIDTextHopADD.getText());
+            PlatformID destination2 = new PlatformID(remoteAMSDestiny);
+
+            while(index<hops.size()&&progress){
+                PlatformID selectedPlatform = hops.get(index);
+                if(selectedPlatform.getAmsAID().equals(destination2.getAmsAID())){
+                    hops.remove(index);
+                    progress=false;
+                }
+            }
+
+            selectedList.selectAll();
+            selectedList.replaceSelection("");
+            selectedList.setText("");
+
+            for(int i=0;i<hops.size();i++){
+                PlatformID destinationSelectedPrinter = hops.get(i);
+                selectedList.appendText(destinationSelectedPrinter.getID()+"\n");
+                selectedList.appendText("*********************\n");
+            }
         }
     }
 

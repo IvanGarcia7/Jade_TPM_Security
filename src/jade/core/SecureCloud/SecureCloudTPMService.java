@@ -659,10 +659,10 @@ public class SecureCloudTPMService extends BaseService {
                     RequestSecureATT packSecure = (RequestSecureATT) requestInsert.getValue();
 
 
-                    PrinterListComplete.appendText("*********************NEW REQUEST*****************************\n");
-                    PrinterListComplete.appendText("LOCATION -> "+requestInsert.getKey()+"\n");
-                    PrinterListComplete.appendText("PUBLIC PASSWORD -> "+packSecure.getPublicPassword()+"\n");
-                    PrinterListComplete.appendText("*********************NEW REQUEST*****************************\n");
+                    PrinterInformationComplete.appendText("*********************NEW REQUEST*****************************\n");
+                    PrinterInformationComplete.appendText("LOCATION -> "+requestInsert.getKey()+"\n");
+                    PrinterInformationComplete.appendText("PUBLIC PASSWORD -> "+packSecure.getPublicPassword()+"\n");
+                    PrinterInformationComplete.appendText("*********************NEW REQUEST*****************************\n");
 
                     System.out.println("*********************NEW REQUEST*****************************");
                     System.out.println("LOCATION -> "+requestInsert.getKey());
@@ -679,12 +679,12 @@ public class SecureCloudTPMService extends BaseService {
                     }else if(findHostpotNew!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
                     }else{
-                        PrinterListComplete.appendText("PCRS LIST:\n");
+                        PrinterInformationComplete.appendText("PCRS LIST:\n");
                         System.out.println("PCRS LIST:");
 
                         String temPath = "./temp";
                         new File(temPath).mkdir();
-                        PrinterListComplete.appendText("DESERIALIZE THEIR INFORMATION\n");
+                        PrinterInformationComplete.appendText("DESERIALIZE THEIR INFORMATION\n");
                         System.out.println("DESERIALIZE THEIR INFORMATION");
                         AttestationSerialized packetReceive = packSecure.getPCR_Signed();
                         Agencia.deserializeATT(temPath,packetReceive);
@@ -692,7 +692,7 @@ public class SecureCloudTPMService extends BaseService {
                         int result = Agencia.check_attestation_files(temPath,"",true, PrinterInformationComplete);
                         if(result==0){
                             Iterator it = null;
-                            PrinterListComplete.appendText("COMPUTING THE HASH:\n");
+                            PrinterInformationComplete.appendText("COMPUTING THE HASH:\n");
                             System.out.println("COMPUTING THE HASH:");
                             String hash = Agencia.computeSHA256(temPath+"/pcr.out", PrinterInformationComplete);
 
@@ -701,7 +701,7 @@ public class SecureCloudTPMService extends BaseService {
                                     packSecure.getPlatformLocationOrigin());
                             Agencia.deleteFolder(new File(temPath));
 
-                            PrinterListComplete.appendText("ADDING THE REQUEST IN THE PENDING LIST\n");
+                            PrinterInformationComplete.appendText("ADDING THE REQUEST IN THE PENDING LIST\n");
                             System.out.println("ADDING THE REQUEST IN THE PENDING LIST");
                             pendingRedirects.put(packSecure.getPlatformLocationOrigin().getID(),saveRequest);
 
@@ -710,7 +710,7 @@ public class SecureCloudTPMService extends BaseService {
 
 
                             it = pendingRedirects.entrySet().iterator();
-                            PrinterListComplete.appendText("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST\n");
+                            PrinterInformationComplete.appendText("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST\n");
                             System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
 
                             //PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
