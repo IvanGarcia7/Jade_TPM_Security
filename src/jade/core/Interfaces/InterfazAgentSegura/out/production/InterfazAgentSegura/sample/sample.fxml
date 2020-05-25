@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="474.0" prefWidth="562.0" style="-fx-background-color: #85c0cc;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SecureAgentGuiImpl">
+    <children>
+        <AnchorPane prefHeight="0.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;">
+            <children>
+                <HBox prefHeight="63.0" prefWidth="562.0">
+                    <children>
+                        <Separator prefWidth="200.0" visible="false" />
+                        <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onUserButtonClicked" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@Images/user.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Separator prefWidth="200.0" visible="false" />
+                        <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onPrinterButtonClicked" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@Images/maleta.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Separator prefWidth="200.0" visible="false" />
+                        <ImageView fitHeight="46.0" fitWidth="69.0" onMouseClicked="#onExitButtonClicked" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@Images/exit.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Separator prefWidth="200.0" visible="false" />
+                    </children>
+                </HBox>
+            </children>
+        </AnchorPane>
+        <AnchorPane fx:id="userPanel" layoutY="89.0" prefHeight="398.0" prefWidth="510.0" style="-fx-background-color: #0f6b7d;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <AnchorPane layoutX="20.0" layoutY="28.0" prefHeight="280.0" prefWidth="522.0" style="-fx-background-color: #85c0cc;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                    <children>
+                        <Label layoutX="9.0" layoutY="127.0" prefHeight="26.0" prefWidth="120.0" text="AID:">
+                            <font>
+                                <Font name="SansSerif Bold" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="9.0" layoutY="165.0" text="ADDRESS:">
+                            <font>
+                                <Font name="SansSerif Bold Italic" size="20.0" />
+                            </font>
+                        </Label>
+                        <JFXTextField fx:id="userAID" layoutX="125.0" layoutY="127.0" prefHeight="27.0" prefWidth="174.0" promptText="Enter the Address platform" />
+                        <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="92.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@Images/antena.png" />
+                            </image>
+                        </ImageView>
+                        <JFXTextArea fx:id="AreaStart" layoutX="307.0" layoutY="-1.0" prefHeight="283.0" prefWidth="219.0" />
+                  <JFXTextField fx:id="userAdd" layoutX="125.0" layoutY="163.0" prefHeight="27.0" prefWidth="174.0" promptText="Enter the AID platform" />
+                  <Label layoutX="14.0" layoutY="213.0" prefHeight="26.0" prefWidth="120.0" text="EK:">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="243.0" prefHeight="26.0" prefWidth="120.0" text="AIK:">
+                     <font>
+                        <Font name="SansSerif Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <JFXTextField fx:id="EKText" layoutX="125.0" layoutY="213.0" prefHeight="27.0" prefWidth="174.0" promptText="Enter the EK Index" />
+                  <JFXTextField fx:id="AIKText" layoutX="125.0" layoutY="242.0" prefHeight="27.0" prefWidth="174.0" promptText="Enter the AIK Index" />
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </AnchorPane>
+                <JFXButton fx:id="startButton" layoutX="203.0" layoutY="337.0" onAction="#onstartButton" prefHeight="27.0" prefWidth="157.0" style="-fx-background-color: #85c0cc;" text="Start">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </JFXButton>
+            </children>
+        </AnchorPane>
+        <ImageView fx:id="userArrow" fitHeight="30.0" fitWidth="90.0" layoutX="114.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+            <image>
+                <Image url="@Images/arrow.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="printerArrow" fitHeight="30.0" fitWidth="90.0" layoutX="266.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+            <image>
+                <Image url="@Images/arrow.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="crudArrow" fitHeight="30.0" fitWidth="90.0" layoutX="413.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" visible="false">
+            <image>
+                <Image url="@Images/arrow.png" />
+            </image>
+        </ImageView>
+        <AnchorPane fx:id="printerPanel" layoutX="10.0" layoutY="96.0" prefHeight="398.0" prefWidth="562.0" style="-fx-background-color: #0f6b7d;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
+            <children>
+                <AnchorPane layoutX="20.0" layoutY="28.0" prefHeight="261.0" prefWidth="529.0" style="-fx-background-color: #85c0cc;" AnchorPane.bottomAnchor="99.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="13.0">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <children>
+                        <Separator layoutY="24.0" prefHeight="3.0" prefWidth="522.0" style="-fx-background-color: #000000;" />
+                        <Label layoutX="34.0" layoutY="3.0" text="Selected Platforms" textAlignment="CENTER">
+                            <font>
+                                <Font name="SansSerif Regular" size="20.0" />
+                            </font>
+                        </Label>
+                        <JFXTextArea fx:id="selectedList" layoutY="26.0" prefHeight="253.0" prefWidth="258.0" />
+                  <JFXTextArea fx:id="AreaList" layoutX="256.0" layoutY="26.0" prefHeight="253.0" prefWidth="266.0" />
+                  <Separator layoutX="259.0" layoutY="1.0" orientation="VERTICAL" prefHeight="279.0" prefWidth="5.0" />
+                  <Label layoutX="356.0" layoutY="3.0" text="Status" textAlignment="CENTER">
+                     <font>
+                        <Font name="SansSerif Regular" size="20.0" />
+                     </font>
+                  </Label>
+                    </children>
+                </AnchorPane>
+                <JFXButton fx:id="AddButton" layoutX="349.0" layoutY="295.0" onAction="#onAddButton" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #85c0cc;" text="Add Platform">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </JFXButton>
+                <JFXButton fx:id="migrateButton" layoutX="349.0" layoutY="339.0" onAction="#onMigrateButton" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #85c0cc;" text="Migrate">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </JFXButton>
+            <JFXTextField fx:id="AIDTextHop" focusColor="BLACK" layoutX="20.0" layoutY="345.0" prefHeight="27.0" prefWidth="290.0" unFocusColor="WHITE" />
+            <Label layoutX="20.0" layoutY="307.0" text="PLATFORM AID:" textFill="WHITE" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

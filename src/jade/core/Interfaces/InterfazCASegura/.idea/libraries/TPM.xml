@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="TPM">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Desktop/TPM.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Desktop/TPM.jar!/" />
+    </SOURCES>
+  </library>
+</component>
