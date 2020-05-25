@@ -4,9 +4,6 @@
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/SecureAgentGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/SecureAgentGuiImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/sample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/sample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +89,7 @@
       <workItem from="1589618188087" duration="14985000" />
       <workItem from="1590309884434" duration="2651000" />
       <workItem from="1590314848818" duration="121000" />
-      <workItem from="1590353069959" duration="16224000" />
+      <workItem from="1590353069959" duration="16624000" />
     </task>
     <servers />
   </component>

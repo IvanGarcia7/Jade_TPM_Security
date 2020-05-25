@@ -136,6 +136,7 @@ public class SecureAgentGuiImpl  extends SecureAgentController implements Initia
                     hops.remove(index);
                     progress=false;
                 }
+                index++;
             }
 
             selectedList.selectAll();
