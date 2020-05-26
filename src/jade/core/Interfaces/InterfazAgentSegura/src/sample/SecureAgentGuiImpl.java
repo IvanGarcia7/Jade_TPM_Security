@@ -156,6 +156,9 @@ public class SecureAgentGuiImpl  extends SecureAgentController implements Initia
             selectedList.appendText("PLEASE INSERT ONE PLATFORM");
         }else{
             PlatformID destiny = hops.get(0);
+            System.out.println("hola");
+            System.out.println(destiny.getAmsAID());
+
             hops.remove(0);
             myAgent.setHops(hops);
             myAgent.doSecureMigration(destiny);
