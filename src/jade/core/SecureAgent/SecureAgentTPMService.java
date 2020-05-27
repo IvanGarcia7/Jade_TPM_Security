@@ -1,6 +1,6 @@
 package jade.core.SecureAgent;
 
-import com.jfoenix.controls.JFXTextArea;
+
 import jade.core.*;
 import jade.core.SecureCloud.*;
 import jade.core.SecureTPM.Agencia;
@@ -84,11 +84,11 @@ public class SecureAgentTPMService extends BaseService {
     public PublicKey CAKey;
 
     //PRINTER
-    private JTextArea Printer;
+    private JTextArea STARTPRINTER;
+    private JTextArea HOPSPRINTER;
+    private JTextArea INFORMATIONPRINTER;
 
-    private JFXTextArea PrinterStart;
-    private JFXTextArea PrinterList;
-    private JFXTextArea PrinterStatus;
+
 
     //PERMITS ASSIGNED BY THE AC
     Map<String, SecureCAConfirmation> CAPermissionList = new HashMap<String,SecureCAConfirmation>();
@@ -200,17 +200,7 @@ public class SecureAgentTPMService extends BaseService {
     }
 
     public JTextArea getGUI(){
-        return Printer;
-    }
-
-    public JFXTextArea getGUIStar(){
-        return PrinterStart;
-    }
-    public JFXTextArea getGUIList(){
-        return PrinterList;
-    }
-    public JFXTextArea getGUIStatus(){
-        return PrinterStatus;
+        return INFORMATIONPRINTER;
     }
 
 
@@ -277,12 +267,12 @@ public class SecureAgentTPMService extends BaseService {
          */
         @Override
         public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, PlatformID caLocation,
-                                                   PublicKey pubKey, String contextEK, String contextAK, JFXTextArea PrinterStars,
-                                                   JFXTextArea PrinterLists, JFXTextArea PrinterStatuss){
-            //Printer = secureAgentPlatform.getGUI();
-            PrinterStart = PrinterStars;
-            PrinterList = PrinterLists;
-            PrinterStatus = PrinterStatuss;
+                                                   PublicKey pubKey, String contextEK, String contextAK, JTextArea startPrinter,
+                                                   JTextArea hopsPrinter, JTextArea informationPrinter){
+           STARTPRINTER = startPrinter;
+           HOPSPRINTER = hopsPrinter;
+           INFORMATIONPRINTER = informationPrinter;
+
             Agencia.printLog("-> THE PROCCES TO COMMUNICATE WITH THE AMS HAS JUST STARTED BY THE AGENT: " +
                               secureAgentPlatform.getAID(), Level.INFO, SecureAgentTPMHelper.DEBUG,
                               this.getClass().getName());
@@ -470,10 +460,10 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("GENERATING THE TEMPORAL DIRECTORY: ");
 
                     //GENERATE THE PRIVATE AND PUBLIC AIK TO SIGN THE INFORMATION
-                    Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK, PrinterStart);
+                    Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK, STARTPRINTER);
 
                     //GENERATE THE SIGNED FILES, AND SERIALIZE INTO AN OBJECT TO SEND IT AFTER TO THE SECURE PLATFORM
-                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true, PrinterStart);
+                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true, STARTPRINTER);
                     File AIKFile = new File("./"+actualLocation.getName()+"/akpub.pem");
                     AIKPub = Files.readAllBytes(AIKFile.toPath());
                     AttestationSerialized PCR_Signed = new AttestationSerialized("./"+
@@ -487,7 +477,7 @@ public class SecureAgentTPMService extends BaseService {
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
                             new SenderStartRequest(message, requestSecureStart, SecureCAInformation, amsMainPlatform,
-                                              SecureAgentTPMService.this, PrinterStart)
+                                              SecureAgentTPMService.this, STARTPRINTER)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
 
@@ -512,7 +502,7 @@ public class SecureAgentTPMService extends BaseService {
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
                             new SenderMigrationRequest(message, amsMainPlatform,
-                                    SecureAgentTPMService.this, PackRequest, PrinterStatus)
+                                    SecureAgentTPMService.this, PackRequest, INFORMATIONPRINTER)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
 
@@ -544,7 +534,7 @@ public class SecureAgentTPMService extends BaseService {
                     try (FileOutputStream fos = new FileOutputStream(temPath+"/akpub.pem")) {
                         fos.write(AIKPub);
                     }
-                    Agencia.attestation_files(temPath,contextAK,challenge,false, PrinterStatus);
+                    Agencia.attestation_files(temPath,contextAK,challenge,false, INFORMATIONPRINTER);
                     AttestationSerialized PCR_Signed = new AttestationSerialized(temPath);
                     Agencia.deleteFolder(new File(temPath));
 
@@ -558,7 +548,7 @@ public class SecureAgentTPMService extends BaseService {
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
                             new SenderChallengeAgentRequest(message, amsMainPlatform, PCR_Signed,
-                                    SecureAgentTPMService.this, CAKey,CALocation,pSender, PrinterStatus)
+                                    SecureAgentTPMService.this, CAKey,CALocation,pSender, INFORMATIONPRINTER)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
 

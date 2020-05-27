@@ -1,6 +1,6 @@
 package jade.core.SecureAgent;
 
-import com.jfoenix.controls.JFXTextArea;
+
 import jade.core.Agent;
 import jade.core.BaseService;
 import jade.core.SecureTPM.Agencia;
@@ -24,11 +24,11 @@ public class SenderStartRequest extends SimpleAchieveREInitiator {
     private RequestSecureATT RequestStart;
     private RequestSecureATT CAInformation;
     private BaseService myService;
-    private JFXTextArea Printer;
+    private JTextArea Printer;
 
     public SenderStartRequest(ACLMessage message, RequestSecureATT requestSecureStart,
                               RequestSecureATT SecureCAInformation, Agent amsMainPlatform,
-                              SecureAgentTPMService secureAgentTPMService, JFXTextArea printer) {
+                              SecureAgentTPMService secureAgentTPMService, JTextArea printer) {
         super(amsMainPlatform,message);
         myMessage = message;
         RequestStart = requestSecureStart;
@@ -87,7 +87,7 @@ public class SenderStartRequest extends SimpleAchieveREInitiator {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
-        Printer.appendText("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
+        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
     }
 
     protected void handleRefuse(ACLMessage inform){

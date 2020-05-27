@@ -1,7 +1,7 @@
 package jade.core.SecureAgent;
 
 
-import com.jfoenix.controls.JFXTextArea;
+
 import jade.core.Agent;
 import jade.core.BaseService;
 import jade.core.GenericCommand;
@@ -21,10 +21,8 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
     private BaseService myService;
     private JTextArea Printer;
 
-    private JFXTextArea PrinterStart;
-    private JFXTextArea PrinterList;
-    private JFXTextArea PrinterStatus;
-
+   
+   
 
 
     public ResponseAgentACL(Agent ams, MessageTemplate mt, SecureAgentTPMService secureAgentTPMService) {
@@ -42,20 +40,19 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
 
         SecureAgentTPMService myServiceHelper = (SecureAgentTPMService) myService;
         Printer = myServiceHelper.getGUI();
-        PrinterStart = myServiceHelper.getGUIStar();
-        PrinterList = myServiceHelper.getGUIList();
-        PrinterStatus = myServiceHelper.getGUIStatus();
+        
+       
 
 
 
-        PrinterStatus.appendText("PROCESSING THE REQUEST IN THE AGENT DESTINY RESPONSER AGENT \n");
+        Printer.append("PROCESSING THE REQUEST IN THE AGENT DESTINY RESPONSER AGENT \n");
         Agencia.printLog("PROCESSING THE REQUEST IN THE AGENT DESTINY RESPONSER AGENT", Level.INFO,
                         SecureAgentTPMHelper.DEBUG, this.getClass().getName());
         ACLMessage reply = null;
 
         if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
             try{
-                PrinterStatus.appendText("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN \n");
+            	Printer.append("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN \n");
                 System.out.println("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                                                             SecureAgentTPMHelper.NAME, null);
@@ -67,7 +64,7 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
             }
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
             try{
-                PrinterStatus.appendText("PLATFORM RECEIVE A CONFIRMATION ORIGIN SECURE MOVE \n");
+            	Printer.append("PLATFORM RECEIVE A CONFIRMATION ORIGIN SECURE MOVE \n");
                 System.out.println("PLATFORM RECEIVE A CONFIRMATION ORIGIN SECURE MOVE");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                         SecureAgentTPMHelper.NAME, null);
@@ -79,7 +76,7 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
             }
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
             try{
-                PrinterStatus.appendText("PLATFORM RECEIVE A CONFIRMATION DESTINY SECURE MOVE \n");
+            	Printer.append("PLATFORM RECEIVE A CONFIRMATION DESTINY SECURE MOVE \n");
                 System.out.println("PLATFORM RECEIVE A CONFIRMATION DESTINY SECURE MOVE");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
                         SecureAgentTPMHelper.NAME, null);
@@ -90,7 +87,7 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
                 e.printStackTrace();
             }
         } else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){
-            PrinterStatus.appendText("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN \n");
+        	Printer.append("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN \n");
             System.out.println("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN");
             System.out.println(request.getContent());
         }else{
@@ -116,7 +113,7 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
-        PrinterStatus.appendText("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+"\n");
+        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+"\n");
     }
 
     protected void handleAgree(ACLMessage agree){

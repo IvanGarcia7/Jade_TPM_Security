@@ -1,6 +1,6 @@
 package jade.core.SecureAgent;
 
-import com.jfoenix.controls.JFXTextArea;
+
 import jade.core.*;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
@@ -22,11 +22,11 @@ public class SenderMigrationRequest extends SimpleAchieveREInitiator {
     private ACLMessage myMessage;
     private BaseService myService;
     private RequestSecureATT myPackRequest;
-    private JFXTextArea Printer;
+    private JTextArea Printer;
 
     public SenderMigrationRequest(ACLMessage message, Agent amsMainPlatform,
                                   SecureAgentTPMService secureAgentTPMService, RequestSecureATT PackRequest,
-                                  JFXTextArea printer) {
+                                  JTextArea printer) {
         super(amsMainPlatform,message);
         myMessage=message;
         myAgent = amsMainPlatform;
@@ -86,7 +86,7 @@ public class SenderMigrationRequest extends SimpleAchieveREInitiator {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
-        Printer.appendText("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
+        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
     }
 
     protected void handleRefuse(ACLMessage inform){

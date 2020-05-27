@@ -1,7 +1,7 @@
 package jade.core.SecureCloud;
 
 
-import com.jfoenix.controls.JFXTextArea;
+
 import jade.core.*;
 import jade.core.SecureTPM.Agencia;
 
@@ -17,6 +17,7 @@ public class SecureCAPlatform extends Agent{
     private transient SecureCloudTPMHelper mobHelperCloud;
     private JTextArea Printer;
 
+    /*
     private JFXTextArea PrinterList;
     private JFXTextArea PrinterCRUD;
     private JFXTextArea PrinterStart;
@@ -54,6 +55,7 @@ public class SecureCAPlatform extends Agent{
      * @param priv
      * @param pub
      */
+    /*
     public void doInitializeCA(PrivateKey priv, PublicKey pub, String username, String password){
         Agencia.printLog("THE INITIALIZATION OF THE CA HAS BEGUN TO RUN",
                         Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
@@ -67,7 +69,7 @@ public class SecureCAPlatform extends Agent{
             se.printStackTrace();
         }
     }
-
+*/
 
     /**
      * THIS FUNCTION PRINTS THE LIST OF HOTSPOTS TO BE CONFIRMED.
