@@ -2,148 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/jade/core/GUI/AgentGuiImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAAgent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAGUIImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAGui.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/description.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/libraries/TPM.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/libraries/commons_codec_1_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/libraries/jfoenix_9_0_8.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/APDescription.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/InterfazAgentSegura.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/accept.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/antena.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/exit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/maleta.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/print.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/shelt.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/square.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/squarec.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/Images/user.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/SecureAgentController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/SecureAgentController$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/SecureAgentController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/SecureAgentGuiImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/sample/sample.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/out/production/InterfazAgentSegura/vom/CAAgent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/CLEAR.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/accept.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/antena.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/exit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/maleta.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/print.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/shelt.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/square.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/squarec.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images/user.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/SecureAgentController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/SecureAgentGuiImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/sample.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/vom/CAAgent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/description.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/libraries/TPM.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/libraries/jfoenix_9_0_8.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/libraries/mongo_java_driver_3_12_4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/APDescription.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/InterfazCASegura.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/MTPs-Main-Container.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/META-INF/InterfazCASegura.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/accept.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/exit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/print.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/shelt.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/square.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/squarec.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/Images/user.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/SecureCAController$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/SecureCAController$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/SecureCAController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/SecureCAGuiImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/sample/sample.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/out/production/InterfazCASegura/vom/CAPlatform.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/CLEAR.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/accept.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/arrow.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/exit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/information.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/print.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/shelt.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/square.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/squarec.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images/user.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/SecureCAController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/SecureCAGuiImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/sample.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/vom/CAPlatform.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderChallengeAgentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderChallengeAgentRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderStartRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderStartRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/CAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/MAIN.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/SecureCAGui.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/SecureCAGuiImpl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/AMSInitiator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/AMSResponder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityProxy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilityService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/InterPlatformMobilitySlice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ClassAnalysisLibrary.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantDouble.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantElement.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantField.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantFloat.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantIfaceMethod.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantInteger.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantLong.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantMethod.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantNameAndType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantPool.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantString.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/analysis/ConstantUtf8String.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/code/JarManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/CloneAction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MigrationOntology.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MigrationVocabulary.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MobileAgentDescription.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MobileAgentLanguage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MobileAgentProfile.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MobileAgentProtocol.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MobileAgentSystem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/MoveAction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/migration/ontology/PowerupAction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/AgentGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/AgentGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/AgentGuiImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/CAAgent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/CAAgent2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/CAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/MAIN.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/MAIN.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/SecureCAGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/SecureCAGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/vomNew/SecureCAGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/SecureCAGuiImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +102,8 @@
       <workItem from="1590309884434" duration="2651000" />
       <workItem from="1590314848818" duration="121000" />
       <workItem from="1590353069959" duration="29199000" />
-      <workItem from="1590568262116" duration="3862000" />
+      <workItem from="1590568262116" duration="4225000" />
+      <workItem from="1590653165780" duration="1702000" />
     </task>
     <servers />
   </component>
@@ -272,12 +145,13 @@
     <state x="128" y="0" key="SettingsEditor/0.0.1280.758@0.0.1280.758" timestamp="1589291505341" />
     <state x="128" y="0" key="SettingsEditor/0.0.1280.763@0.0.1280.763" timestamp="1590272344273" />
     <state x="-1728" y="-364" key="SettingsEditor/0.23.1280.777/-1920.-364.1920.994@-1920.-364.1920.994" timestamp="1589387705911" />
-    <state x="-1441" y="-73" key="com.intellij.ide.util.TipDialog" timestamp="1590314865600">
-      <screen x="-1920" y="-364" width="1920" height="1057" />
+    <state x="319" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1590653205018">
+      <screen x="0" y="0" width="1280" height="756" />
     </state>
     <state x="319" y="206" key="com.intellij.ide.util.TipDialog/0.0.1280.748@0.0.1280.748" timestamp="1589307266460" />
     <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.751@0.0.1280.751" timestamp="1589288509185" />
     <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.752/-1920.-387.1920.1080@0.0.1280.752" timestamp="1589618190779" />
+    <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.0.1280.756/-1920.-387.1920.1080@0.0.1280.756" timestamp="1590653205018" />
     <state x="319" y="208" key="com.intellij.ide.util.TipDialog/0.0.1280.756@0.0.1280.756" timestamp="1589301405434" />
     <state x="319" y="209" key="com.intellij.ide.util.TipDialog/0.0.1280.761/-1920.-387.1920.1080@0.0.1280.761" timestamp="1589894381175" />
     <state x="319" y="210" key="com.intellij.ide.util.TipDialog/0.0.1280.764/-1920.-387.1920.1080@0.0.1280.764" timestamp="1590309889561" />

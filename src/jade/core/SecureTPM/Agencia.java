@@ -24,7 +24,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
 
-import com.jfoenix.controls.JFXTextArea;
+
 
 
 public class Agencia{
@@ -898,12 +898,12 @@ public class Agencia{
         return valuereturn;
     }
 
-    public static int check_attestation_files(String path,String nonce,boolean debug, JFXTextArea Printer){
+    public static int check_attestation_files(String path,String nonce,boolean debug, JTextArea Printer){
         int valuereturn = 0;
         String sing_path = path+"/sign.out";
         String pcr_path = path+"/pcr.out";
         String quote_path = path+"/quote.out";
-        Printer.appendText("EXECUTING THE CHECK FUNCTION: \n");
+        Printer.append("EXECUTING THE CHECK FUNCTION: \n");
         System.out.println("EXECUTING THE CHECK FUNCTION: ");
         String akpub_path = path+"/akpub.pem";
         ProcessBuilder pb1 = new ProcessBuilder(
@@ -938,7 +938,7 @@ public class Agencia{
         return valuereturn;
     }
 
-    public static String computeSHA256(String pathPCRFile, JFXTextArea Printer) throws Exception{
+    public static String computeSHA256(String pathPCRFile, JTextArea Printer) throws Exception{
         FileInputStream fis = new FileInputStream(pathPCRFile);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] byteArray = new byte[1024];
@@ -952,7 +952,7 @@ public class Agencia{
         for(int i=0; i< bytes.length ;i++){
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
-        Printer.appendText(sb.toString()+"\n");
+        Printer.append(sb.toString()+"\n");
         System.out.println(sb.toString());
         return sb.toString();
     }

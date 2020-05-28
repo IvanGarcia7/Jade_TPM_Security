@@ -15,13 +15,13 @@ public class SecureCAPlatform extends Agent{
 
     private static final long serialVersionUID = 9058618378207435615L;
     private transient SecureCloudTPMHelper mobHelperCloud;
-    private JTextArea Printer;
 
-    /*
-    private JFXTextArea PrinterList;
-    private JFXTextArea PrinterCRUD;
-    private JFXTextArea PrinterStart;
-    private JFXTextArea PrinterInformation;
+
+
+    private JTextArea PrinterList;
+    private JTextArea PrinterCRUD;
+    private JTextArea PrinterStart;
+    private JTextArea PrinterInformation;
 
 
 
@@ -30,19 +30,19 @@ public class SecureCAPlatform extends Agent{
     }
 
 
-    public void setPrinterList(JFXTextArea PrinterA){
+    public void setPrinterStart(JTextArea PrinterA){
         PrinterList = PrinterA;
     }
 
-    public void setCRUDPrinter(JFXTextArea PrinterB){
+    public void setCRUDPrinterList(JTextArea PrinterB){
         PrinterCRUD = PrinterB;
     }
 
-    public void setStartPrinter(JFXTextArea PrinterB){
+    public void setStartPrinterCRUD(JTextArea PrinterB){
         PrinterStart = PrinterB;
     }
 
-    public void setInformationPrinter(JFXTextArea pListInformation) {
+    public void setPrinterInformation(JTextArea pListInformation) {
         PrinterInformation = pListInformation;
     }
 
@@ -55,21 +55,24 @@ public class SecureCAPlatform extends Agent{
      * @param priv
      * @param pub
      */
-    /*
-    public void doInitializeCA(PrivateKey priv, PublicKey pub, String username, String password){
+
+    public void doInitializeCA(PrivateKey priv, PublicKey pub, String username, String password,
+                               JTextArea STARTAREA, JTextArea PRINTERAREA, JTextArea CRUDAREA,
+                               JTextArea INFORMATIONAREA){
         Agencia.printLog("THE INITIALIZATION OF THE CA HAS BEGUN TO RUN",
                         Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
         try {
             initmobHelperCloud();
             Agencia.printLog("THE INITIALIZATION OF THE CA HAS BEGUN TO RUN",
                             Level.INFO,SecureCloudTPMHelper.DEBUG,this.getClass().getName());
-            mobHelperCloud.doStartCloud(this,priv,pub, PrinterInformation,PrinterList,PrinterCRUD,PrinterStart,username,password);
+            mobHelperCloud.doStartCloud(this,priv,pub,username,password,STARTAREA,
+                    PRINTERAREA, CRUDAREA, INFORMATIONAREA);
         } catch(ServiceException se) {
             System.out.println("THERE ARE AN ERROR IN THE doInitializeCA");
             se.printStackTrace();
         }
     }
-*/
+
 
     /**
      * THIS FUNCTION PRINTS THE LIST OF HOTSPOTS TO BE CONFIRMED.
@@ -148,17 +151,6 @@ public class SecureCAPlatform extends Agent{
             se.printStackTrace();
         }
     }
-
-
-    public void setGUI(JTextArea printer){
-        Printer = printer;
-    }
-
-    public JTextArea getGUI(){
-        return Printer;
-    }
-
-
 
     /**
      * CALL THIS FUNCTION TO INITIALIZE THE CLOUD SERVICE

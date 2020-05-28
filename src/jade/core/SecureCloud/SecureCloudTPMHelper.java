@@ -1,6 +1,6 @@
 package jade.core.SecureCloud;
 
-import com.jfoenix.controls.JFXTextArea;
+
 import jade.core.ServiceHelper;
 
 import javax.swing.*;
@@ -34,7 +34,9 @@ public interface SecureCloudTPMHelper extends ServiceHelper {
 
 
     //PUBLIC METHODS
-    void doStartCloud(SecureCAPlatform secureCAPlatform, PrivateKey priv, PublicKey pub, JFXTextArea Printer, JFXTextArea PrinterList, JFXTextArea PrinterCRUD, JFXTextArea PrinterStart, String username, String password);
+    void doStartCloud(SecureCAPlatform secureCAPlatform, PrivateKey priv, PublicKey pub, String username, String password,
+                      JTextArea STARTAREA, JTextArea PRINTERAREA, JTextArea CRUDAREA,
+                      JTextArea INFORMATIONAREA);
     void listPlatforms(SecureCAPlatform secureCAPlatform);
     void doAcceptCloud(SecureCAPlatform secureCAPlatform, String index);
     void doDeleteCloud(SecureCAPlatform secureCAPlatform, String index);
