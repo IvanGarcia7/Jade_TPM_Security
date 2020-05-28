@@ -630,7 +630,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
     private void STARTMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         if(USERNAMETEXT.getText().isEmpty()||PASSWORDTEXT.getText().isEmpty()) {
-            STARTAREAS.append("PLEASE INSERT USERNAME AND PASSWORD");
+            STARTAREAS.append("PLEASE INSERT USERNAME AND PASSWORD\n");
         }else {
             try {
                 String publicKeyGen = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxWn5INyIwdQlCFnw+45a91O3LrmRtWkj9mEXcXUViblgTrNEYpuY2HuU7wDn6tIs3WrZcxfNbw8vYKnYGmsCvyua2eqhYQ7AW31Itj+fsOy/XrX5a02aNrqwVOs+Evcx9d9Ap5gWU1XJ2Vl47wsCShxFFhadR2ILZNj5XhTeqMwEalsXcQ+D8DIIyy5eKrgZ1KP79s8Kf2UrVFMADsjt39hM4ajB2F9Pge5m5/tQmt3sBKnGFMf+kaIiHd6INZYJB+5+UdcFzBYzF2PMJpU54kywpIyjZ+xo6RLzMnmlP4lEJnPwKai94mUUV4K9V/fe17DPpEey1SKk7I2DMokNSwIDAQAB";
@@ -648,7 +648,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                 //myAgent.setStartPrinter(AreaStart);
                 //myAgent.setInformationPrinter(PListInformation);
                 myAgent.doInitializeCA(pubKeyPriv,pubKey,USERNAMETEXT.getText(),PASSWORDTEXT.getText(),STARTAREAS,
-                        PRINTERAREA, CRUDAREA, INFORMATIONAREA);
+                        PRINTERAREA, CRUDAREA, INFORMATIONAREA, START);
                 //doListCA();
             } catch (Exception e1) {
                 // TODO Auto-generated catch block

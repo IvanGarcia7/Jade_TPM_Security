@@ -92,7 +92,7 @@ public class SecureAgentPlatform extends Agent implements Serializable{
     public void doSecureMigration(PlatformID destiny){
         //PrinterStatus.appendText("EXECUTING THE MIGRATION PROCESS");
         System.out.println("EXECUTING THE MIGRATION PROCESS");
-        informationPrinter.append("EXECUTING THE MIGRATION PROCESS");
+        informationPrinter.append("EXECUTING THE MIGRATION PROCESS\n");
         try {
             initmobHelperCloud();
             Agencia.printLog("THE MIGRATION SERVICE HAS BEGUN TO RUN", Level.INFO,

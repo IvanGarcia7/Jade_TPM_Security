@@ -857,7 +857,11 @@ public class Agencia{
 
     public static int attestation_files(String path,String context,String nonce,boolean debug, JTextArea Printer){
         int valuereturn = 0;
-        Printer.append("EXECUTING THE SALIDA FUNCTION: \n");
+        Printer.append("EXECUTING THE ATTESTATION FUNCTION INTO THE TPM: \n");
+        if(!debug){
+            Printer.append("******CREATING THE ATTESTATION FILES WITH THE FOLLOWING INFORMATION:\n");
+            Printer.append("SERVER TOKEN: "+nonce+"\n\n");
+        }
         System.out.println("EXECUTING THE SALIDA FUNCTION: ");
         new File(path).mkdirs();
         String sing_path = path+"/sign.out";

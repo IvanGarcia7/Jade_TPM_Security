@@ -58,7 +58,7 @@ public class SecureCAPlatform extends Agent{
 
     public void doInitializeCA(PrivateKey priv, PublicKey pub, String username, String password,
                                JTextArea STARTAREA, JTextArea PRINTERAREA, JTextArea CRUDAREA,
-                               JTextArea INFORMATIONAREA){
+                               JTextArea INFORMATIONAREA, JButton Start){
         Agencia.printLog("THE INITIALIZATION OF THE CA HAS BEGUN TO RUN",
                         Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
         try {
@@ -66,7 +66,7 @@ public class SecureCAPlatform extends Agent{
             Agencia.printLog("THE INITIALIZATION OF THE CA HAS BEGUN TO RUN",
                             Level.INFO,SecureCloudTPMHelper.DEBUG,this.getClass().getName());
             mobHelperCloud.doStartCloud(this,priv,pub,username,password,STARTAREA,
-                    PRINTERAREA, CRUDAREA, INFORMATIONAREA);
+                    PRINTERAREA, CRUDAREA, INFORMATIONAREA, Start);
         } catch(ServiceException se) {
             System.out.println("THERE ARE AN ERROR IN THE doInitializeCA");
             se.printStackTrace();

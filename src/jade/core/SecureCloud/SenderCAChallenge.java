@@ -116,7 +116,7 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
     //REDEFINED ALL THE HANDLERS TO KNOW WHAT HAPPENS WITH THE MESSAGE THAT THE PLATFORM RECEIVE FROM THE CA
 
     protected void handleInform(ACLMessage inform){
-        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+"\n");
+        Printer.append("\nRESPONSE FROM THE SECURE PLATFORM: \n"+inform.getContent()+" \n\n");
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
     }
 

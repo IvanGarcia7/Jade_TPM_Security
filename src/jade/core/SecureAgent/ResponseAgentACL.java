@@ -41,18 +41,15 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
         SecureAgentTPMService myServiceHelper = (SecureAgentTPMService) myService;
         Printer = myServiceHelper.getGUI();
         
-       
 
-
-
-        Printer.append("PROCESSING THE REQUEST IN THE AGENT DESTINY RESPONSER AGENT \n");
+        Printer.append("\nPROCESSING THE RESPONSE IN THE AGENT\n");
         Agencia.printLog("PROCESSING THE REQUEST IN THE AGENT DESTINY RESPONSER AGENT", Level.INFO,
                         SecureAgentTPMHelper.DEBUG, this.getClass().getName());
         ACLMessage reply = null;
 
         if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
             try{
-            	Printer.append("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN \n");
+            	Printer.append("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN \n\n");
                 System.out.println("PLATFORM RECEIVE A ZONE 1 REQUEST TO ATTESTATE THE ORIGIN");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
                                                             SecureAgentTPMHelper.NAME, null);
@@ -64,7 +61,8 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
             }
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM)){
             try{
-            	Printer.append("PLATFORM RECEIVE A CONFIRMATION ORIGIN SECURE MOVE \n");
+            	Printer.append("\n\nPLATFORM RECEIVE A CONFIRMATION ORIGIN SECURE MOVE \n");
+
                 System.out.println("PLATFORM RECEIVE A CONFIRMATION ORIGIN SECURE MOVE");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE2_PLATFORM,
                         SecureAgentTPMHelper.NAME, null);
@@ -77,6 +75,7 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
         }else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
             try{
             	Printer.append("PLATFORM RECEIVE A CONFIRMATION DESTINY SECURE MOVE \n");
+                Printer.append("****** CHECKING THE CONFIRM LIST ******");
                 System.out.println("PLATFORM RECEIVE A CONFIRMATION DESTINY SECURE MOVE");
                 GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
                         SecureAgentTPMHelper.NAME, null);
@@ -113,7 +112,7 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
-        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+"\n");
+        Printer.append("\nRESPONSE FROM THE SECURE PLATFORM: \n"+inform.getContent()+" \n\n");
     }
 
     protected void handleAgree(ACLMessage agree){

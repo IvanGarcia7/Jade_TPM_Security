@@ -567,7 +567,17 @@ public class SecureAgentTPMService extends BaseService {
                     AID amsMain = packetReceived.getAgent();
                     SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
 
-                   
+
+                    INFORMATIONPRINTER.append("\n\n*****************************************************************\n");
+                    INFORMATIONPRINTER.append("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:\n");
+                    INFORMATIONPRINTER.append("AGENT NAME: "+amsMainPlatform.getName()+"\n");
+                    INFORMATIONPRINTER.append("AGENT AID: "+amsMainPlatform.getAID()+"\n");
+                    INFORMATIONPRINTER.append("*****************************************************************\n");
+                    INFORMATIONPRINTER.append("DESTINY AMS: "+packetReceived.getDestinyPlatform().getAmsAID());
+                    INFORMATIONPRINTER.append("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
+                    INFORMATIONPRINTER.append("*****************************************************************\n");
+
+
                     System.out.println("*****************************************************************");
                     System.out.println("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:");
                     System.out.println("AGENT NAME: "+amsMainPlatform.getName());
@@ -575,8 +585,6 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("*****************************************************************");
                     System.out.println("DESTINY AMS: "+packetReceived.getDestinyPlatform());
                     System.out.println("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
-
-                   
 
                     System.out.println(actualcontainer.getAMS());
                     System.out.println(actualcontainer.getID());

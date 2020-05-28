@@ -87,7 +87,7 @@ public class SenderStartRequest extends SimpleAchieveREInitiator {
 
     protected void handleInform(ACLMessage inform){
         System.out.println("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent());
-        Printer.append("RESPONSE FROM THE SECURE PLATFORM: "+inform.getContent()+" \n");
+        Printer.append("\nRESPONSE FROM THE SECURE PLATFORM: \n"+inform.getContent()+" \n\n");
     }
 
     protected void handleRefuse(ACLMessage inform){

@@ -51,7 +51,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                                                                            request.getContentObject());
                command.addParam(requestInsert);
                myService.submit(command);
-               String Response = "RESPONSE: 200";
+               String Response = "RESPONSE: 200A";
                reply = request.createReply();
                reply.setPerformative(ACLMessage.INFORM);
                reply.setContent(Response);
