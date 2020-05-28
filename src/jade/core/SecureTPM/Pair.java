@@ -1,17 +1,15 @@
 package jade.core.SecureTPM;
 
+
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-// Pair class
+
 public class Pair<U, V> implements Serializable {
-    public final U first;		// first field of a Pair
-    public final V second; 	// second field of a Pair
 
-    // Constructs a new Pair with specified values
+    public final U first;
+    public final V second;
+
+
     public Pair(U first, V second)
     {
         this.first = first;
@@ -19,9 +17,7 @@ public class Pair<U, V> implements Serializable {
     }
 
     @Override
-    // Checks specified object is "equal to" current object or not
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o)
             return true;
 
@@ -30,17 +26,13 @@ public class Pair<U, V> implements Serializable {
 
         Pair<?, ?> pair = (Pair<?, ?>) o;
 
-        // call equals() method of the underlying objects
         if (!first.equals(pair.first))
             return false;
         return second.equals(pair.second);
     }
 
     @Override
-    // Computes hash code for an object to support hash tables
-    public int hashCode()
-    {
-        // use hash codes of the underlying objects
+    public int hashCode() {
         return 31 * first.hashCode() + second.hashCode();
     }
 
@@ -50,10 +42,9 @@ public class Pair<U, V> implements Serializable {
         return "(" + first + ", " + second + ")";
     }
 
-    // Factory method for creating a Typed Pair instance
+
     public static <U, V> Pair <U, V> of(U a, V b)
     {
-        // calls private constructor
         return new Pair<>(a, b);
     }
 

@@ -23,7 +23,5 @@ public interface SecureAgentTPMSlice extends Service.Slice {
     void doMigrateAMS(VerticalCommand command);
     void doAttestateOrginAMS(VerticalCommand command);
     void doMigrateHostpotAMS(VerticalCommand command);
-    void doMoveFinal(GenericCommand newCommand);
-    void doMoveFinalMigration(GenericCommand newCommand);
     void doMigrateHostpotAcepted(VerticalCommand command);
 }

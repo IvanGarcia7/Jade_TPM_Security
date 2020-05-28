@@ -3,7 +3,6 @@ package jade.core.SecureCloud;
 
 import jade.core.GenericCommand;
 import jade.core.Node;
-import jade.core.SecureAgent.SecureAgentTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.core.Service;
 import jade.core.VerticalCommand;
@@ -32,8 +31,8 @@ public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureClo
             newCommand.addParam(command.getParams()[1]);
             newCommand.addParam(command.getParams()[2]);
             Node n = getNode();
-            Agencia.printLog("-> SENDING THE REQUEST COMMUNICATION THROUGH A HORIZONTAL COMMAND TO THE AMS NODE "+
-                            n.getName(), Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            Agencia.printLog("-> SENDING THE REQUEST COMMUNICATION THROUGH A HORIZONTAL COMMAND TO THE AMS " +
+                            "NODE "+ n.getName(), Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
             n.accept(newCommand);
         }catch(Exception e){
             e.printStackTrace();

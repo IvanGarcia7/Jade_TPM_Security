@@ -60,7 +60,8 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
 
 
     /**
-     * doAttestateOrginAMS IS USED TO ATTESTATE THE ORIGIN PLATFORM ACCORDING TO A CHALLENGE SENT BY THE SECURE PLATFORM.
+     * doAttestateOrginAMS IS USED TO ATTESTATE THE ORIGIN PLATFORM ACCORDING TO A CHALLENGE SENT BY THE SECURE
+     * PLATFORM.
      * @param command
      */
     public void doAttestateOrginAMS(VerticalCommand command){

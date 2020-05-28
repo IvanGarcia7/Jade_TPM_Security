@@ -4,7 +4,6 @@ package jade.core.SecureCloud;
 
 import jade.core.*;
 import jade.core.SecureTPM.Agencia;
-
 import javax.swing.*;
 import java.security.PrivateKey;
 import java.security.PublicKey;

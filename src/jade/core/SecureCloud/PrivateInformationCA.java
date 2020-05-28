@@ -2,9 +2,8 @@ package jade.core.SecureCloud;
 
 
 import jade.core.AID;
-import jade.core.Location;
 import jade.core.PlatformID;
-import jade.core.SecureAgent.SecureAgentPlatform;
+
 
 import java.io.Serializable;
 

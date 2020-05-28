@@ -11,7 +11,6 @@ import jade.domain.FIPAAgentManagement.FailureException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.SimpleAchieveREResponder;
-
 import javax.swing.*;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -43,6 +42,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
         ACLMessage reply = null;
 
        if(request.getOntology().equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
+
            try{
                System.out.println("SAVING THE PLATFORM IN THE SECURE DIRECTORY");
                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM,
@@ -62,7 +62,9 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                reply.setPerformative(ACLMessage.INFORM);
                reply.setContent(Response);
            }
+
        }else if(request.getOntology().equals("MIGRATE_REQUEST")){
+
            try{
                System.out.println("THE SECURE PLATFORM RECEIVES A MIGRATE REQUEST");
                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM,
@@ -82,7 +84,9 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                reply.setPerformative(ACLMessage.INFORM);
                reply.setContent(Response);
            }
+
        }else if(request.getOntology().equals("MIGRATE_ZONE1_REQUEST")){
+
            try{
                System.out.println("THE SECURE PLATFORM RECEIVES AN ATTESTATE PLATFORM REQUEST");
                GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM,
@@ -103,6 +107,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
                reply.setPerformative(ACLMessage.INFORM);
                reply.setContent(Response);
            }
+
        }else{
            System.out.println("THE SECURE PLATFORM RECEIVES AN UNKNOWN MESSAGE, --IGNORING--");
        }

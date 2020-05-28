@@ -1,13 +1,10 @@
 package jade.core.SecureCloud;
 
 import jade.core.*;
-import jade.core.SecureAgent.SecureAgentPlatform;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
-
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;

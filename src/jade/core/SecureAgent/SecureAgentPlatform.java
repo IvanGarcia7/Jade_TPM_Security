@@ -1,19 +1,12 @@
 package jade.core.SecureAgent;
 
 
-
 import jade.core.Agent;
-import jade.core.Location;
 import jade.core.PlatformID;
 import jade.core.SecureCloud.SecureCAConfirmation;
 import jade.core.SecureTPM.Agencia;
 import jade.core.ServiceException;
-import jade.core.migration.InterPlatformMobilityHelper;
-import jade.core.mobility.AgentMobilityHelper;
-import jade.core.mobility.AgentMobilityService;
-
 import javax.swing.*;
-
 import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -30,14 +23,8 @@ public class SecureAgentPlatform extends Agent implements Serializable{
     private JTextArea hopsPrinter;
     private JTextArea informationPrinter;
 
-
     private PublicKey LocationKey;
     private String Token;
-
-
-    public PublicKey getLocDestiny(){
-        return LocationKey;
-    }
 
     public String getToken(){
         return Token;
@@ -66,18 +53,20 @@ public class SecureAgentPlatform extends Agent implements Serializable{
      * @param contextEK THE INDEX WHERE THE EK IS LOADED INTO THE TPM
      * @param contextAK THE INDEX WHERE THE PRIVATE AIK IS LOADED INTO THE TPM
      */
-    public void doInitializeAgent(PlatformID CALocation, PublicKey pubKey, String contextEK, String contextAK, JTextArea STARTPRINTER,
-                                  JTextArea HOPSPRINTER, JTextArea INFORMATIONPRINTER){
+    public void doInitializeAgent(PlatformID CALocation, PublicKey pubKey, String contextEK, String contextAK,
+                                  JTextArea STARTPRINTER, JTextArea HOPSPRINTER, JTextArea INFORMATIONPRINTER){
+
         startPrinter = STARTPRINTER;
         hopsPrinter = HOPSPRINTER;
         informationPrinter = INFORMATIONPRINTER;
+
         try {
             startPrinter.append("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN");
             initmobHelperCloud();
             Agencia.printLog("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN",
                     Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
-            mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey, contextEK,  contextAK, STARTPRINTER,
-                    HOPSPRINTER, INFORMATIONPRINTER);
+            mobHelperCloudPlatform.doStartCloudAgent(this, CALocation, pubKey, contextEK,  contextAK,
+                    STARTPRINTER, HOPSPRINTER, INFORMATIONPRINTER);
         } catch(ServiceException se) {
             System.out.println("THERE ARE AN ERROR IN THE doInitializeAgent");
             se.printStackTrace();
@@ -103,12 +92,6 @@ public class SecureAgentPlatform extends Agent implements Serializable{
             se.printStackTrace();
         }
     }
-
-
-    public void doSecureMigration2(PlatformID destiny){
-        super.doMove(destiny);
-    }
-
 
 
     /**

@@ -3,7 +3,6 @@ package jade.core.SecureCloud;
 
 import jade.core.AID;
 import jade.core.PlatformID;
-import jade.core.SecureAgent.SecureAgentPlatform;
 import java.io.Serializable;
 import java.security.PublicKey;
 import java.util.Date;

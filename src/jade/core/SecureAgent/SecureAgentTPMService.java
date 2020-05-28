@@ -13,18 +13,12 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
 import java.io.File;
 import java.io.FileOutputStream;
-
-import jade.domain.AMSService;
-import jade.domain.FIPAAgentManagement.AMSAgentDescription;
-import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import java.nio.file.Files;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -267,8 +261,9 @@ public class SecureAgentTPMService extends BaseService {
          */
         @Override
         public synchronized void doStartCloudAgent(SecureAgentPlatform secureAgentPlatform, PlatformID caLocation,
-                                                   PublicKey pubKey, String contextEK, String contextAK, JTextArea startPrinter,
-                                                   JTextArea hopsPrinter, JTextArea informationPrinter){
+                                                   PublicKey pubKey, String contextEK, String contextAK,
+                                                   JTextArea startPrinter, JTextArea hopsPrinter,
+                                                   JTextArea informationPrinter){
            STARTPRINTER = startPrinter;
            HOPSPRINTER = hopsPrinter;
            INFORMATIONPRINTER = informationPrinter;
@@ -444,8 +439,6 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println("HELLO FROM THE START");
                     actualcontainer.releaseLocalAgent(amsAID);
 
-
-
                     //SAVE THE ACTUAL LOCATION OF THE PLATFORM
                     Location actualLocation = actualcontainer.here();
 
@@ -463,7 +456,8 @@ public class SecureAgentTPMService extends BaseService {
                     Agencia.init_platform("./"+actualLocation.getName(),contextEK, contextAK, STARTPRINTER);
 
                     //GENERATE THE SIGNED FILES, AND SERIALIZE INTO AN OBJECT TO SEND IT AFTER TO THE SECURE PLATFORM
-                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true, STARTPRINTER);
+                    Agencia.attestation_files("./"+actualLocation.getName(),contextAK,"",true,
+                                               STARTPRINTER);
                     File AIKFile = new File("./"+actualLocation.getName()+"/akpub.pem");
                     AIKPub = Files.readAllBytes(AIKFile.toPath());
                     AttestationSerialized PCR_Signed = new AttestationSerialized("./"+
@@ -548,7 +542,8 @@ public class SecureAgentTPMService extends BaseService {
                     ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
                     amsMainPlatform.addBehaviour(
                             new SenderChallengeAgentRequest(message, amsMainPlatform, PCR_Signed,
-                                    SecureAgentTPMService.this, CAKey,CALocation,pSender, INFORMATIONPRINTER)
+                                    SecureAgentTPMService.this, CAKey,CALocation,pSender,
+                                     INFORMATIONPRINTER)
                     );
                     actualcontainer.releaseLocalAgent(amsMain);
 
@@ -565,17 +560,17 @@ public class SecureAgentTPMService extends BaseService {
 
                     
                     AID amsMain = packetReceived.getAgent();
-                    SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(amsMain);
+                    SecureAgentPlatform amsMainPlatform = (SecureAgentPlatform) actualcontainer.acquireLocalAgent(
+                            amsMain);
 
-
-                    INFORMATIONPRINTER.append("\n\n*****************************************************************\n");
+                    INFORMATIONPRINTER.append("\n\n****************************************************************\n");
                     INFORMATIONPRINTER.append("THE AGENT IS GOING TO MIGRATE TO THE PLATFORM SELECTED PREVIOUSLY:\n");
                     INFORMATIONPRINTER.append("AGENT NAME: "+amsMainPlatform.getName()+"\n");
                     INFORMATIONPRINTER.append("AGENT AID: "+amsMainPlatform.getAID()+"\n");
                     INFORMATIONPRINTER.append("*****************************************************************\n");
                     INFORMATIONPRINTER.append("DESTINY AMS: "+packetReceived.getDestinyPlatform().getAmsAID());
                     INFORMATIONPRINTER.append("AGENT AMS: "+packetReceived.getDestinyPlatform().getID());
-                    INFORMATIONPRINTER.append("*****************************************************************\n");
+                    INFORMATIONPRINTER.append("********************************************************************\n");
 
 
                     System.out.println("*****************************************************************");
@@ -603,11 +598,6 @@ public class SecureAgentTPMService extends BaseService {
                     amsMainPlatform.setToken(packetReceived.getToken());
                     amsMainPlatform.doMove(packetReceived.getDestinyPlatform());
                     actualcontainer.releaseLocalAgent(amsMain);
-
-
-                    //requestAgent.doSecureMigration2(packetReceived.getDestinyPlatform());
-
-                    //requestAgent.doMove(packetReceived.getDestinyPlatform());
 
                 }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM)){
 

@@ -2,7 +2,6 @@ package jade.core.SecureAgent;
 
 
 import jade.core.AID;
-import jade.core.Location;
 import jade.core.PlatformID;
 import java.io.Serializable;
 import java.security.PublicKey;
@@ -18,7 +17,7 @@ public class RequestSecureATT implements Serializable {
     private PlatformID PlatformCALocation;
     private PlatformID PlatformCALocationDestiny;
     private AttestationSerialized PCR_Signed;
-    private AID Agente;
+    private AID Agent;
 
 
     public RequestSecureATT(PublicKey publicP, PlatformID locationP, String contextek, String contextak){
@@ -37,7 +36,7 @@ public class RequestSecureATT implements Serializable {
     public RequestSecureATT(PlatformID origin, PlatformID destiny,AID agent){
         PlatformLocation = origin;
         PlatformCALocationDestiny=destiny;
-        Agente=agent;
+        Agent=agent;
     }
 
 
@@ -54,7 +53,7 @@ public class RequestSecureATT implements Serializable {
         PlatformCALocation = CAPlatform;
         PlatformCALocationDestiny=destiny;
         PlatformLocation = myLoc;
-        Agente = agent;
+        Agent = agent;
     }
 
 
@@ -67,10 +66,7 @@ public class RequestSecureATT implements Serializable {
     public AttestationSerialized getPCR_Signed(){ return PCR_Signed; }
     public PlatformID getPlatformLocationOrigin(){ return PlatformLocation; }
     public PlatformID getPlatformCALocationDestiny(){ return PlatformCALocationDestiny; }
-    public AID getAgente(){ return Agente; }
+    public AID getAgente(){ return Agent; }
 
-    //SETTER METHODS
-
-    public void setPlatformLocation(PlatformID location){ PlatformLocation=location; }
 
 }
