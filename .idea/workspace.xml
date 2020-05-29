@@ -3,24 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/RequestSecureATT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/RequestSecureATT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SenderMigrationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/PrivateInformationCA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/PrivateInformationCA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/ResponserCloudACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/ResponserCloudACL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAConfirmation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAConfirmation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCAPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAConfirmation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAConfirmation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/Pair.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/TPMHighLevel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/jade/core/SecureTPM/Agencia.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/CAGUIImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAGUIImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +92,8 @@
       <workItem from="1590314848818" duration="121000" />
       <workItem from="1590353069959" duration="29199000" />
       <workItem from="1590568262116" duration="4225000" />
-      <workItem from="1590653165780" duration="7473000" />
+      <workItem from="1590653165780" duration="11538000" />
+      <workItem from="1590785387109" duration="508000" />
     </task>
     <servers />
   </component>
@@ -150,8 +135,8 @@
     <state x="128" y="0" key="SettingsEditor/0.0.1280.758@0.0.1280.758" timestamp="1589291505341" />
     <state x="128" y="0" key="SettingsEditor/0.0.1280.763@0.0.1280.763" timestamp="1590272344273" />
     <state x="-1728" y="-364" key="SettingsEditor/0.23.1280.777/-1920.-364.1920.994@-1920.-364.1920.994" timestamp="1589387705911" />
-    <state x="319" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1590653205018">
-      <screen x="0" y="0" width="1280" height="756" />
+    <state x="319" y="244" key="com.intellij.ide.util.TipDialog" timestamp="1590785976176">
+      <screen x="0" y="23" width="1280" height="741" />
     </state>
     <state x="319" y="206" key="com.intellij.ide.util.TipDialog/0.0.1280.748@0.0.1280.748" timestamp="1589307266460" />
     <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.751@0.0.1280.751" timestamp="1589288509185" />
@@ -168,6 +153,7 @@
     <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.23.1280.733/-1920.-364.1920.1057@0.23.1280.733" timestamp="1588343482256" />
     <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.23.1280.733@0.23.1280.733" timestamp="1587991791687" />
     <state x="319" y="227" key="com.intellij.ide.util.TipDialog/0.23.1280.738/-1920.-364.1920.1057@0.23.1280.738" timestamp="1587821910211" />
+    <state x="319" y="244" key="com.intellij.ide.util.TipDialog/0.23.1280.741@0.23.1280.741" timestamp="1590785976176" />
     <state x="-1441" y="-73" key="com.intellij.ide.util.TipDialog/0.23.1280.742/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589556781495" />
     <state x="-1441" y="-89" key="com.intellij.ide.util.TipDialog/0.23.1280.777/-1920.-364.1920.996@-1920.-364.1920.996" timestamp="1588498921057" />
     <state x="-1302" y="-218" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588691048850">
