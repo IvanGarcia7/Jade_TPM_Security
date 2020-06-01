@@ -514,9 +514,8 @@ public class SecureAgentTPMService extends BaseService {
 
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
                                                               "AES");
-                    Cipher aesCipher = Cipher.getInstance("AES");
-                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    byte[] byteObject = aesCipher.doFinal(contentPub);
+
+                    byte[] byteObject = Agencia.decipherOwner(contentPub,originalKey);
                     String challenge = (String)Agencia.deserialize(byteObject);
 
                     System.out.println("*************************************************");
@@ -553,9 +552,8 @@ public class SecureAgentTPMService extends BaseService {
                     byte[] decryptedKey = Agencia.decrypt(privKeyAgent,confirmationPacket.getKey());
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
                                                               "AES");
-                    Cipher aesCipher = Cipher.getInstance("AES");
-                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    byte[] byteObject = aesCipher.doFinal(confirmationPacket.getValue());
+
+                    byte[] byteObject = Agencia.decipherOwner(confirmationPacket.getValue(),originalKey);
                     SecureCAConfirmation packetReceived = (SecureCAConfirmation) Agencia.deserialize(byteObject);
 
                     
@@ -605,9 +603,8 @@ public class SecureAgentTPMService extends BaseService {
                     byte[] decryptedKey = Agencia.decrypt(privKeyAgent,confirmationPacket.getKey());
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
                             "AES");
-                    Cipher aesCipher = Cipher.getInstance("AES");
-                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    byte[] byteObject = aesCipher.doFinal(confirmationPacket.getValue());
+
+                    byte[] byteObject = Agencia.decipherOwner(confirmationPacket.getValue(),originalKey);
                     SecureCAConfirmation packetReceived = (SecureCAConfirmation) Agencia.deserialize(byteObject);
 
                     System.out.println("***********************************************************");

@@ -54,10 +54,7 @@ public class SenderStartRequest extends SimpleAchieveREInitiator {
 
             //GENERATED OTP KEY
             SecretKey secKey = generator.generateKey();
-            Cipher aesCipher = Cipher.getInstance("AES");
-            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-
-            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(RequestStart));
+            byte[] byteCipherObject = Agencia.cipherOwner(Agencia.serialize(RequestStart),secKey);
             byte [] encryptedKey = Agencia.encrypt(PublicKeyCA,secKey.getEncoded());
             myMessage.setContentObject(new Pair<byte [],byte []>(encryptedKey,byteCipherObject));
         } catch (Exception e) {

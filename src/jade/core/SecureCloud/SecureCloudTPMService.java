@@ -10,7 +10,6 @@ import jade.core.behaviours.Behaviour;
 import jade.core.mobility.Movable;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
@@ -1148,9 +1147,8 @@ public class SecureCloudTPMService extends BaseService {
                     byte[] decryptedKey = Agencia.decrypt(privateKeyCA,key);
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
                                                               "AES");
-                    Cipher aesCipher = Cipher.getInstance("AES");
-                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    byte[] byteObject = aesCipher.doFinal(object);
+
+                    byte[] byteObject = Agencia.decipherOwner(object,originalKey);
 
                     RequestSecureATT pack = (RequestSecureATT) Agencia.deserialize(byteObject);
                     Pair<String,RequestSecureATT> newPacket = new Pair<String,RequestSecureATT>(requestInsert.getKey(),
@@ -1173,9 +1171,8 @@ public class SecureCloudTPMService extends BaseService {
                     byte[] decryptedKey = Agencia.decrypt(privateKeyCA,key);
                     SecretKey originalKey = new SecretKeySpec(decryptedKey , 0, decryptedKey .length,
                                                               "AES");
-                    Cipher aesCipher = Cipher.getInstance("AES");
-                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    byte[] byteObject = aesCipher.doFinal(object);
+
+                    byte[] byteObject = Agencia.decipherOwner(object,originalKey);
 
                     RequestSecureATT packetReceived = (RequestSecureATT) Agencia.deserialize(byteObject);
                     Pair<String,RequestSecureATT> newPacketMigrate = new Pair<String,RequestSecureATT>(
@@ -1200,16 +1197,14 @@ public class SecureCloudTPMService extends BaseService {
                     byte[] decryptedKeyPublic = Agencia.decrypt(privateKeyCA,OTP_PUB);
                     SecretKey originalKey = new SecretKeySpec(decryptedKeyPublic , 0, decryptedKeyPublic .length,
                                                               "AES");
-                    Cipher aesCipher = Cipher.getInstance("AES");
-                    aesCipher.init(Cipher.DECRYPT_MODE, originalKey);
-                    byte[] byteObject = aesCipher.doFinal(public_Part);
+
+                    byte[] byteObject = Agencia.decipherOwner(public_Part,originalKey);
 
                     byte[] decryptedKeyPrivate = Agencia.decrypt(privateKeyCA,OTP_PRIV);
                     SecretKey originalKeyPrivate = new SecretKeySpec(decryptedKeyPrivate , 0,
                                                                      decryptedKeyPrivate .length, "AES");
-                    Cipher aesCipherPrivate = Cipher.getInstance("AES");
-                    aesCipherPrivate.init(Cipher.DECRYPT_MODE, originalKeyPrivate);
-                    byte[] byteObjectPrivatesender = aesCipherPrivate.doFinal(private_part);
+
+                    byte[] byteObjectPrivatesender = Agencia.decipherOwner(private_part,originalKeyPrivate);
 
                     Pair<byte [],byte []> pairProcessed = new Pair<byte[],byte[]>(byteObject,byteObjectPrivatesender);
 

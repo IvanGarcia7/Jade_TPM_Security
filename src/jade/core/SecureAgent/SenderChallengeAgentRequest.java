@@ -55,15 +55,10 @@ public class SenderChallengeAgentRequest extends SimpleAchieveREInitiator {
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256);
             SecretKey secKey = generator.generateKey();
-            Cipher aesCipher = Cipher.getInstance("AES");
-            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-
-            byte[] byteCipherObject = aesCipher.doFinal(Agencia.serialize(myAttestation));
+            byte[] byteCipherObject = Agencia.cipherOwner(Agencia.serialize(myAttestation),secKey);
             byte [] encryptedKey = Agencia.encrypt(pubCA,secKey.getEncoded());
-
             packetResponser.setOTPPub(encryptedKey);
             packetResponser.setPartPublic(byteCipherObject);
-
             myMessage.setContentObject(packetResponser);
         } catch (Exception e) {
             e.printStackTrace();

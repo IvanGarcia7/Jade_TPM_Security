@@ -64,25 +64,19 @@ public class SenderCAChallenge extends SimpleAchieveREInitiator {
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256);
             SecretKey secKey = generator.generateKey();
-            Cipher aesCipher = Cipher.getInstance("AES");
-            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-
             Date date = new Date();
             long timeMilli = date.getTime();
             PrivateInformationCA secretInfo = new PrivateInformationCA(Destiny,timeMilli,Challenge,Origin,validation,
                                                                        Agent);
 
-            byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(secretInfo));
+            byte[] byteCipherObjectSecret = Agencia.cipherOwner(Agencia.serialize(secretInfo),secKey);
             byte [] encryptedKeySecret = Agencia.encrypt(pubCA,secKey.getEncoded());
             //Pair<byte [],byte []> SecretPack = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
 
             KeyGenerator generator2 = KeyGenerator.getInstance("AES");
             generator2.init(256);
             SecretKey secKey2 = generator.generateKey();
-            Cipher aesCipher2 = Cipher.getInstance("AES");
-            aesCipher2.init(Cipher.ENCRYPT_MODE, secKey2);
-
-            byte[] byteCipherObjectPublic = aesCipher2.doFinal(Agencia.serialize(Challenge));
+            byte[] byteCipherObjectPublic = Agencia.cipherOwner(Agencia.serialize(Challenge),secKey2);
             byte [] encryptedKeyPublic = Agencia.encrypt(destinyKey,secKey2.getEncoded());
 
             SecureChallengerPacket pSender = new SecureChallengerPacket(encryptedKeySecret,encryptedKeyPublic,

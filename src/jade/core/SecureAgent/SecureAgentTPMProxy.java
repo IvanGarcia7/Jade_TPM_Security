@@ -104,10 +104,12 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
     }
 
 
+    
     /**
      * doMoveFinal IS USED TO START THE MIGRATION ACCORDING TO THE SERVER RESPONSE.
      * @param command
      */
+    /*
     @Override
     public void doMoveFinal(GenericCommand command) {
         try{
@@ -124,7 +126,8 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
             e.printStackTrace();
         }
     }
-
+    */
+    
     public void doMoveFinalMigration(GenericCommand command) {
         try{
             Agencia.printLog("PROCEED TO MOVE THE AGENT", Level.INFO,SecureAgentTPMHelper.DEBUG,

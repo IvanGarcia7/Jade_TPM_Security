@@ -63,13 +63,9 @@ public class SenderCAConfirmation extends SimpleAchieveREInitiator {
             KeyGenerator generator = KeyGenerator.getInstance("AES");
             generator.init(256);
             SecretKey secKey = generator.generateKey();
-            Cipher aesCipher = Cipher.getInstance("AES");
-            aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
-
             Date date = new Date();
             long timeMilli = date.getTime();
-
-            byte[] byteCipherObjectSecret = aesCipher.doFinal(Agencia.serialize(packetConfirmation));
+            byte[] byteCipherObjectSecret = Agencia.cipherOwner(Agencia.serialize(packetConfirmation),secKey);
             byte [] encryptedKeySecret = Agencia.encrypt(destinyKey,secKey.getEncoded());
             Pair<byte [],byte []> confirmationPacket = new Pair<byte [],byte []>
                     (encryptedKeySecret,byteCipherObjectSecret);
