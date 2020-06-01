@@ -40,7 +40,7 @@ public class ResponserCloudACL extends SimpleAchieveREResponder {
         Agencia.printLog("PROCESSING THE REQUEST IN THE SECURE DESTINY RESPONSER AGENT", Level.INFO,
                 SecureAgentTPMHelper.DEBUG, this.getClass().getName());
         ACLMessage reply = null;
-
+        
        if(request.getOntology().equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
 
            try{

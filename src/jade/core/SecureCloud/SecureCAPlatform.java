@@ -151,6 +151,10 @@ public class SecureCAPlatform extends Agent{
         }
     }
 
+    public void setTimeout(int time){
+        Agencia.setTimeout(time);
+    }
+
     /**
      * CALL THIS FUNCTION TO INITIALIZE THE CLOUD SERVICE
      * @throws ServiceException

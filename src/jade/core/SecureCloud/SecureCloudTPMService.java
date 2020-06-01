@@ -806,8 +806,11 @@ public class SecureCloudTPMService extends BaseService {
                         PlatformID origin = packet_privative.getOrigin();
                         PlatformID destiny = packet_privative.getDestiny();
 
+                        long time = packet_privative.getTimestamp()+Agencia.getTimeout();
+                        long time_actual = System.currentTimeMillis();
+
                         if(requestZone1Processed.getKey().equals(origin.getID()) ||
-                                requestZone1Processed.getKey().equals(destiny.getID())){
+                                requestZone1Processed.getKey().equals(destiny.getID())&& time>=time_actual){
 
                             String temPath = "./temp";
                             new File(temPath).mkdir();
