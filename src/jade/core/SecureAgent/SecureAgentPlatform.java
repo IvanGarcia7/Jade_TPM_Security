@@ -38,6 +38,9 @@ public class SecureAgentPlatform extends Agent implements Serializable{
         Token = token;
     }
 
+    public PublicKey getLocDestiny() {
+        return LocationKey;}
+
     public PrivateKey getPrivateKey(){
         return mobHelperCloudPlatform.getPrivKey();
     }
@@ -103,6 +106,8 @@ public class SecureAgentPlatform extends Agent implements Serializable{
             mobHelperCloudPlatform = (SecureAgentTPMHelper) getHelper(SecureAgentTPMHelper.NAME);
         }
     }
+
+
 }
 
 

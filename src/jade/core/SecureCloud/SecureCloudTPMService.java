@@ -602,7 +602,7 @@ public class SecureCloudTPMService extends BaseService {
 
                         System.out.println("*********************HOTSPOT DELETE*****************************");
                     PRINTERCRUDCOMPLETE.append("\n\n*********************HOTSPOT DELETE****************************\n");
-                    PRINTERCRUDCOMPLETE.append((String)command.getParams()[0]);
+                    PRINTERCRUDCOMPLETE.append((String)command.getParams()[0]+"\n");
                     PRINTERCRUDCOMPLETE.append("*********************HOTSPOT DELETE****************************\n\n\n");
 
 
