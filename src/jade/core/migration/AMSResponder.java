@@ -36,6 +36,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.AgentContainer;
 import jade.core.SecureCloud.SecureCAConfirmation;
+import jade.core.SecureCloud.SecureCAPlatform;
 import jade.core.SecureTPM.Agencia;
 import jade.core.SecureTPM.Pair;
 import jade.core.ServiceException;
@@ -292,13 +293,14 @@ public class AMSResponder extends SimpleAchieveREResponder {
 				try {
 
 					Map<String, SecureCAConfirmation> pass_request = ams.request_pass();
-					System.out.println("*********************HOTSPOTS*****************************");
+					System.out.println("*********************REQUESTS*****************************");
 					Iterator it = pass_request.entrySet().iterator();
 					while(it.hasNext()){
 						Map.Entry pair = (Map.Entry)it.next();
-						System.out.println(pair.getKey() + " = " + pair.getValue());
+						SecureCAConfirmation packet_secure = (SecureCAConfirmation) pair.getValue();
+						System.out.println(pair.getKey() + " = " + packet_secure.getTimestamp());
 					}
-					System.out.println("*********************HOTSPOTS*****************************");
+					System.out.println("*********************REQUESTS*****************************");
 
 					System.out.println("MY PRIVATE KEY IS THE FOLLOWING:" +privateAMS);
 
@@ -317,20 +319,24 @@ public class AMSResponder extends SimpleAchieveREResponder {
 
 					//See if the token is in the list
 					SecureCAConfirmation myPacket = pass_request.get(challenge);
-					Date time = myPacket.getTimestamp();
+					Date time ;
 					Calendar c = Calendar.getInstance();
 					Date timeChallenge = new Date(c.getTimeInMillis());
 
-
-					System.out.println("THE CHALLENGE DEFINE FOR THE CA IS THE FOLLOWING: ");
-
-
-					if (time.compareTo(timeChallenge) >= 0) {
-						System.out.println("THE REQUEST PASS THE TIMESTAMP CHALLENGUE");
-						jar = contentdecrypt.getValue();
-					} else {
+					if(myPacket!=null){
+						time = myPacket.getTimestamp();
+						if (time.compareTo(timeChallenge) >= 0) {
+							System.out.println("THE REQUEST PASS THE TIMESTAMP CHALLENGUE");
+							jar = contentdecrypt.getValue();
+						} else {
+							System.out.println("THE CHALLENGE HAS NOT BEEN OVERCOME");
+							jar = null;
+						}
+					}else{
+						System.out.println("MIGRATION NOT PREVIOUSLY VALIDATED BY THE AC");
 						jar = null;
 					}
+
 				}catch(Exception e){
 					e.printStackTrace();
 				}
