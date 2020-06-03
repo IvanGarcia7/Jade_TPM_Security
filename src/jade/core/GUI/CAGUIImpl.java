@@ -1,6 +1,5 @@
 package jade.core.GUI;
 
-import jade.core.GUI.CAGui;
 import jade.core.GUI.CAPlatform;
 
 import java.awt.Color;
@@ -39,7 +38,6 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         });}
 
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -66,12 +64,11 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         PASS = new javax.swing.JLabel();
         USER = new javax.swing.JLabel();
         USERNAMETEXT = new javax.swing.JTextField();
-        PASSWORDTEXT = new javax.swing.JTextField();
+        PASSWORDTEXT = new javax.swing.JPasswordField();
         jScrollPane1 = new javax.swing.JScrollPane();
         STARTAREAS = new javax.swing.JTextArea();
         PRINTERPANEL = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        TELECOIMAGE1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         PRINTERAREA = new javax.swing.JTextArea();
         PENDINGREQUESTBUTTON = new javax.swing.JButton();
@@ -79,25 +76,29 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         CRUDPANEL = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         VALIDATEBUTTON = new javax.swing.JButton();
-        TELECOIMAGE2 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         USER1 = new javax.swing.JLabel();
         AIDVALIDATIONTEXT = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         CRUDAREA = new javax.swing.JTextArea();
         DELETEBUTTON = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        TIMEOUT = new javax.swing.JTextField();
+        SET = new javax.swing.JButton();
         INFORMATIONPANEL = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         INFORMATIONAREA = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setMaximumSize(new java.awt.Dimension(1013, 2147483647));
 
         PANELHORIZONTAL.setBackground(new java.awt.Color(51, 102, 255));
+        PANELHORIZONTAL.setPreferredSize(new java.awt.Dimension(900, 110));
 
         USERCA.setIcon(new javax.swing.ImageIcon(getClass().getResource("user.png"))); // NOI18N
-        USERCA.setMaximumSize(new java.awt.Dimension(64, 64));
-        USERCA.setMinimumSize(new java.awt.Dimension(64, 64));
         USERCA.setPreferredSize(new java.awt.Dimension(113, 64));
         USERCA.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -147,15 +148,15 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                         .addGroup(PANELHORIZONTALLayout.createSequentialGroup()
                                 .addGap(60, 60, 60)
                                 .addComponent(USERCA, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(120, 120, 120)
+                                .addGap(80, 80, 80)
                                 .addComponent(CLOUDCA)
-                                .addGap(120, 120, 120)
+                                .addGap(70, 70, 70)
                                 .addComponent(CRUDCA)
-                                .addGap(120, 120, 120)
+                                .addGap(72, 72, 72)
                                 .addComponent(VALIDATECA)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                                .addGap(84, 84, 84)
                                 .addComponent(PRINTERCA)
-                                .addGap(120, 120, 120)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
                                 .addComponent(EXITCA)
                                 .addGap(60, 60, 60))
         );
@@ -171,6 +172,8 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                                         .addComponent(EXITCA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(0, 0, 0))
         );
+
+        STARTPANEL.setPreferredSize(new java.awt.Dimension(1000, 600));
 
         jPanel2.setBackground(new java.awt.Color(102, 153, 255));
 
@@ -208,7 +211,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(USER)
                                         .addComponent(PASS))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(PASSWORDTEXT, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(USERNAMETEXT, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -225,7 +228,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(PASS)
                                         .addComponent(PASSWORDTEXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(35, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -235,17 +238,19 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(177, 177, 177)
-                                                .addComponent(jLabel1)
-                                                .addGap(469, 469, 469)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                .addGap(24, 24, 24)
+                                                                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                .addGap(117, 117, 117)
+                                                                .addComponent(jLabel1)))
+                                                .addGap(413, 413, 413)
                                                 .addComponent(TELECOIMAGE, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(24, 24, 24)
-                                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(162, 162, 162)
+                                                .addGap(105, 105, 105)
                                                 .addComponent(START, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,13 +260,13 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                                                 .addGap(55, 55, 55)
                                                 .addComponent(TELECOIMAGE, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(90, 90, 90)
-                                                .addComponent(jLabel1)))
-                                .addGap(55, 55, 55)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(83, 83, 83)
+                                                .addGap(34, 34, 34)
+                                                .addComponent(jLabel1)
+                                                .addGap(28, 28, 28)
+                                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(31, 31, 31)
                                 .addComponent(START, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(109, Short.MAX_VALUE))
+                                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         STARTAREAS.setColumns(20);
@@ -273,24 +278,26 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         STARTPANELLayout.setHorizontalGroup(
                 STARTPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(STARTPANELLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+                                .addGap(16, 16, 16))
         );
         STARTPANELLayout.setVerticalGroup(
                 STARTPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(STARTPANELLayout.createSequentialGroup()
-                                .addGroup(STARTPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(0, 15, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addGroup(STARTPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane1)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
         );
 
-        jPanel4.setBackground(new java.awt.Color(102, 153, 255));
+        PRINTERPANEL.setPreferredSize(new java.awt.Dimension(1000, 600));
 
-        TELECOIMAGE1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jPanel4.setBackground(new java.awt.Color(102, 153, 255));
+        jPanel4.setPreferredSize(new java.awt.Dimension(1000, 600));
 
         PRINTERAREA.setColumns(20);
         PRINTERAREA.setRows(5);
@@ -301,23 +308,16 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         jPanel4Layout.setHorizontalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(TELECOIMAGE1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jScrollPane2)
+                                .addGap(14, 14, 14))
         );
         jPanel4Layout.setVerticalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(55, 55, 55)
-                                                .addComponent(TELECOIMAGE1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel4Layout.createSequentialGroup()
-                                                .addGap(29, 29, 29)
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 531, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(33, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         PENDINGREQUESTBUTTON.setText("PENDING REQUESTS");
@@ -326,6 +326,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                 PENDINGREQUESTBUTTONMouseClicked(evt);
             }
         });
+
 
         VALIDATEREQUESTBUTTON.setText("VALIDATE REQUESTS");
         VALIDATEREQUESTBUTTON.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -340,28 +341,28 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         PRINTERPANELLayout.setHorizontalGroup(
                 PRINTERPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(PRINTERPANELLayout.createSequentialGroup()
-                                .addGap(12, 12, 12)
+                                .addContainerGap()
                                 .addGroup(PRINTERPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(PRINTERPANELLayout.createSequentialGroup()
-                                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
                                         .addGroup(PRINTERPANELLayout.createSequentialGroup()
                                                 .addComponent(PENDINGREQUESTBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 610, Short.MAX_VALUE)
                                                 .addComponent(VALIDATEREQUESTBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
+                                .addGap(30, 30, 30))
         );
         PRINTERPANELLayout.setVerticalGroup(
                 PRINTERPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(PRINTERPANELLayout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(PRINTERPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addContainerGap()
+                                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(PRINTERPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(PENDINGREQUESTBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(VALIDATEREQUESTBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(28, Short.MAX_VALUE))
+                                .addContainerGap())
         );
+
+        CRUDPANEL.setPreferredSize(new java.awt.Dimension(1000, 600));
 
         jPanel5.setBackground(new java.awt.Color(102, 153, 255));
 
@@ -373,13 +374,12 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         });
 
 
-        TELECOIMAGE2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-
         USER1.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         USER1.setText("PLATFORM AID:");
 
         AIDVALIDATIONTEXT.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
         AIDVALIDATIONTEXT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -387,19 +387,19 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                 jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGap(19, 19, 19)
-                                .addComponent(USER1)
-                                .addGap(57, 57, 57)
-                                .addComponent(AIDVALIDATIONTEXT, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(25, Short.MAX_VALUE))
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(USER1)
+                                        .addComponent(AIDVALIDATIONTEXT, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE))
+                                .addGap(16, 16, 16))
         );
         jPanel6Layout.setVerticalGroup(
                 jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                .addContainerGap(41, Short.MAX_VALUE)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(USER1)
-                                        .addComponent(AIDVALIDATIONTEXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(USER1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(AIDVALIDATIONTEXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36))
         );
 
         CRUDAREA.setColumns(20);
@@ -414,60 +414,95 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         });
 
 
+        jLabel2.setText("TIMEOUT:");
+
+        SET.setText("SET");
+        SET.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SETMouseClicked(evt);
+            }
+        });
+
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(TIMEOUT, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(SET, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(TIMEOUT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(SET, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
                 jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addContainerGap()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane3)
                                         .addGroup(jPanel5Layout.createSequentialGroup()
-                                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(12, 12, 12)
+                                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(VALIDATEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(DELETEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(33, 33, 33)
-                                                .addComponent(DELETEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(VALIDATEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TELECOIMAGE2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
                 jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel5Layout.createSequentialGroup()
-                                                .addGap(55, 55, 55)
-                                                .addComponent(TELECOIMAGE2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 336, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(jScrollPane3)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel5Layout.createSequentialGroup()
-                                                .addGap(32, 32, 32)
-                                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(DELETEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(VALIDATEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(22, 22, 22))
+                                                .addComponent(DELETEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(VALIDATEBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(23, 23, 23))
         );
 
         javax.swing.GroupLayout CRUDPANELLayout = new javax.swing.GroupLayout(CRUDPANEL);
         CRUDPANEL.setLayout(CRUDPANELLayout);
         CRUDPANELLayout.setHorizontalGroup(
                 CRUDPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CRUDPANELLayout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 1144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12))
+                        .addGroup(CRUDPANELLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         CRUDPANELLayout.setVerticalGroup(
                 CRUDPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(CRUDPANELLayout.createSequentialGroup()
-                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 3, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
+
+        INFORMATIONPANEL.setPreferredSize(new java.awt.Dimension(1000, 600));
 
         jPanel7.setBackground(new java.awt.Color(102, 153, 255));
 
@@ -480,29 +515,33 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         jPanel7Layout.setHorizontalGroup(
                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(16, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 977, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
                 jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(29, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         javax.swing.GroupLayout INFORMATIONPANELLayout = new javax.swing.GroupLayout(INFORMATIONPANEL);
         INFORMATIONPANEL.setLayout(INFORMATIONPANELLayout);
         INFORMATIONPANELLayout.setHorizontalGroup(
                 INFORMATIONPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, INFORMATIONPANELLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(INFORMATIONPANELLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         INFORMATIONPANELLayout.setVerticalGroup(
                 INFORMATIONPANELLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(INFORMATIONPANELLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         jLayeredPane1.setLayer(STARTPANEL, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -514,62 +553,61 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         jLayeredPane1.setLayout(jLayeredPane1Layout);
         jLayeredPane1Layout.setHorizontalGroup(
                 jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                .addComponent(STARTPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 1013, Short.MAX_VALUE)
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                        .addComponent(STARTPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 1007, Short.MAX_VALUE)
+                                        .addContainerGap()))
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                                         .addContainerGap()
-                                        .addComponent(PRINTERPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(127, Short.MAX_VALUE)))
+                                        .addComponent(PRINTERPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 1007, Short.MAX_VALUE)))
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                                         .addContainerGap()
-                                        .addComponent(CRUDPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(133, Short.MAX_VALUE)))
+                                        .addComponent(CRUDPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE)
+                                        .addContainerGap()))
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(INFORMATIONPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(8, 8, 8)))
+                                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(INFORMATIONPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE)
+                                        .addContainerGap()))
         );
         jLayeredPane1Layout.setVerticalGroup(
                 jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(STARTPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25))
+                        .addGap(0, 478, Short.MAX_VALUE)
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jLayeredPane1Layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(PRINTERPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(223, Short.MAX_VALUE)))
+                                .addComponent(STARTPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jLayeredPane1Layout.createSequentialGroup()
-                                        .addContainerGap(221, Short.MAX_VALUE)
-                                        .addComponent(CRUDPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(15, 15, 15)))
+                                        .addContainerGap()
+                                        .addComponent(PRINTERPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)))
                         .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jLayeredPane1Layout.createSequentialGroup()
                                         .addContainerGap()
-                                        .addComponent(INFORMATIONPANEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(230, Short.MAX_VALUE)))
+                                        .addComponent(CRUDPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
+                                        .addContainerGap()))
+                        .addGroup(jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jLayeredPane1Layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(INFORMATIONPANEL, javax.swing.GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE)
+                                        .addContainerGap()))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(PANELHORIZONTAL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(PANELHORIZONTAL, javax.swing.GroupLayout.DEFAULT_SIZE, 1013, Short.MAX_VALUE)
+                        .addComponent(jLayeredPane1)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(PANELHORIZONTAL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 699, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLayeredPane1)
+                                .addContainerGap())
         );
 
         Font f = new Font("SansSerif", Font.BOLD, 10);
@@ -631,7 +669,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
     private void STARTMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         if(USERNAMETEXT.getText().isEmpty()||PASSWORDTEXT.getText().isEmpty()) {
-            STARTAREAS.append("PLEASE INSERT USERNAME AND PASSWORD\n");
+            STARTAREAS.append("PLEASE INSERT USERNAME AND PASSWORD");
         }else {
             try {
                 String publicKeyGen = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxWn5INyIwdQlCFnw+45a91O3LrmRtWkj9mEXcXUViblgTrNEYpuY2HuU7wDn6tIs3WrZcxfNbw8vYKnYGmsCvyua2eqhYQ7AW31Itj+fsOy/XrX5a02aNrqwVOs+Evcx9d9Ap5gWU1XJ2Vl47wsCShxFFhadR2ILZNj5XhTeqMwEalsXcQ+D8DIIyy5eKrgZ1KP79s8Kf2UrVFMADsjt39hM4ajB2F9Pge5m5/tQmt3sBKnGFMf+kaIiHd6INZYJB+5+UdcFzBYzF2PMJpU54kywpIyjZ+xo6RLzMnmlP4lEJnPwKai94mUUV4K9V/fe17DPpEey1SKk7I2DMokNSwIDAQAB";
@@ -650,6 +688,8 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
                 //myAgent.setInformationPrinter(PListInformation);
                 myAgent.doInitializeCA(pubKeyPriv,pubKey,USERNAMETEXT.getText(),PASSWORDTEXT.getText(),STARTAREAS,
                         PRINTERAREA, CRUDAREA, INFORMATIONAREA, START);
+                USERNAMETEXT.setText("");
+                PASSWORDTEXT.setText("");
                 //doListCA();
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
@@ -662,15 +702,16 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
 
     private void PRINTERCAMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
-        if(STARTAREAS.isVisible()) {
+
+        if(STARTPANEL.isVisible()) {
             STARTAREAS.selectAll();
             STARTAREAS.replaceSelection("");
             STARTAREAS.setText("");
-        }else if(PRINTERAREA.isVisible()) {
+        }else if(PRINTERPANEL.isVisible()) {
             PRINTERAREA.selectAll();
             PRINTERAREA.replaceSelection("");
             PRINTERAREA.setText("");
-        }else if(CRUDAREA.isVisible()) {
+        }else if(CRUDPANEL.isVisible()) {
             CRUDAREA.selectAll();
             CRUDAREA.replaceSelection("");
             CRUDAREA.setText("");
@@ -691,7 +732,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         PRINTERAREA.selectAll();
         PRINTERAREA.replaceSelection("");
         PRINTERAREA.setText("");
-        PRINTERAREA.append("-PENDING HOTSPOTS-");
+        PRINTERAREA.append("-PENDING HOTSPOTS-\n");
         myAgent.doListCA();
     }
 
@@ -701,7 +742,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         PRINTERAREA.selectAll();
         PRINTERAREA.replaceSelection("");
         PRINTERAREA.setText("");
-        PRINTERAREA.append("-VALIDATE HOTSPOTS-");
+        PRINTERAREA.append("-VALIDATE HOTSPOTS-\n");
         myAgent.doListACA();
     }
 
@@ -732,6 +773,25 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
         }
     }
 
+    private void SETMouseClicked(java.awt.event.MouseEvent evt) {
+        if(TIMEOUT.getText().isEmpty()){
+            CRUDAREA.selectAll();
+            CRUDAREA.replaceSelection("");
+            CRUDAREA.setText("");
+            CRUDAREA.append("PLEASE INSERT A CORRECT TIMEOUT");
+        }else{
+            try {
+                int time = Integer.parseInt(TIMEOUT.getText());
+                myAgent.setTimeout(time);
+            }catch(Exception e) {
+                CRUDAREA.selectAll();
+                CRUDAREA.replaceSelection("");
+                CRUDAREA.setText("");
+                CRUDAREA.append("PLEASE INSERT A CORRECT TIMEOUT");
+            }
+        }
+    }
+
 
 
 
@@ -748,7 +808,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
     private javax.swing.JPanel INFORMATIONPANEL;
     private javax.swing.JPanel PANELHORIZONTAL;
     private javax.swing.JLabel PASS;
-    private javax.swing.JTextField PASSWORDTEXT;
+    private javax.swing.JPasswordField PASSWORDTEXT;
     private javax.swing.JButton PENDINGREQUESTBUTTON;
     private javax.swing.JTextArea PRINTERAREA;
     private javax.swing.JLabel PRINTERCA;
@@ -768,6 +828,7 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
     private javax.swing.JButton VALIDATEREQUESTBUTTON;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -778,6 +839,9 @@ public class CAGUIImpl extends javax.swing.JFrame implements CAGui,Serializable{
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JButton SET;
+    private javax.swing.JTextField TIMEOUT;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration
 
     @Override
