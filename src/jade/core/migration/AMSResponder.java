@@ -328,6 +328,7 @@ public class AMSResponder extends SimpleAchieveREResponder {
 						if (time.compareTo(timeChallenge) >= 0) {
 							System.out.println("THE REQUEST PASS THE TIMESTAMP CHALLENGUE");
 							jar = contentdecrypt.getValue();
+
 						} else {
 							System.out.println("THE CHALLENGE HAS NOT BEEN OVERCOME");
 							jar = null;

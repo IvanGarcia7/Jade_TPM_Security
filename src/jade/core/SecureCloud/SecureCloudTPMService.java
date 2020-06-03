@@ -31,6 +31,7 @@ public class SecureCloudTPMService extends BaseService {
 
     public static final String NAME = "jade.core.SecureCloud.SecureCloudTPM";
     public static final String VERBOSE = "SecureCloud";
+    private boolean started = false;
 
     //TIMESTAMP TO INSERT INTO A CHALLENGE PACKET
     long startTime = System.nanoTime();
@@ -511,6 +512,7 @@ public class SecureCloudTPMService extends BaseService {
                         System.out.println("NUMBER OF INSTANCE: "+collection.count());
 
 
+                        started = true;
                         StartButton.setEnabled(false);
                         StartButton.disable();
 
@@ -546,7 +548,7 @@ public class SecureCloudTPMService extends BaseService {
 
 
 
-                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_LIST)){
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_LIST) && started==true){
                     Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST REQUEST INTO THE AMS " +
                                     "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
 
@@ -568,7 +570,7 @@ public class SecureCloudTPMService extends BaseService {
                     PRINTERLISTCOMPLETE.append("\n");
                     PRINTERLISTCOMPLETE.append("\n");
 
-                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED)){
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED)&& started==true){
 
                     Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST REQUEST INTO THE AMS " +
                             "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
@@ -581,11 +583,14 @@ public class SecureCloudTPMService extends BaseService {
                     System.out.println("*********************HOTSPOTS*****************************");
 
 
-
-                    MongoCursor<Document> cursor = collection.find().iterator();
-                    while(cursor.hasNext()) {
-                        Document str = cursor.next();
-                        PRINTERLISTCOMPLETE.append(str.get("_id")+" = "+str.get("SHA256")+"\n");
+                    if(collection == null){
+                        PRINTERLISTCOMPLETE.append("PLEASE INSERT THE USERNAME AND PASSWORD BEFORE FIND HOTSPOTS\n");
+                    }else{
+                        MongoCursor<Document> cursor = collection.find().iterator();
+                        while(cursor.hasNext()) {
+                            Document str = cursor.next();
+                            PRINTERLISTCOMPLETE.append(str.get("_id")+" = "+str.get("SHA256")+"\n");
+                        }
                     }
 
 
@@ -594,19 +599,26 @@ public class SecureCloudTPMService extends BaseService {
                     PRINTERLISTCOMPLETE.append("\n");
                     PRINTERLISTCOMPLETE.append("\n");
 
-                } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_DELETE)){
+                } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_DELETE)&& started==true){
                         Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST DELETE REQUEST INTO THE AMS " +
                                 "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
 
+
+                    if(collection == null){
+                        PRINTERLISTCOMPLETE.append("PLEASE INSERT THE USERNAME AND PASSWORD BEFORE FIND HOTSPOTS\n");
+                    }else{
                         collection.findOneAndDelete(Filters.eq("_id",command.getParams()[0]));
 
                         System.out.println("*********************HOTSPOT DELETE*****************************");
-                    PRINTERCRUDCOMPLETE.append("\n\n*********************HOTSPOT DELETE****************************\n");
-                    PRINTERCRUDCOMPLETE.append((String)command.getParams()[0]+"\n");
-                    PRINTERCRUDCOMPLETE.append("*********************HOTSPOT DELETE****************************\n\n\n");
+                        PRINTERCRUDCOMPLETE.append("\n\n*********************HOTSPOT DELETE****************************\n");
+                        PRINTERCRUDCOMPLETE.append((String)command.getParams()[0]+"\n");
+                        PRINTERCRUDCOMPLETE.append("*********************HOTSPOT DELETE****************************\n\n\n");
+                    }
 
 
-                } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)){
+
+
+                } else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_ACCEPT)&& started==true){
                     Agencia.printLog("PROCESSING THE VERTICAL COMMAND LIST CLOUD REQUEST INTO THE AMS " +
                                     "DESTINATION CONTAINER", Level.INFO, true, this.getClass().getName());
                     String index = (String) command.getParams()[0];
@@ -616,24 +628,29 @@ public class SecureCloudTPMService extends BaseService {
                     if(FindHotspot==null){
                             if(content!=null){
 
-                                //SAVE INTO MONGO
-                                Document hotspotNew = new Document("_id", index);
-                                hotspotNew.append("PUBLIC_AIK", Agencia.serialize(content.getAIK()));
-                                hotspotNew.append("PUBLIC_KEY", Agencia.serialize(content.getKeyPub()));
-                                hotspotNew.append("PLATFORM_LOCATION", Agencia.serialize(content.getPlatformLocation()));
-                                hotspotNew.append("SHA256", content.getSha256());
-                                collection.insertOne(hotspotNew);
+                                if(collection == null){
+                                    PRINTERLISTCOMPLETE.append("PLEASE INSERT THE USERNAME AND PASSWORD BEFORE FIND HOTSPOTS\n");
+                                }else{
+                                    //SAVE INTO MONGO
+                                    Document hotspotNew = new Document("_id", index);
+                                    hotspotNew.append("PUBLIC_AIK", Agencia.serialize(content.getAIK()));
+                                    hotspotNew.append("PUBLIC_KEY", Agencia.serialize(content.getKeyPub()));
+                                    hotspotNew.append("PLATFORM_LOCATION", Agencia.serialize(content.getPlatformLocation()));
+                                    hotspotNew.append("SHA256", content.getSha256());
+                                    collection.insertOne(hotspotNew);
 
 
-                                PRINTERCRUDCOMPLETE.append("\n\nPLATFORM INSERTED CORRECTLY WITH THE FOLLOWING " +
-                                                           "INFORMATION:\n");
-                                PRINTERCRUDCOMPLETE.append("AIK: "+content.getAIK().toString()+"\n");
-                                PRINTERCRUDCOMPLETE.append("PUBLIC KEY: "+content.getKeyPub()+"\n");
-                                PRINTERCRUDCOMPLETE.append("PLATFORM LOCATION: "+
-                                                           content.getPlatformLocation().getAmsAID()+"\n");
-                                PRINTERCRUDCOMPLETE.append("GENERATED HASH: "+content.getSha256()+"\n\n");
+                                    PRINTERCRUDCOMPLETE.append("\n\nPLATFORM INSERTED CORRECTLY WITH THE FOLLOWING " +
+                                            "INFORMATION:\n");
+                                    PRINTERCRUDCOMPLETE.append("AIK: "+content.getAIK().toString()+"\n");
+                                    PRINTERCRUDCOMPLETE.append("PUBLIC KEY: "+content.getKeyPub()+"\n");
+                                    PRINTERCRUDCOMPLETE.append("PLATFORM LOCATION: "+
+                                            content.getPlatformLocation().getAmsAID()+"\n");
+                                    PRINTERCRUDCOMPLETE.append("GENERATED HASH: "+content.getSha256()+"\n\n");
 
-                                pendingRedirects.remove(index);
+                                    pendingRedirects.remove(index);
+                                }
+
                             }
                     }else{
                         /*REVIEW
@@ -660,7 +677,7 @@ public class SecureCloudTPMService extends BaseService {
                         */
 
                     }
-                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)){
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)&& started==true){
 
                     Pair<String,Object> requestInsert = (Pair<String,Object>)  command.getParams()[0];
                     RequestSecureATT packSecure = (RequestSecureATT) requestInsert.getValue();
@@ -733,7 +750,7 @@ public class SecureCloudTPMService extends BaseService {
                             System.out.println("ERROR READING THE ATTESTATION DATA.");
                         }
                     }
-                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM)){
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_PLATFORM)&& started==true){
 
                     Pair<String,Object> requestMigrate = (Pair<String,Object>) command.getParams()[0];
 
@@ -791,7 +808,7 @@ public class SecureCloudTPMService extends BaseService {
                         System.out.println("REJECTED REQUEST, PLATFORM IS NOT FOUND WITHIN THE ACCEPTED " +
                                 "DESTINATIONS DIRECTORY");
                     }
-                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)){
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE1_PLATFORM)&& started==true){
 
                     if(command.getParams()[0]!=null){
 
@@ -911,6 +928,7 @@ public class SecureCloudTPMService extends BaseService {
                                         String challenge = Agencia.getRandomChallenge();
                                         Calendar c = Calendar.getInstance();
                                         c.add(Calendar.SECOND, Agencia.getTimeout());
+
                                         Date timeChallenge = new Date(c.getTimeInMillis()+Agencia.getTimeout());
 
                                         PPRINTERINFORMATIONCOMPLETE.append("***************************************\n");
@@ -1053,8 +1071,6 @@ public class SecureCloudTPMService extends BaseService {
                     }
                 }
             }catch(Exception ex){
-                PPRINTERINFORMATIONCOMPLETE.append("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET" +
-                        " SINK\n");
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
                 ex.printStackTrace();
             }

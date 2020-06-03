@@ -35,7 +35,7 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 
 
 	public void afterMove() {
-/*
+
         if(index>=hops.size()){
             System.out.println("END MIGRATION");
         }else{
@@ -43,7 +43,7 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
             index++;
             doSecureMigration(newDestination);
         }
-        */
+
 
 	}
 
@@ -51,12 +51,7 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 		hops = hopsList;
 	}
 
-	public void dale(PlatformID destiny) {
 
-
-		System.out.println("hola" + this);
-		doMove(destiny);
-	}
 
 
 

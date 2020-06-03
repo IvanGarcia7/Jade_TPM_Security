@@ -140,6 +140,8 @@ public class AMSInitiator extends SimpleAchieveREInitiator{
           System.out.println("TOKEN "+token);
           System.out.println(_jar);
 
+
+
           KeyGenerator generator = KeyGenerator.getInstance("AES");
           generator.init(256);
           SecretKey secKey = generator.generateKey();
@@ -150,11 +152,13 @@ public class AMSInitiator extends SimpleAchieveREInitiator{
           byte [] encryptedKeySecret = Agencia.encrypt(destinyPub,secKey.getEncoded());
           Pair<byte [],byte []> migrationPacket = new Pair<byte [],byte []>(encryptedKeySecret,byteCipherObjectSecret);
           _jar = Agencia.serialize(migrationPacket);
+          myContainer.releaseLocalAgent(name);
       }catch(Exception e){
           e.printStackTrace();
       }
 
     mad.setCode(new String(Base64.encodeBase64(_jar)));
+
     mad.setName(name);
     mad.setAgentProfile(mapf);
   	

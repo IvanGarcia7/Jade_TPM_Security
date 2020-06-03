@@ -23,7 +23,6 @@ public class SecureCAPlatform extends Agent{
     private JTextArea PrinterInformation;
 
 
-
     public PrivateKey getPrivateKey(){
         return mobHelperCloud.getPrivKey();
     }
