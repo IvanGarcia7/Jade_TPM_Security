@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/CAGUIImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAGUIImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/AgentGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/AgentGuiImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +98,7 @@
       <workItem from="1590653165780" duration="11538000" />
       <workItem from="1590785387109" duration="508000" />
       <workItem from="1590929807642" duration="6000" />
-      <workItem from="1591002828747" duration="10576000" />
+      <workItem from="1591002828747" duration="11105000" />
     </task>
     <servers />
   </component>
