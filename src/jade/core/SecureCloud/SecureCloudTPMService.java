@@ -65,7 +65,9 @@ public class SecureCloudTPMService extends BaseService {
             SecureCloudTPMHelper.REQUEST_MIGRATE_ZONE3_PLATFORM,
             SecureCloudTPMHelper.REQUEST_ERROR,
             SecureCloudTPMHelper.REQUEST_LIST_ACCEPTED,
-            SecureCloudTPMHelper.REQUEST_DELETE
+            SecureCloudTPMHelper.REQUEST_DELETE,
+            SecureCloudTPMHelper.REQUEST_VALIDATE_HASH,
+            SecureCloudTPMHelper.REQUEST_DELETE_HASH
     };
 
     //PERFORMATIVE PRINTER.
@@ -73,6 +75,7 @@ public class SecureCloudTPMService extends BaseService {
     private AgentContainer actualcontainer;
 
     private  MongoCollection<Document> collection = null;
+    private  MongoCollection<Document> collectionHASH = null;
 
     //PRINTER
     JTextArea PRINTERSTARTCOMPLETE;
@@ -324,6 +327,41 @@ public class SecureCloudTPMService extends BaseService {
             }
         }
 
+        @Override
+        public void doValidateHash(SecureCAPlatform secureCAPlatform, String hash) {
+            Agencia.printLog("-> THE PROCESS TO VALIDATE THE HASH HAS JUST STARTED", Level.INFO,
+                            SecureCloudTPMHelper.DEBUG, this.getClass().getName());
+            Agencia.printLog("START THE HASH VALIDATOR SERVICE", Level.INFO, true,
+                            this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_VALIDATE_HASH,
+                    SecureCloudTPMHelper.NAME, null);
+            command.addParam(hash);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS TO VALIDATE THE HASH", Level.INFO,
+                             true, this.getClass().getName());
+            try {
+                SecureCloudTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void doDeleteHash(SecureCAPlatform secureCAPlatform, String hash) {
+            Agencia.printLog("-> THE PROCESS TO DELETE THE HASH HAS JUST STARTED", Level.INFO,
+                    SecureCloudTPMHelper.DEBUG, this.getClass().getName());
+            Agencia.printLog("START THE HASH DELETER SERVICE", Level.INFO, true,
+                    this.getClass().getName());
+            GenericCommand command = new GenericCommand(SecureCloudTPMHelper.REQUEST_DELETE_HASH,
+                    SecureCloudTPMHelper.NAME, null);
+            command.addParam(hash);
+            Agencia.printLog("AGENT REQUEST COMMUNICATE WITH THE AMS TO DELETE THE HASH", Level.INFO,
+                    true, this.getClass().getName());
+            try {
+                SecureCloudTPMService.this.submit(command);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
 
         /**
@@ -475,6 +513,26 @@ public class SecureCloudTPMService extends BaseService {
                                 "COMMAND SOURCE SINK");
                         ie.printStackTrace();
                     }
+                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_VALIDATE_HASH)) {
+                    Agencia.printLog("PROCESSING THE COMMAND TO VALIDATE THE HASH IN THE CONSUME", Level.INFO,
+                            true, this.getClass().getName());
+                    try {
+                        obj.doValidateHashAMS(command);
+                    } catch (Exception ie) {
+                        System.out.println("THERE ARE AN ERROR PROCESSING doValidateHashAMS IN THE " +
+                                "COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
+                }else if(commandName.equals(SecureCloudTPMHelper.REQUEST_DELETE_HASH)) {
+                    Agencia.printLog("PROCESSING THE COMMAND TO DELETE THE HASH IN THE CONSUME", Level.INFO,
+                            true, this.getClass().getName());
+                    try {
+                        obj.doDeleteHashAMS(command);
+                    } catch (Exception ie) {
+                        System.out.println("THERE ARE AN ERROR PROCESSING doDeleteHashAMS IN THE " +
+                                "COMMAND SOURCE SINK");
+                        ie.printStackTrace();
+                    }
                 }
             }catch (Exception e) {
                 e.printStackTrace();
@@ -509,7 +567,10 @@ public class SecureCloudTPMService extends BaseService {
                         MongoClient mongoClient = new MongoClient(mongoCientURI);
                         MongoDatabase database = mongoClient.getDatabase("hotspot");
                         collection = database.getCollection("hotspot");
+                        MongoDatabase databaseHASH = mongoClient.getDatabase("HASH");
+                        collectionHASH = databaseHASH.getCollection("HASH");
                         System.out.println("NUMBER OF INSTANCE: "+collection.count());
+                        System.out.println("NUMBER OF INSTANCE: "+collectionHASH.count());
 
 
                         started = true;
@@ -596,6 +657,23 @@ public class SecureCloudTPMService extends BaseService {
 
                     System.out.println("*********************HOTSPOTS*****************************");
                     PRINTERLISTCOMPLETE.append("*********************HOTSPOTS*****************************\n");
+
+
+                    PRINTERLISTCOMPLETE.append("\n*********************HASHES*****************************\n");
+
+                    if(collectionHASH == null){
+                        PRINTERLISTCOMPLETE.append("PLEASE INSERT THE USERNAME AND PASSWORD BEFORE FIND HOTSPOTS\n");
+                    }else{
+                        MongoCursor<Document> cursorHash = collectionHASH.find().iterator();
+                        while(cursorHash.hasNext()) {
+                            Document str = cursorHash.next();
+                            PRINTERLISTCOMPLETE.append(" ==> "+str.get("_id")+"\n");
+                        }
+                    }
+
+                    PRINTERLISTCOMPLETE.append("*********************HASHES*****************************\n");
+
+
                     PRINTERLISTCOMPLETE.append("\n");
                     PRINTERLISTCOMPLETE.append("\n");
 
@@ -728,13 +806,28 @@ public class SecureCloudTPMService extends BaseService {
                                     packSecure.getPlatformLocationOrigin());
                             Agencia.deleteFolder(new File(temPath));
 
-                            PPRINTERINFORMATIONCOMPLETE.append("ADDING THE REQUEST IN THE PENDING LIST\n");
-                            System.out.println("ADDING THE REQUEST IN THE PENDING LIST");
-                            pendingRedirects.put(packSecure.getPlatformLocationOrigin().getID(),saveRequest);
 
-                            it = pendingRedirects.entrySet().iterator();
-                            PPRINTERINFORMATIONCOMPLETE.append("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST\n\n");
-                            System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
+                            Document hashSave = collectionHASH.find(new Document("_id", hash)).first();
+                            if(hashSave != null){
+                                PPRINTERINFORMATIONCOMPLETE.append("THE HASH IS ACCEPTED IN THE LIST.\n");
+                                PPRINTERINFORMATIONCOMPLETE.append("VALIDATE THE PLATFORM.\n");
+
+                                Document hotspotNew = new Document("_id", packSecure.getPlatformLocationOrigin().getID());
+                                hotspotNew.append("PUBLIC_AIK", Agencia.serialize(saveRequest.getAIK()));
+                                hotspotNew.append("PUBLIC_KEY", Agencia.serialize(saveRequest.getKeyPub()));
+                                hotspotNew.append("PLATFORM_LOCATION", Agencia.serialize(saveRequest.getPlatformLocation()));
+                                hotspotNew.append("SHA256", saveRequest.getSha256());
+                                collection.insertOne(hotspotNew);
+
+                            }else{
+                                PPRINTERINFORMATIONCOMPLETE.append("ADDING THE REQUEST IN THE PENDING LIST\n");
+                                System.out.println("ADDING THE REQUEST IN THE PENDING LIST");
+                                pendingRedirects.put(packSecure.getPlatformLocationOrigin().getID(),saveRequest);
+                                PPRINTERINFORMATIONCOMPLETE.append("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST\n\n");
+                                System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
+                            }
+
+
 
                             //PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
                             //System.out.println("*********************HOTSPOTS*****************************");
@@ -1069,6 +1162,42 @@ public class SecureCloudTPMService extends BaseService {
                         PPRINTERINFORMATIONCOMPLETE.append("ERROR TIMEOUT IGNORING THE REQUEST \n");
                         System.out.println("ERROR TIMEOUT IGNORING THE REQUEST ");
                     }
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_VALIDATE_HASH)&& started==true){
+
+                    if(collectionHASH == null){
+                        PRINTERLISTCOMPLETE.append("PLEASE INSERT THE USERNAME AND PASSWORD BEFORE ACCEPT/DELETE " +
+                                                   "HASH\n");
+                    }else{
+                        String hash = (String)command.getParams()[0];
+                        Document FindHotspot = collectionHASH.find(new Document("_id", hash)).first();
+                        //System.out.println(FindHotspot);
+                        if(FindHotspot == null){
+                            //SAVE INTO MONGO
+                            Document hashNew = new Document("_id", hash);
+                            collectionHASH.insertOne(hashNew);
+                            PRINTERLISTCOMPLETE.append("HASH "+hash+" INSERTED CORRECTLY\n");
+                        }else{
+                            PRINTERLISTCOMPLETE.append("THE HASH IS ALREADY IN THE VALIDATE LIST\n");
+                        }
+                    }
+
+                }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_DELETE_HASH)&& started==true){
+
+                    if(collectionHASH == null){
+                        PRINTERLISTCOMPLETE.append("PLEASE INSERT THE USERNAME AND PASSWORD BEFORE ACCEPT/DELETE " +
+                                "HASH\n");
+                    }else{
+                        String hash = (String)command.getParams()[0];
+                        Document FindHotspot = collectionHASH.find(new Document("_id", hash)).first();
+                        //System.out.println(FindHotspot);
+                        if(FindHotspot != null){
+                            collectionHASH.findOneAndDelete(Filters.eq("_id",hash));
+                            PRINTERLISTCOMPLETE.append("HASH "+hash+" DELETE CORRECTLY\n");
+                        }else{
+                            PRINTERLISTCOMPLETE.append("THE HASH IS NOT ON THE LIST\n");
+                        }
+                    }
+
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -1244,6 +1373,24 @@ public class SecureCloudTPMService extends BaseService {
                         System.out.println("THE AGENCIA IS TIMEOUT, IGNORING THE REQUEST");
                         commandResponse.addParam(null);
                     }
+                }else if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_VALIDATE_HASH)) {
+
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO VALIDATE ONE HASH", Level.INFO, true,
+                            this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_VALIDATE_HASH,
+                            SecureCloudTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
+
+                }else if (commandReceived.equals(SecureCloudTPMSlice.REMOTE_REQUEST_DELETE_HASH)) {
+
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL COMMAND CLOUD MD IN THE SERVICE " +
+                                    "COMPONENT TO DELETE ONE HASH", Level.INFO, true,
+                            this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureCloudTPMHelper.REQUEST_DELETE_HASH,
+                            SecureCloudTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
+
                 }
             }catch(Exception e){
                 System.out.println("AN ERROR HAPPENED WHEN PROCESS THE VERTICAL COMMAND IN THE SERVICECOMPONENT");

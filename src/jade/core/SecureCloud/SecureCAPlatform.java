@@ -150,6 +150,44 @@ public class SecureCAPlatform extends Agent{
         }
     }
 
+
+    /**
+     * THIS FUNCTION TAKES AN HASHCODE AND VALIDATE IT INTO THE CLUSTER
+     * @param hash
+     */
+    public void validateHASH(String hash){
+        Agencia.printLog("REQUEST TO SAVE THE HASH",
+                Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+        try {
+            initmobHelperCloud();
+            Agencia.printLog("THE SERVICE TO ACCEPT THE HASH HAS BEGUN TO RUN", Level.INFO,
+                    SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            mobHelperCloud.doValidateHash(this,hash);
+        } catch(ServiceException se) {
+            System.out.println("THE SERVICE CANNOT VALIDATE THE HASH NOW, TRY IT LATER");
+            se.printStackTrace();
+        }
+    }
+
+    /**
+     * THIS FUNCTION TAKES AN HASHCODE AND DELETE IT INTO THE CLUSTER
+     * @param hash
+     */
+    public void deleteHASH(String hash){
+        Agencia.printLog("REQUEST TO DELETE THE HASH",
+                Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+        try {
+            initmobHelperCloud();
+            Agencia.printLog("THE SERVICE TO DELETE THE HASH HAS BEGUN TO RUN", Level.INFO,
+                    SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            mobHelperCloud.doDeleteHash(this,hash);
+        } catch(ServiceException se) {
+            System.out.println("THE SERVICE CANNOT DELETE THE HASH NOW, TRY IT LATER");
+            se.printStackTrace();
+        }
+    }
+
+
     public void setTimeout(int time){
         Agencia.setTimeout(time);
     }

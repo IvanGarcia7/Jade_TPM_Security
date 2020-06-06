@@ -115,6 +115,40 @@ public class SecureCloudTPMProxy extends Service.SliceProxy implements SecureClo
         }
     }
 
+    @Override
+    public void doValidateHashAMS(VerticalCommand command) {
+        try{
+            Agencia.printLog("PROCEED TO DO THE REQUEST VALIDATOR HASH WITH THE AMS OF THE MAIN PLATFORM IN " +
+                    "THE PROXY", Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            GenericCommand newCommand = new GenericCommand(SecureCloudTPMSlice.REMOTE_REQUEST_VALIDATE_HASH,
+                    SecureCloudTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
+            Node n = getNode();
+            Agencia.printLog("-> SENDING THE REQUEST VALIDATOR HASH THROUGH A HORIZONTAL COMMAND TO THE AMS " +
+                    "NODE "+ n.getName(), Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            n.accept(newCommand);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void doDeleteHashAMS(VerticalCommand command) {
+        try{
+            Agencia.printLog("PROCEED TO DO THE REQUEST DELETE HASH WITH THE AMS OF THE MAIN PLATFORM IN " +
+                    "THE PROXY", Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            GenericCommand newCommand = new GenericCommand(SecureCloudTPMSlice.REMOTE_REQUEST_DELETE_HASH,
+                    SecureCloudTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
+            Node n = getNode();
+            Agencia.printLog("-> SENDING THE REQUEST VALIDATOR HASH THROUGH A HORIZONTAL COMMAND TO THE AMS " +
+                    "NODE "+ n.getName(), Level.INFO, SecureCloudTPMHelper.DEBUG,this.getClass().getName());
+            n.accept(newCommand);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      *doInsertHostpotAMS IS USED TO INSERT A NEW HOTSPOT INTO THE SECURE PLATFORMS
