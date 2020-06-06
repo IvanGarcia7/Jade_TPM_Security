@@ -1,7 +1,10 @@
 package jade.core.GUI;
 
+
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
@@ -11,10 +14,20 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+import javax.swing.GroupLayout;
 import javax.swing.JTextArea;
+
 import jade.core.AID;
 import jade.core.PlatformID;
+import jade.core.SecureTPM.Pair;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 /**
  *
@@ -88,6 +101,8 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
         AIDPLATFORMTEXT = new javax.swing.JTextField();
         ADDPLATFORMTEXT = new javax.swing.JTextField();
         DELETEBUTTON = new javax.swing.JButton();
+        SERVICELABEL = new javax.swing.JLabel();
+        SERVICETEXT = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         STATUSAREA = new javax.swing.JTextArea();
 
@@ -103,14 +118,14 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
             }
         });
 
-        SUITCASEIMAGE.setIcon(new javax.swing.ImageIcon(getClass().getResource("user.png"))); // NOI18N
+        SUITCASEIMAGE.setIcon(new javax.swing.ImageIcon(getClass().getResource("maleta.png"))); // NOI18N
         SUITCASEIMAGE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 SUITCASEIMAGEMouseClicked(evt);
             }
         });
 
-        PRINTERIMAGE.setIcon(new javax.swing.ImageIcon(getClass().getResource("CLEAR.png"))); // NOI18N
+        PRINTERIMAGE.setIcon(new javax.swing.ImageIcon(getClass().getResource("printer.png"))); // NOI18N
         PRINTERIMAGE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 PRINTERIMAGEMouseClicked(evt);
@@ -317,6 +332,13 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
             }
         });
 
+        SERVICELABEL.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        SERVICELABEL.setText("SERVICE:");
+
+        SERVICETEXT.setFont(new java.awt.Font("SansSerif", 0, 16)); // NOI18N
+        SERVICETEXT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -329,11 +351,13 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
                                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addComponent(ADDPLATFORM)
-                                                                        .addComponent(AIDPLATFORM))
+                                                                        .addComponent(AIDPLATFORM)
+                                                                        .addComponent(SERVICELABEL))
                                                                 .addGap(18, 18, 18)
                                                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addComponent(ADDPLATFORMTEXT)
-                                                                        .addComponent(AIDPLATFORMTEXT)))
+                                                                        .addComponent(AIDPLATFORMTEXT)
+                                                                        .addComponent(SERVICETEXT)))
                                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
                                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                                 .addComponent(ADDBUTTON)
@@ -353,14 +377,18 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(AIDPLATFORM)
                                         .addComponent(AIDPLATFORMTEXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                                .addGap(10, 10, 10)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(ADDPLATFORM)
                                         .addComponent(ADDPLATFORMTEXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(SERVICELABEL)
+                                        .addComponent(SERVICETEXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(ADDBUTTON, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -494,8 +522,13 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
             AID remoteAMSDestiny = new AID(AIDPLATFORMTEXT.getText(), AID.ISGUID);
             remoteAMSDestiny.addAddresses(ADDPLATFORMTEXT.getText());
             PlatformID destination2 = new PlatformID(remoteAMSDestiny);
-            hops.add(destination2);
-            HOPSAERA.append(destination2.getID()+"\n");
+            String service = "";
+            if(!SERVICETEXT.getText().isEmpty()) {
+                service = SERVICETEXT.getText();
+            }
+            Pair<PlatformID,String> hopsNew = new Pair<PlatformID,String>(destination2,service);
+            hops.add(hopsNew);
+            HOPSAERA.append("\nPLATFORM: "+destination2.getID()+" Service: "+service+"\n");
         }
     }
 
@@ -517,7 +550,7 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
             PlatformID destination2 = new PlatformID(remoteAMSDestiny);
 
             while(index<hops.size()&&progress){
-                PlatformID selectedPlatform = hops.get(index);
+                PlatformID selectedPlatform = hops.get(index).getKey();
                 if(selectedPlatform.getAmsAID().equals(destination2.getAmsAID())){
                     hops.remove(index);
                     progress=false;
@@ -530,8 +563,9 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
             HOPSAERA.setText("");
 
             for(int i=0;i<hops.size();i++){
-                PlatformID destinationSelectedPrinter = hops.get(i);
-                HOPSAERA.append(destinationSelectedPrinter.getID()+"\n");
+                PlatformID destinationSelectedPrinter = hops.get(i).getKey();
+                String service = hops.get(i).getValue();
+                HOPSAERA.append("\nPLATFORM: "+destinationSelectedPrinter.getID()+" Service: "+service+"\n");
                 HOPSAERA.append("*********************\n");
             }
         }
@@ -553,9 +587,9 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
 
         if(hops.size()==0){
             STATUSAREA.append("PLEASE INSERT ONE PLATFORM\n");
-        }else{
+        }else {
             STATUSAREA.append("STARTING THE MIGRATION\n");
-            PlatformID destiny = hops.get(0);
+            PlatformID destiny = hops.get(0).getKey();
             hops.remove(0);
             myAgent.setHops(hops);
             myAgent.doSecureMigration(destiny);
@@ -669,10 +703,11 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel SERVICELABEL;
+    private javax.swing.JTextField SERVICETEXT;
     // End of variables declaration
 
-    private List<PlatformID> hops = new ArrayList<PlatformID>();
-
+    private List<Pair<PlatformID,String>> hops = new ArrayList<Pair<PlatformID,String>>();
 
 
     @Override
