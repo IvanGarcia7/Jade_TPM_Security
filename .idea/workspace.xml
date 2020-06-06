@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/jade/core/CasoUso/Agent2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentRastreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/CasoUso/Agent2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentWorker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentRastreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentRastreator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +100,8 @@
       <workItem from="1590785387109" duration="508000" />
       <workItem from="1590929807642" duration="6000" />
       <workItem from="1591002828747" duration="14482000" />
-      <workItem from="1591379486044" duration="121000" />
+      <workItem from="1591379486044" duration="267000" />
+      <workItem from="1591438122926" duration="56000" />
     </task>
     <servers />
   </component>
@@ -145,13 +146,14 @@
     <state x="128" y="0" key="SettingsEditor/0.0.1280.758@0.0.1280.758" timestamp="1589291505341" />
     <state x="128" y="0" key="SettingsEditor/0.0.1280.763@0.0.1280.763" timestamp="1590272344273" />
     <state x="-1728" y="-364" key="SettingsEditor/0.23.1280.777/-1920.-364.1920.994@-1920.-364.1920.994" timestamp="1589387705911" />
-    <state x="319" y="226" key="com.intellij.ide.util.TipDialog" timestamp="1591379514509">
-      <screen x="0" y="0" width="1280" height="757" />
+    <state x="319" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1591438122192">
+      <screen x="0" y="0" width="1280" height="753" />
     </state>
     <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.0.1280.748/-1920.-387.1920.1080@0.0.1280.748" timestamp="1591002839293" />
     <state x="319" y="206" key="com.intellij.ide.util.TipDialog/0.0.1280.748@0.0.1280.748" timestamp="1589307266460" />
     <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.751@0.0.1280.751" timestamp="1589288509185" />
     <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.752/-1920.-387.1920.1080@0.0.1280.752" timestamp="1589618190779" />
+    <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.0.1280.753@0.0.1280.753" timestamp="1591438122192" />
     <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.0.1280.756/-1920.-387.1920.1080@0.0.1280.756" timestamp="1590653205018" />
     <state x="319" y="208" key="com.intellij.ide.util.TipDialog/0.0.1280.756@0.0.1280.756" timestamp="1589301405434" />
     <state x="319" y="226" key="com.intellij.ide.util.TipDialog/0.0.1280.757/-1920.-387.1920.1080@0.0.1280.757" timestamp="1591379514509" />

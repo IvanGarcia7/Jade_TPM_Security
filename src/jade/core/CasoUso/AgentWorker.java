@@ -1,5 +1,7 @@
 package jade.core.CasoUso;
 
+
+
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -9,10 +11,11 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class Agent2 extends Agent {
-	
+
+public class AgentWorker extends Agent {
+
 	public void setup(){
-		
+
 		//REGISTER INTO THE YELLOW PAGES
 		DFAgentDescription dfd = new DFAgentDescription();
 		dfd.setName(getAID());
@@ -26,18 +29,19 @@ public class Agent2 extends Agent {
 		catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
-		
+
 		//ADD THE BEHAVIOURS OF THE AGENT IMAGE PROCESSING
 		addBehaviour(new ImageProcessingRequest());
 		addBehaviour(new ImageProcessingResponse());
-		
+
 	}
-	
-	
+
+
 	private class ImageProcessingRequest extends CyclicBehaviour {
 		public void action() {
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.CFP);
 			ACLMessage msg = myAgent.receive(mt);
+
 			if (msg != null) {
 				System.out.println("SENDIND THE OK CONFIRMATION");
 				String title = msg.getContent();
@@ -58,12 +62,13 @@ public class Agent2 extends Agent {
 				block();
 			}
 		}
-	} 
-	
+	}
+
 	private class ImageProcessingResponse extends CyclicBehaviour {
 		public void action() {
 			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
 			ACLMessage msg = myAgent.receive(mt);
+
 			if (msg != null) {
 				String title = msg.getContent()+"Plataforma 2";
 				ACLMessage reply = msg.createReply();
@@ -71,18 +76,18 @@ public class Agent2 extends Agent {
 				reply.setPerformative(ACLMessage.INFORM);
 				reply.setContent(title);
 				System.out.println("DATA PROCESED SUCCESFULLY: "+title);
-			//}
+				myAgent.send(reply);
+			}else {
+				block();
+			}
+
+
 			//else {
-				// The requested book has been sold to another buyer in the meanwhile .
+			// The requested book has been sold to another buyer in the meanwhile .
 			//	reply.setPerformative(ACLMessage.FAILURE);
 			//	reply.setContent("not-available");
 			//}
-				myAgent.send(reply);
-			}
-			else {
-				block();
-			}
 		}
 	}
-	
+
 }
