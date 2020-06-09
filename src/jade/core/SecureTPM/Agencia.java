@@ -315,7 +315,8 @@ public class Agencia{
                 while((line=reader.readLine())!=null){
                     output.append(line+"\n");
                 }
-                System.out.println(output);
+                System.out.println(output.toString());
+                Printer.append(output.toString());
             }
             int exitVal = p.waitFor();
             System.out.println(exitVal);

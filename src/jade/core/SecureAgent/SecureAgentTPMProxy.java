@@ -104,30 +104,7 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
     }
 
 
-    
-    /**
-     * doMoveFinal IS USED TO START THE MIGRATION ACCORDING TO THE SERVER RESPONSE.
-     * @param command
-     */
-    /*
-    @Override
-    public void doMoveFinal(GenericCommand command) {
-        try{
-            Agencia.printLog("PROCEED TO MOVE THE AGENT", Level.INFO,SecureAgentTPMHelper.DEBUG,
-                    this.getClass().getName());
-            GenericCommand newCommand2 = new GenericCommand(SecureAgentTPMSlice.REMOTE_REQUEST_START,
-                    SecureAgentTPMHelper.NAME, null);
-            newCommand2.addParam(command.getParams()[0]);
-            Node n = getNode();
-            Agencia.printLog("-> SENDING THE ACTION TO MIGRATE THROUGH A HORIZONTAL COMMAND TO THE AMS "+
-                    "NODE "+ n.getName(), Level.INFO,SecureAgentTPMHelper.DEBUG, this.getClass().getName());
-            n.accept(command);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    */
-    
+
     public void doMoveFinalMigration(GenericCommand command) {
         try{
             Agencia.printLog("PROCEED TO MOVE THE AGENT", Level.INFO,SecureAgentTPMHelper.DEBUG,
@@ -162,8 +139,22 @@ public class SecureAgentTPMProxy extends Service.SliceProxy implements SecureAge
         }
     }
 
-
-
+    @Override
+    public void doInformError(VerticalCommand command) {
+        try{
+            Agencia.printLog("PROCEED TO DO THE ERROR INFORM FUNCTION", Level.INFO,
+                            SecureAgentTPMHelper.DEBUG,this.getClass().getName());
+            GenericCommand newCommand = new GenericCommand(SecureAgentTPMSlice.REMOTE_REQUEST_ERROR,
+                    SecureAgentTPMHelper.NAME, null);
+            newCommand.addParam(command.getParams()[0]);
+            Node n = getNode();
+            Agencia.printLog("-> SENDING THE ERROR INFORM MSG "+ n.getName(), Level.INFO,
+                            SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+            n.accept(newCommand);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
 }

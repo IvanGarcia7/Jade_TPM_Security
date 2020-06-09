@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/jade/core/GUI/AgentWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentRastreator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentWorker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/CAAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/ResponseAgentACL.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentTPMSlice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureTPM/Agencia.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +107,7 @@
       <workItem from="1591002828747" duration="14482000" />
       <workItem from="1591379486044" duration="267000" />
       <workItem from="1591438122926" duration="8084000" />
-      <workItem from="1591692058568" duration="2343000" />
+      <workItem from="1591692058568" duration="5242000" />
     </task>
     <servers />
   </component>
@@ -116,8 +118,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser" timestamp="1591449066068">
-      <screen x="-1920" y="-364" width="1920" height="1057" />
+    <state x="515" y="194" key="#com.intellij.ide.util.MemberChooser" timestamp="1591735548177">
+      <screen x="0" y="23" width="1280" height="738" />
     </state>
     <state x="515" y="179" key="#com.intellij.ide.util.MemberChooser/0.0.1280.753@0.0.1280.753" timestamp="1588625404942" />
     <state x="-1147" y="-131" key="#com.intellij.ide.util.MemberChooser/0.0.1280.754/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1587591008547" />
@@ -126,6 +128,7 @@
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591449066068" />
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587827055013" />
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.737/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514801371" />
+    <state x="515" y="194" key="#com.intellij.ide.util.MemberChooser/0.23.1280.738@0.23.1280.738" timestamp="1591735548177" />
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.739/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588510295096" />
     <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.741/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590312526863" />
     <state x="-1186" y="45" width="451" height="225" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1588705779672">
@@ -183,7 +186,7 @@
     <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587829722284" />
     <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.738/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514209472" />
     <state x="-1302" y="-208" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1587838924384" />
-    <state x="-1588" y="-73" width="961" height="513" key="find.popup" timestamp="1591461889613">
+    <state x="-1294" y="-73" width="667" height="504" key="find.popup" timestamp="1591729664198">
       <screen x="-1920" y="-364" width="1920" height="1057" />
     </state>
     <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.751/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1591008203911" />
@@ -219,12 +222,12 @@
     <state x="221" y="76" width="667" height="504" key="find.popup/0.23.1280.731@0.23.1280.731" timestamp="1589135153843" />
     <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.732/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590683570267" />
     <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.733/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591461889613" />
-    <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.734/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590675720905" />
+    <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.734/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591700002205" />
     <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.735/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589020264220" />
     <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587924728507" />
     <state x="221" y="76" width="668" height="510" key="find.popup/0.23.1280.736@0.23.1280.736" timestamp="1589402822791" />
-    <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.737/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514631790" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.738/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588525381891" />
+    <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.737/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591729664198" />
+    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.738/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591712548262" />
     <state x="-1588" y="-288" width="961" height="729" key="find.popup/0.23.1280.741/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590312301358" />
     <state x="-1588" y="-288" width="961" height="729" key="find.popup/0.23.1280.742/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590312869585" />
     <state x="-1588" y="-88" width="961" height="486" key="find.popup/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1588518694854" />

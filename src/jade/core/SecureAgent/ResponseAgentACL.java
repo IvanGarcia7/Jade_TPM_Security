@@ -85,10 +85,18 @@ public class ResponseAgentACL extends SimpleAchieveREResponder {
 
         } else if(request.getOntology().equals(SecureAgentTPMHelper.REQUEST_ERROR)){
 
-        	Printer.append("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN \n");
-            System.out.println("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN");
-            System.out.println(request.getContent());
 
+            try{
+                Printer.append("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN \n");
+                System.out.println("PLATFORM RECEIVE A ERROR REQUEST WHILE ATTESTATE THE ORIGIN");
+                GenericCommand command = new GenericCommand(SecureAgentTPMHelper.REQUEST_ERROR,
+                        SecureAgentTPMHelper.NAME, null);
+                command.addParam(request.getContentObject());
+                myService.submit(command);
+            }catch(Exception e){
+                System.out.println("ERROR IN THE DESTINY CONFIRMATION RESPONSE OF THE ZONE 2");
+                e.printStackTrace();
+            }
         }else{
             System.out.println("UNKNOWN ERROR RECEIVES FROM THE SECURE PLATFORM");
             //reply = request.createReply();

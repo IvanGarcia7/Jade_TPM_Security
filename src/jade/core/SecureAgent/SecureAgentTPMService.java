@@ -391,6 +391,15 @@ public class SecureAgentTPMService extends BaseService {
                                            "SOURCE SINK");
                         ie.printStackTrace();
                     }
+                }else if(commandName.equals(SecureAgentTPMHelper.REQUEST_ERROR)) {
+                    Agencia.printLog("PROCESSING THE COMMAND TO INFORM ABOUT THE ERROR", Level.INFO,
+                            SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+                    try {
+                        obj.doInformError(command);
+                    } catch (Exception ie) {
+                        System.out.println("THERE ARE AN ERROR PROCESSING THE ERROR INFORM");
+                        ie.printStackTrace();
+                    }
                 }
             }catch (Exception e) {
                 e.printStackTrace();
@@ -624,6 +633,13 @@ public class SecureAgentTPMService extends BaseService {
                     System.out.println(actualcontainer.getID().getName());
                     System.out.println(actualcontainer.getAMS());
                     System.out.println(actualcontainer.getID());
+                }else if(CommandName.equals(SecureAgentTPMHelper.REQUEST_START)){
+                    byte [] msg = (byte[])command.getParams()[0];
+                    byte [] decryptedData = Agencia.decrypt(privKeyAgent,msg);
+                    INFORMATIONPRINTER.append("*****************************************************************\n");
+                    INFORMATIONPRINTER.append("MESSAGE FROM THE CA:\n");
+                    INFORMATIONPRINTER.append(decryptedData.toString());
+                    INFORMATIONPRINTER.append("*****************************************************************\n");
                 }
             }catch(Exception ex){
                 System.out.println("AN ERROR HAPPENED WHEN RUNNING THE SERVICE IN THE COMMAND TARGET SINK");
@@ -695,6 +711,12 @@ public class SecureAgentTPMService extends BaseService {
                     Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND IN THE ORIGIN" +
                             " PLATFORM", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
                     commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_DO_MIGRATION,
+                            SecureAgentTPMHelper.NAME, null);
+                    commandResponse.addParam(command.getParams()[0]);
+                }else if(commandReceived.equals(SecureAgentTPMSlice.REMOTE_REQUEST_ERROR)){
+                    Agencia.printLog("+*-> I HAVE RECEIVED A HORIZONTAL CONFIRMATION COMMAND TO INFORM " +
+                            "ABOUT ONE ERROR", Level.INFO, SecureAgentTPMHelper.DEBUG, this.getClass().getName());
+                    commandResponse = new GenericCommand(SecureAgentTPMHelper.REQUEST_ERROR,
                             SecureAgentTPMHelper.NAME, null);
                     commandResponse.addParam(command.getParams()[0]);
                 }

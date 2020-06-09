@@ -764,7 +764,7 @@ public class SecureCloudTPMService extends BaseService {
                     PPRINTERINFORMATIONCOMPLETE.append("\n\n*********************NEW REQUEST***********************\n");
                     PPRINTERINFORMATIONCOMPLETE.append("LOCATION -> "+requestInsert.getKey()+"\n");
                     PPRINTERINFORMATIONCOMPLETE.append("PUBLIC PASSWORD -> "+packSecure.getPublicPassword()+"\n");
-                    PPRINTERINFORMATIONCOMPLETE.append("*********************NEW REQUEST***************************\n");
+
 
                     System.out.println("*********************NEW REQUEST*****************************");
                     System.out.println("LOCATION -> "+requestInsert.getKey());
@@ -779,8 +779,10 @@ public class SecureCloudTPMService extends BaseService {
 
                     if(findHostpot!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE CONFIRMED LIST");
+                        PPRINTERINFORMATIONCOMPLETE.append("THE PLATFORM IS ALREADY INCLUDED WITHIN THE CONFIRMED LIST\n");
                     }else if(findHostpotNew!=null){
                         System.out.println("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST");
+                        PPRINTERINFORMATIONCOMPLETE.append("THE PLATFORM IS ALREADY INCLUDED WITHIN THE PENDING LIST\n");
                     }else{
                         PPRINTERINFORMATIONCOMPLETE.append("PCRS LIST:\n");
                         System.out.println("PCRS LIST:");
@@ -794,6 +796,7 @@ public class SecureCloudTPMService extends BaseService {
 
                         int result = Agencia.check_attestation_files(temPath,"",true,
                                                                      PPRINTERINFORMATIONCOMPLETE);
+                        PPRINTERINFORMATIONCOMPLETE.append("*********************NEW REQUEST***************************\n");
                         if(result==0){
                             Iterator it = null;
                             PPRINTERINFORMATIONCOMPLETE.append("COMPUTING THE HASH:\n");

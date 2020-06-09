@@ -34,6 +34,10 @@ public class SecureAgentPlatform extends Agent implements Serializable{
         LocationKey = destiny;
     }
 
+    public JTextArea getInformationPrinter(){
+        return informationPrinter;
+    }
+
     public void setToken(String token){
         Token = token;
     }
@@ -64,7 +68,7 @@ public class SecureAgentPlatform extends Agent implements Serializable{
         informationPrinter = INFORMATIONPRINTER;
 
         try {
-            startPrinter.append("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN");
+            startPrinter.append("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN\n");
             initmobHelperCloud();
             Agencia.printLog("THE INITIALIZATION OF THE AGENT HAS BEGUN TO RUN",
                     Level.INFO, SecureAgentTPMHelper.DEBUG,this.getClass().getName());
