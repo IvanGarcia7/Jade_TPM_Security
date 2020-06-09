@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/jade/core/GUI/AgentWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/AgentGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/AgentGuiImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentRastreator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/CasoUso/AgentWorker.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/CAAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAAgent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,7 +104,8 @@
       <workItem from="1590929807642" duration="6000" />
       <workItem from="1591002828747" duration="14482000" />
       <workItem from="1591379486044" duration="267000" />
-      <workItem from="1591438122926" duration="7767000" />
+      <workItem from="1591438122926" duration="8084000" />
+      <workItem from="1591692058568" duration="2343000" />
     </task>
     <servers />
   </component>
@@ -147,8 +151,8 @@
     <state x="128" y="0" key="SettingsEditor/0.0.1280.758@0.0.1280.758" timestamp="1589291505341" />
     <state x="128" y="0" key="SettingsEditor/0.0.1280.763@0.0.1280.763" timestamp="1590272344273" />
     <state x="-1728" y="-364" key="SettingsEditor/0.23.1280.777/-1920.-364.1920.994@-1920.-364.1920.994" timestamp="1589387705911" />
-    <state x="319" y="225" key="com.intellij.ide.util.TipDialog" timestamp="1591438122192">
-      <screen x="0" y="0" width="1280" height="753" />
+    <state x="319" y="240" key="com.intellij.ide.util.TipDialog" timestamp="1591692128579">
+      <screen x="0" y="23" width="1280" height="726" />
     </state>
     <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.0.1280.748/-1920.-387.1920.1080@0.0.1280.748" timestamp="1591002839293" />
     <state x="319" y="206" key="com.intellij.ide.util.TipDialog/0.0.1280.748@0.0.1280.748" timestamp="1589307266460" />
@@ -162,6 +166,7 @@
     <state x="319" y="210" key="com.intellij.ide.util.TipDialog/0.0.1280.764/-1920.-387.1920.1080@0.0.1280.764" timestamp="1590309889561" />
     <state x="319" y="220" key="com.intellij.ide.util.TipDialog/0.0.1280.800/-1920.-387.1920.1012@0.0.1280.800" timestamp="1589377201072" />
     <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.23.1280.725@0.23.1280.725" timestamp="1589228577894" />
+    <state x="319" y="240" key="com.intellij.ide.util.TipDialog/0.23.1280.726/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591692128579" />
     <state x="319" y="224" key="com.intellij.ide.util.TipDialog/0.23.1280.729/-1920.-364.1920.1057@0.23.1280.729" timestamp="1588426973563" />
     <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.23.1280.729@0.23.1280.729" timestamp="1589100386412" />
     <state x="-1441" y="-73" key="com.intellij.ide.util.TipDialog/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590314865600" />
