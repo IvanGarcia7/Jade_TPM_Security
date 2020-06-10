@@ -7,8 +7,8 @@ To implement this new functionality, asymmetric keys have been used, as well as 
 
 The implementation of the secure migration service is in the following dirs:
 
-* Deploys a system status verification platform: https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureCloud 
-* Deploy a conventional platform: 
+* Deploys a system status verification Agent: https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureCloud 
+* Deploy a conventional Agent: 
 https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureAgent 
 * Conveniently run TPM methods as well as other key usage related functions:
 https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM 
