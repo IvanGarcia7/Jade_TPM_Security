@@ -77,5 +77,11 @@ java -cp commons.jar:TPM.jar:test.jar jade.Boot -container-name P3 -gui -host lo
 
 ![Secure System](https://github.com/IvanGarcia7/Jade_TPM_Security/blob/master/Images/SecureSystem.jpeg?raw=true "Secure System")
 
+# REQUIREMENTS:
+
+* JRE > 4.0
+* Infineon OPTIGATM TPM SLI 9670 TPM2.0
+
+
 © 2020 Iván García Aguilar 
 All Rights Reserved.
