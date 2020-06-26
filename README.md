@@ -66,6 +66,16 @@ java -cp commons.jar:TPM.jar:test.jar jade.Boot -container-name P2 -gui -host lo
 ``` 
 java -cp commons.jar:TPM.jar:test.jar jade.Boot -container-name P3 -gui -host localhost -port 1864 -mtp jade.mtp.http.MessageTransportProtocol\(http://raspberrypi:36911\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A3:vom.CAAgent\;WORKERC:vom.AgentWorker
 ``` 
+# USERCASE EXAMPLE:
+
+## HOPS:
+* ams@192.168.0.110:1364/JADE
+  http://raspberrypi:36711/acc
+  ImageProcessing
+* ams@192.168.0.110:1864/JADE
+  http://raspberrypi:36911/acc
+  ImageProcessing
+
 
 # Operation Diagram:
 
