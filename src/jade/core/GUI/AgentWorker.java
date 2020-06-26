@@ -68,7 +68,7 @@ public class AgentWorker extends Agent {
             ACLMessage msg = myAgent.receive(mt);
 
             if (msg != null) {
-                String title = msg.getContent()+"Plataforma 2";
+                String title = msg.getContent()+myAgent.getAID().getLocalName();;
                 ACLMessage reply = msg.createReply();
                 //if (null) {
                 reply.setPerformative(ACLMessage.INFORM);
