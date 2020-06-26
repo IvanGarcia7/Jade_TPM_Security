@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="03df9e0b-136b-42fe-a0b4-5a0516104191" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Jade_TPM_Security.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_codec_1_14.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/jfoenix_9_0_8.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/migration.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/mongo_java_driver_3_12_4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAConfirmation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAConfirmation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/AgentGuiImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/AgentGuiImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/GUI/CAAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/GUI/CAAgent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,7 +37,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1593181133340</updated>
-      <workItem from="1593181135767" duration="513000" />
+      <workItem from="1593181135767" duration="1461000" />
     </task>
     <servers />
   </component>

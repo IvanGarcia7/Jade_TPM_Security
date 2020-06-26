@@ -7,8 +7,6 @@ import java.util.List;
 
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.GUI.AgentGui;
-import jade.core.GUI.AgentGuiImpl;
 import jade.core.PlatformID;
 import jade.core.SecureAgent.SecureAgentPlatform;
 import jade.core.SecureTPM.Pair;
@@ -27,7 +25,7 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 	// private static final long serialVersionUID = 91162339198848092L;
 	public List<Pair<PlatformID,String>> hops;
 	int index = 0;
-	private String DATA = "hola";
+	private String DATA = "HOPS:";
 	private AID[] searchAgents;
 	private List<AID> AvailablesellerAgents = new ArrayList<AID>();
 	private transient AgentGui myGUI;
@@ -53,16 +51,20 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 
 	public void afterMove() {
 
+		System.out.println(hops.size());
+		System.out.println(index);
 		AvailablesellerAgents.clear();
 		addBehaviour(new ThreeStepBehaviour());
 
-		if(index>=hops.size()){
+
+
+		if(index+1>=hops.size()){
 			System.out.println("END MIGRATION");
 			System.out.println(DATA);
 		}else{
 			System.out.println(DATA);
-			PlatformID newDestination = hops.get(index).getKey();
 			index++;
+			PlatformID newDestination = hops.get(index).getKey();
 			doSecureMigration(newDestination);
 		}
 
@@ -83,7 +85,8 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 			DFAgentDescription template = new DFAgentDescription();
 			ServiceDescription sd = new ServiceDescription();
 			//sd.setType("ImageProcessing");
-			sd.setType(hops.get(index-1).getValue());
+			System.out.println(hops.get(index).getValue());
+			sd.setType(hops.get(index).getValue());
 			template.addServices(sd);
 
 			try {
@@ -148,11 +151,11 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 						cfp.addReceiver(searchAgents[i]);
 					}
 					cfp.setContent("REQUEST");
-					cfp.setConversationId(hops.get(index-1).getValue());
+					cfp.setConversationId(hops.get(index).getValue());
 					cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
 					myAgent.send(cfp);
 
-					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(index-1).getValue()),
+					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(index).getValue()),
 							MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
 					step = 1;
 					break;
@@ -186,11 +189,11 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 					ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 					order.addReceiver(selectedAgent);
 					order.setContent(DATA);
-					order.setConversationId(hops.get(index-1).getValue());
+					order.setConversationId(hops.get(index).getValue());
 					order.setReplyWith("order"+System.currentTimeMillis());
 					myAgent.send(order);
 
-					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(index-1).getValue()),
+					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(index).getValue()),
 							MessageTemplate.MatchInReplyTo(order.getReplyWith()));
 					step = 3;
 					break;
@@ -201,7 +204,10 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 						if (reply.getPerformative() == ACLMessage.INFORM) {
 							System.out.println(DATA+" SUCCESSFULLY PROCESED FROM AGENT "+reply.getSender().getName());
 							System.out.println(reply.getContent());
+							System.out.println("**************************");
 							DATA = reply.getContent();
+							System.out.println("**************************");
+
 						}else {
 							System.out.println("REQUEST FAILED: AGENT IS NOT AVAILABLE.");
 							block();

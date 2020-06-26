@@ -1,6 +1,5 @@
 package jade.core.GUI;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -590,7 +589,7 @@ public class AgentGuiImpl extends javax.swing.JFrame implements AgentGui,Seriali
         }else {
             STATUSAREA.append("STARTING THE MIGRATION\n");
             PlatformID destiny = hops.get(0).getKey();
-            hops.remove(0);
+            //hops.remove(0);
             myAgent.setHops(hops);
             myAgent.doSecureMigration(destiny);
             //Platform.exit();
