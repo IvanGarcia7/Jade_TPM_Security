@@ -14,11 +14,10 @@ import java.util.Map;
 import java.util.logging.Level;
 
 
-public class SecureAgentPlatform extends Agent implements Serializable{
+public class SecureAgentPlatform extends Agent implements Serializable {
 
     private static final long serialVersionUID = 9058618378207435612L;
     private transient SecureAgentTPMHelper mobHelperCloudPlatform;
-
     private JTextArea startPrinter;
     private JTextArea hopsPrinter;
     private JTextArea informationPrinter;

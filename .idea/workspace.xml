@@ -1,245 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="">
+    <list default="true" id="03df9e0b-136b-42fe-a0b4-5a0516104191" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Jade_TPM_Security.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_codec_1_14.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/jfoenix_9_0_8.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/migration.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/mongo_java_driver_3_12_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureAgent/SecureAgentPlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SecureCloudTPMService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAChallenge.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAConfirmation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/jade/core/SecureCloud/SenderCAConfirmation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FavoritesManager">
-    <favorites_list name="Jade_TPM_Security" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Interface" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1auD847MxwaUI76jdzxPBCGwSLq" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="1drRH0USq3VIeEAeXRoWV1NQ6LU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="jade.core.SecureAgent" />
-      <recent name="jade.core.CloudAgents" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images" />
-      <recent name="$PROJECT_DIR$/src/jade/core/D4rkPr0j3cTPlatforms" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazCASegura/src/sample/Images" />
-      <recent name="$PROJECT_DIR$/src/jade/core/Interfaces/InterfazAgentSegura/src/sample/Images" />
-      <recent name="$PROJECT_DIR$/src/jade/core/vom" />
-    </key>
+    <property name="settings.editor.selected.configurable" value="preferences.externalDependencies" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="326185a5-2dc4-442c-a7c7-999a85ee26a4" name="Default Changelist" comment="" />
-      <created>1587576422708</created>
+      <changelist id="03df9e0b-136b-42fe-a0b4-5a0516104191" name="Default Changelist" comment="" />
+      <created>1593181133340</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1587576422708</updated>
-      <workItem from="1587576424678" duration="21780000" />
-      <workItem from="1587821900158" duration="15909000" />
-      <workItem from="1587892842390" duration="14936000" />
-      <workItem from="1587991789358" duration="411000" />
-      <workItem from="1588110020923" duration="261000" />
-      <workItem from="1588343479864" duration="2278000" />
-      <workItem from="1588426807406" duration="9319000" />
-      <workItem from="1588498918475" duration="50501000" />
-      <workItem from="1588857616973" duration="14293000" />
-      <workItem from="1588942947147" duration="10499000" />
-      <workItem from="1589014139758" duration="21827000" />
-      <workItem from="1589100387889" duration="29628000" />
-      <workItem from="1589221998804" duration="1067000" />
-      <workItem from="1589228561880" duration="3243000" />
-      <workItem from="1589288507592" duration="4595000" />
-      <workItem from="1589301298209" duration="56000" />
-      <workItem from="1589301406081" duration="2054000" />
-      <workItem from="1589307258203" duration="7210000" />
-      <workItem from="1589377153515" duration="13513000" />
-      <workItem from="1589471168190" duration="6962000" />
-      <workItem from="1589556782276" duration="6559000" />
-      <workItem from="1589618188087" duration="14985000" />
-      <workItem from="1590309884434" duration="2651000" />
-      <workItem from="1590314848818" duration="121000" />
-      <workItem from="1590353069959" duration="29199000" />
-      <workItem from="1590568262116" duration="4225000" />
-      <workItem from="1590653165780" duration="11538000" />
-      <workItem from="1590785387109" duration="508000" />
-      <workItem from="1590929807642" duration="6000" />
-      <workItem from="1591002828747" duration="14482000" />
-      <workItem from="1591379486044" duration="267000" />
-      <workItem from="1591438122926" duration="8084000" />
-      <workItem from="1591692058568" duration="5582000" />
-      <workItem from="1591776629405" duration="3000" />
+      <updated>1593181133340</updated>
+      <workItem from="1593181135767" duration="513000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="515" y="194" key="#com.intellij.ide.util.MemberChooser" timestamp="1591735548177">
-      <screen x="0" y="23" width="1280" height="738" />
-    </state>
-    <state x="515" y="179" key="#com.intellij.ide.util.MemberChooser/0.0.1280.753@0.0.1280.753" timestamp="1588625404942" />
-    <state x="-1147" y="-131" key="#com.intellij.ide.util.MemberChooser/0.0.1280.754/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1587591008547" />
-    <state x="515" y="181" key="#com.intellij.ide.util.MemberChooser/0.0.1280.763@0.0.1280.763" timestamp="1590272722025" />
-    <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.729/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588605305483" />
-    <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591449066068" />
-    <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587827055013" />
-    <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.737/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514801371" />
-    <state x="515" y="194" key="#com.intellij.ide.util.MemberChooser/0.23.1280.738@0.23.1280.738" timestamp="1591735548177" />
-    <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.739/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588510295096" />
-    <state x="-1147" y="-113" key="#com.intellij.ide.util.MemberChooser/0.23.1280.741/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590312526863" />
-    <state x="-1186" y="45" width="451" height="225" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1588705779672">
-      <screen x="-1920" y="-387" width="1920" height="1080" />
-    </state>
-    <state x="-1186" y="45" width="451" height="225" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1280.759/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1588705779672" />
-    <state x="-1920" y="-364" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1587914537292">
-      <screen x="-1920" y="-364" width="1920" height="1057" />
-    </state>
-    <state x="-1920" y="-364" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.733/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587914537292" />
-    <state x="-1541" y="-364" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587832564447" />
-    <state x="-1541" y="-364" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1587839086555" />
-    <state x="402" y="101" key="DetectedRootsChooserDialog" timestamp="1589292177805">
-      <screen x="0" y="0" width="1280" height="756" />
-    </state>
-    <state x="402" y="101" key="DetectedRootsChooserDialog/0.0.1280.756@0.0.1280.756" timestamp="1589292177805" />
-    <state x="128" y="0" key="SettingsEditor" timestamp="1590353955540">
-      <screen x="0" y="0" width="1280" height="755" />
-    </state>
-    <state x="128" y="0" key="SettingsEditor/0.0.1280.751@0.0.1280.751" timestamp="1589319660939" />
-    <state x="128" y="0" key="SettingsEditor/0.0.1280.755@0.0.1280.755" timestamp="1590353955540" />
-    <state x="128" y="0" key="SettingsEditor/0.0.1280.756@0.0.1280.756" timestamp="1589292313324" />
-    <state x="128" y="0" key="SettingsEditor/0.0.1280.758@0.0.1280.758" timestamp="1589291505341" />
-    <state x="128" y="0" key="SettingsEditor/0.0.1280.763@0.0.1280.763" timestamp="1590272344273" />
-    <state x="-1728" y="-364" key="SettingsEditor/0.23.1280.777/-1920.-364.1920.994@-1920.-364.1920.994" timestamp="1589387705911" />
-    <state x="319" y="240" key="com.intellij.ide.util.TipDialog" timestamp="1591776629244">
-      <screen x="0" y="23" width="1280" height="726" />
-    </state>
-    <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.0.1280.748/-1920.-387.1920.1080@0.0.1280.748" timestamp="1591002839293" />
-    <state x="319" y="206" key="com.intellij.ide.util.TipDialog/0.0.1280.748@0.0.1280.748" timestamp="1589307266460" />
-    <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.751@0.0.1280.751" timestamp="1589288509185" />
-    <state x="319" y="207" key="com.intellij.ide.util.TipDialog/0.0.1280.752/-1920.-387.1920.1080@0.0.1280.752" timestamp="1589618190779" />
-    <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.0.1280.753@0.0.1280.753" timestamp="1591438122192" />
-    <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.0.1280.756/-1920.-387.1920.1080@0.0.1280.756" timestamp="1590653205018" />
-    <state x="319" y="208" key="com.intellij.ide.util.TipDialog/0.0.1280.756@0.0.1280.756" timestamp="1589301405434" />
-    <state x="319" y="226" key="com.intellij.ide.util.TipDialog/0.0.1280.757/-1920.-387.1920.1080@0.0.1280.757" timestamp="1591379514509" />
-    <state x="319" y="209" key="com.intellij.ide.util.TipDialog/0.0.1280.761/-1920.-387.1920.1080@0.0.1280.761" timestamp="1589894381175" />
-    <state x="319" y="210" key="com.intellij.ide.util.TipDialog/0.0.1280.764/-1920.-387.1920.1080@0.0.1280.764" timestamp="1590309889561" />
-    <state x="319" y="220" key="com.intellij.ide.util.TipDialog/0.0.1280.800/-1920.-387.1920.1012@0.0.1280.800" timestamp="1589377201072" />
-    <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.23.1280.725@0.23.1280.725" timestamp="1589228577894" />
-    <state x="319" y="240" key="com.intellij.ide.util.TipDialog/0.23.1280.726/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591692128579" />
-    <state x="319" y="240" key="com.intellij.ide.util.TipDialog/0.23.1280.726@0.23.1280.726" timestamp="1591776629244" />
-    <state x="319" y="224" key="com.intellij.ide.util.TipDialog/0.23.1280.729/-1920.-364.1920.1057@0.23.1280.729" timestamp="1588426973563" />
-    <state x="319" y="223" key="com.intellij.ide.util.TipDialog/0.23.1280.729@0.23.1280.729" timestamp="1589100386412" />
-    <state x="-1441" y="-73" key="com.intellij.ide.util.TipDialog/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590314865600" />
-    <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.23.1280.733/-1920.-364.1920.1057@0.23.1280.733" timestamp="1588343482256" />
-    <state x="319" y="225" key="com.intellij.ide.util.TipDialog/0.23.1280.733@0.23.1280.733" timestamp="1587991791687" />
-    <state x="319" y="227" key="com.intellij.ide.util.TipDialog/0.23.1280.738/-1920.-364.1920.1057@0.23.1280.738" timestamp="1587821910211" />
-    <state x="319" y="244" key="com.intellij.ide.util.TipDialog/0.23.1280.741@0.23.1280.741" timestamp="1590785976176" />
-    <state x="-1441" y="-73" key="com.intellij.ide.util.TipDialog/0.23.1280.742/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589556781495" />
-    <state x="-1441" y="-89" key="com.intellij.ide.util.TipDialog/0.23.1280.777/-1920.-364.1920.996@-1920.-364.1920.996" timestamp="1588498921057" />
-    <state x="-1302" y="-218" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588691048850">
-      <screen x="-1920" y="-387" width="1920" height="1080" />
-    </state>
-    <state x="-1302" y="-218" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1280.758/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1588691048850" />
-    <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587829722284" />
-    <state x="-1302" y="-199" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.738/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588514209472" />
-    <state x="-1302" y="-208" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1587838924384" />
-    <state x="-1294" y="-73" width="667" height="504" key="find.popup" timestamp="1591729664198">
-      <screen x="-1920" y="-364" width="1920" height="1057" />
-    </state>
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.751/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1591008203911" />
-    <state x="221" y="54" width="667" height="519" key="find.popup/0.0.1280.751@0.0.1280.751" timestamp="1589312084430" />
-    <state x="-1294" y="-73" width="1001" height="676" key="find.popup/0.0.1280.752/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588858903347" />
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.752/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1591004736756" />
-    <state x="221" y="54" width="667" height="519" key="find.popup/0.0.1280.752@0.0.1280.752" timestamp="1589232404871" />
-    <state x="221" y="54" width="668" height="521" key="find.popup/0.0.1280.753@0.0.1280.753" timestamp="1589645898936" />
-    <state x="221" y="54" width="667" height="520" key="find.popup/0.0.1280.754@0.0.1280.754" timestamp="1591095942742" />
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.755/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1591021287176" />
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.756/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1590684206827" />
-    <state x="221" y="54" width="667" height="522" key="find.popup/0.0.1280.756@0.0.1280.756" timestamp="1590356634249" />
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.757/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1588957601486" />
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.758/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1588948322102" />
-    <state x="221" y="54" width="667" height="520" key="find.popup/0.0.1280.758@0.0.1280.758" timestamp="1591105384284" />
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.759/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1590501101332" />
-    <state x="221" y="54" width="667" height="525" key="find.popup/0.0.1280.759/-1920.-387.1920.1080@0.0.1280.759" timestamp="1590391451100" />
-    <state x="221" y="55" width="667" height="523" key="find.popup/0.0.1280.759@0.0.1280.759" timestamp="1591108877393" />
-    <state x="-1294" y="-90" width="667" height="486" key="find.popup/0.0.1280.760/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1588793324499" />
-    <state x="417" y="209" width="667" height="486" key="find.popup/0.0.1280.760@0.0.1280.760" timestamp="1588801229616" />
-    <state x="-1588" y="-309" width="961" height="744" key="find.popup/0.0.1280.764/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1590531307647" />
-    <state x="221" y="55" width="667" height="528" key="find.popup/0.0.1280.765@0.0.1280.765" timestamp="1589577079249" />
-    <state x="-1294" y="-90" width="667" height="514" key="find.popup/0.0.1280.771/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1590431780789" />
-    <state x="-1294" y="-106" width="667" height="486" key="find.popup/0.0.1280.800/-1920.-387.1920.1020@-1920.-387.1920.1020" timestamp="1590393678300" />
-    <state x="221" y="57" width="667" height="554" key="find.popup/0.0.1280.800/-1920.-387.1920.1020@0.0.1280.800" timestamp="1590393028374" />
-    <state x="-1588" y="-313" width="961" height="707" key="find.popup/0.0.1280.800/-1920.-387.1920.1026@-1920.-387.1920.1026" timestamp="1589561638013" />
-    <state x="-1294" y="-104" width="667" height="490" key="find.popup/0.0.1280.800/-1920.-387.1920.1030@-1920.-387.1920.1030" timestamp="1590402575385" />
-    <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.725/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587894527232" />
-    <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.726/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587894992892" />
-    <state x="-1155" y="-241" width="961" height="728" key="find.popup/0.23.1280.729/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589103947006" />
-    <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.730/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591456166630" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.731/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589476676551" />
-    <state x="221" y="76" width="667" height="504" key="find.popup/0.23.1280.731@0.23.1280.731" timestamp="1589135153843" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.732/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590683570267" />
-    <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.733/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591461889613" />
-    <state x="-1588" y="-73" width="961" height="513" key="find.popup/0.23.1280.734/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591700002205" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.735/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1589020264220" />
-    <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.736/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587924728507" />
-    <state x="221" y="76" width="668" height="510" key="find.popup/0.23.1280.736@0.23.1280.736" timestamp="1589402822791" />
-    <state x="-1294" y="-73" width="667" height="504" key="find.popup/0.23.1280.737/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591729664198" />
-    <state x="-1588" y="-288" width="961" height="728" key="find.popup/0.23.1280.738/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1591712548262" />
-    <state x="-1588" y="-288" width="961" height="729" key="find.popup/0.23.1280.741/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590312301358" />
-    <state x="-1588" y="-288" width="961" height="729" key="find.popup/0.23.1280.742/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1590312869585" />
-    <state x="-1588" y="-88" width="961" height="486" key="find.popup/0.23.1280.777/-1920.-364.1920.1002@-1920.-364.1920.1002" timestamp="1588518694854" />
-    <state x="-1588" y="-88" width="961" height="487" key="find.popup/0.23.1280.777/-1920.-364.1920.1003@-1920.-364.1920.1003" timestamp="1587839556859" />
-    <state x="-1588" y="-293" width="1001" height="685" key="find.popup/0.23.1280.777/-1920.-364.1920.991@-1920.-364.1920.991" timestamp="1589379228868" />
-    <state x="-1588" y="-293" width="1001" height="687" key="find.popup/0.23.1280.777/-1920.-364.1920.993@-1920.-364.1920.993" timestamp="1589382373292" />
-    <state x="-1588" y="-293" width="1001" height="688" key="find.popup/0.23.1280.777/-1920.-364.1920.994@-1920.-364.1920.994" timestamp="1589388033980" />
-    <state x="-1566" y="-225" key="new project wizard" timestamp="1590314965503">
-      <screen x="-1920" y="-387" width="1920" height="1080" />
-    </state>
-    <state x="-1566" y="-225" key="new project wizard/0.0.1280.755/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1590314965503" />
-    <state x="-1294" y="-161" width="670" height="635" key="search.everywhere.popup" timestamp="1589379222214">
-      <screen x="-1920" y="-364" width="1920" height="991" />
-    </state>
-    <state x="-1294" y="-148" width="670" height="676" key="search.everywhere.popup/0.0.1280.752/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1588858933062" />
-    <state x="-1294" y="-166" width="670" height="691" key="search.everywhere.popup/0.0.1280.757/-1920.-387.1920.1080@-1920.-387.1920.1080" timestamp="1588958373374" />
-    <state x="-1294" y="-148" width="670" height="676" key="search.everywhere.popup/0.23.1280.733/-1920.-364.1920.1057@-1920.-364.1920.1057" timestamp="1587916387095" />
-    <state x="-1294" y="-161" width="670" height="635" key="search.everywhere.popup/0.23.1280.777/-1920.-364.1920.991@-1920.-364.1920.991" timestamp="1589379222214" />
   </component>
 </project>

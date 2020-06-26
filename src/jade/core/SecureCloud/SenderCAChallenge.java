@@ -7,7 +7,6 @@ import jade.core.SecureAgent.SecureAgentTPMHelper;
 import jade.core.SecureTPM.Agencia;
 import jade.lang.acl.ACLMessage;
 import jade.proto.SimpleAchieveREInitiator;
-import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.swing.*;

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="migration">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/Downloads/ipms-1.2-jade-3.5 4/add-ons/migration/lib/migration.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

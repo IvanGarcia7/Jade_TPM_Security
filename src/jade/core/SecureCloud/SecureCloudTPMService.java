@@ -88,8 +88,6 @@ public class SecureCloudTPMService extends BaseService {
     private PrivateKey privateKeyCA;
     private PublicKey publicKeyCA;
 
-    //HASHMAP OF ACCEPTED HOTSPOTS
-    //Map<String,SecureInformationCloud> HotspotsRegister = new HashMap<String,SecureInformationCloud>();
 
     //HASHMAP TO REGISTER THE PLATFORMS STILL TO BE CONFIRMED
     Map<String, SecureInformationCloud> pendingRedirects = new HashMap<String, SecureInformationCloud>();
@@ -730,30 +728,6 @@ public class SecureCloudTPMService extends BaseService {
                                 }
 
                             }
-                    }else{
-                        /*REVIEW
-                        //ESTA METIDO TENGO QUE VER SI EL HASH ES EL MISMO
-                        String hashStore = FindHotspot.getString("SHA256");
-                        if(content.getSha256().equals(hashStore)){
-                            Printer.append("THE PLATFORM IS ALREADY ACCEPTED IN THE CA");
-                            pendingRedirects.remove(index);
-                        }else{
-                            Document hotspotNew = new Document("_id", index);
-                            hotspotNew.append("PUBLIC_AIK", Agencia.serialize(content.getAIK()));
-                            hotspotNew.append("PUBLIC_KEY", Agencia.serialize(content.getKeyPub()));
-                            hotspotNew.append("PLATFORM_LOCATION", Agencia.serialize(content.getPlatformLocation()));
-                            hotspotNew.append("SHA256", content.getSha256());
-                            collection.insertOne(hotspotNew);
-
-                            Bson filter = Filters.eq("_id", index);
-                            Bson update = new Document("$set", hotspotNew);
-                            UpdateOptions options = new UpdateOptions().upsert(true);
-                            collection.updateOne(filter, update, options);
-                            Printer.append("THE PLATFORM IS UPDATE CORRECTLY IN THE CA");
-                            pendingRedirects.remove(index);
-                        }
-                        */
-
                     }
                 }else if(CommandName.equals(SecureCloudTPMHelper.REQUEST_INSERT_PLATFORM)&& started==true){
 
@@ -830,18 +804,6 @@ public class SecureCloudTPMService extends BaseService {
                                 System.out.println("PLATFORM INSERTED IN THE CORRECTLY PENDING LIST");
                             }
 
-
-
-                            //PrinterListComplete.appendText("*********************HOTSPOTS*****************************\n");
-                            //System.out.println("*********************HOTSPOTS*****************************");
-                            //while(it.hasNext()){
-                            //    Map.Entry pair = (Map.Entry)it.next();
-                            //    SecureInformationCloud iteration = (SecureInformationCloud)pair.getValue();
-                            //    Printer.append(pair.getKey() + " = " + iteration.getSha256()+"\n");
-                            //    System.out.println(pair.getKey() + " = " + iteration.getSha256());
-                            //}
-                            //Printer.append("*********************HOTSPOTS*****************************\n");
-                            //System.out.println("*********************HOTSPOTS*****************************");
                         }else{
                             System.out.println("ERROR READING THE ATTESTATION DATA.");
                         }
@@ -969,9 +931,7 @@ public class SecureCloudTPMService extends BaseService {
                                     actualcontainer.releaseLocalAgent(amsMain);
 
                                     collection.findOneAndDelete(Filters.eq("_id",origin));
-                                    //SecureInformationCloud malware = HotspotsRegister.get(origin);
-                                    //pendingRedirects.put(origin.getID(),malware);
-                                    //HotspotsRegister.remove(origin);
+
                                 }else{
 
                                     if(packet_privative.getValidation()==1){
