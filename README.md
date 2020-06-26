@@ -69,12 +69,13 @@ java -cp commons.jar:TPM.jar:test.jar jade.Boot -container-name P3 -gui -host lo
 # USERCASE EXAMPLE:
 
 ## HOPS:
-* AID PLATFORM: ams@192.168.0.110:1364/JADE
-  ADDRESS PLATFORM: http://raspberrypi:36711/acc
-  SERVICE: ImageProcessing
-* AID PLATFORM: ams@192.168.0.110:1864/JADE
-  ADDRESS PLATFORM: http://raspberrypi:36911/acc
-  SERVICE: ImageProcessing
+  AID PLATFORM: ams@192.168.0.110:1364/JADE 
+  ADDRESS PLATFORM: http://raspberrypi:36711/acc 
+  SERVICE: ImageProcessing 
+ 
+  AID PLATFORM: ams@192.168.0.110:1864/JADE 
+  ADDRESS PLATFORM: http://raspberrypi:36911/acc 
+  SERVICE: ImageProcessing 
 
 
 # Operation Diagram:
