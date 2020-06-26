@@ -29,6 +29,8 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 	private AID[] searchAgents;
 	private List<AID> AvailablesellerAgents = new ArrayList<AID>();
 	private transient AgentGui myGUI;
+	private String service;
+	private int temporal;
 
 
 	public void setup() {
@@ -53,17 +55,22 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 
 		System.out.println(hops.size());
 		System.out.println(index);
-		AvailablesellerAgents.clear();
-		addBehaviour(new ThreeStepBehaviour());
 
+		if(!hops.get(index).getValue().equalsIgnoreCase("")) {
+			AvailablesellerAgents.clear();
+			addBehaviour(new ThreeStepBehaviour());
+			service = hops.get(index).getValue();
+			temporal=index;
+		}
 
+		index++;
 
-		if(index+1>=hops.size()){
+		if(index>=hops.size()){
 			System.out.println("END MIGRATION");
 			System.out.println(DATA);
 		}else{
 			System.out.println(DATA);
-			index++;
+
 			PlatformID newDestination = hops.get(index).getKey();
 			doSecureMigration(newDestination);
 		}
@@ -85,8 +92,9 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 			DFAgentDescription template = new DFAgentDescription();
 			ServiceDescription sd = new ServiceDescription();
 			//sd.setType("ImageProcessing");
-			System.out.println(hops.get(index).getValue());
-			sd.setType(hops.get(index).getValue());
+			System.out.println(hops.get(temporal).getValue());
+
+			sd.setType(hops.get(temporal).getValue());
 			template.addServices(sd);
 
 			try {
@@ -151,11 +159,12 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 						cfp.addReceiver(searchAgents[i]);
 					}
 					cfp.setContent("REQUEST");
-					cfp.setConversationId(hops.get(index).getValue());
+
+					cfp.setConversationId(hops.get(temporal).getValue());
 					cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
 					myAgent.send(cfp);
 
-					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(index).getValue()),
+					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(temporal).getValue()),
 							MessageTemplate.MatchInReplyTo(cfp.getReplyWith()));
 					step = 1;
 					break;
@@ -189,11 +198,11 @@ public class CAAgent extends SecureAgentPlatform implements Serializable {
 					ACLMessage order = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
 					order.addReceiver(selectedAgent);
 					order.setContent(DATA);
-					order.setConversationId(hops.get(index).getValue());
+					order.setConversationId(hops.get(temporal).getValue());
 					order.setReplyWith("order"+System.currentTimeMillis());
 					myAgent.send(order);
 
-					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(index).getValue()),
+					mt = MessageTemplate.and(MessageTemplate.MatchConversationId(hops.get(temporal).getValue()),
 							MessageTemplate.MatchInReplyTo(order.getReplyWith()));
 					step = 3;
 					break;
