@@ -15,6 +15,8 @@ https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/Secur
 https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/SecureTPM 
 * Graphical interface developed for each of the deployed agents, in this case, the conventional platforms and the CA:
 https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/GUI
+* Modification the Service Movility:
+https://github.com/IvanGarcia7/Jade_TPM_Security/tree/master/src/jade/core/migration
 
 
 # USER CASE:
