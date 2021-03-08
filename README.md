@@ -70,6 +70,18 @@ java -cp commons.jar:TPM.jar:test.jar jade.Boot -container-name P3 -gui -host lo
 ``` 
 # USERCASE EXAMPLE:
 
+# DEPLOYS:
+
+### CA:
+``` 
+java -Djdk.tls.client.protocols=TLSv1.2 -cp TPM.jar:test.jar:mongo.jar jade.Boot -gui -host localhost -port 2511 -services jade.core.SecureCloud.SecureCloudTPMService -agents CA:vom.CAPlatform
+``` 
+### CONVENTIONAL AGENT:
+
+``` 
+java -cp commons.jar:TPM.jar:test.jar jade.Boot -container-name P1 -gui -host localhost -port 1564 -mtp jade.mtp.http.MessageTransportProtocol\(http:\/\/raspberrypi:36911\) -services jade.core.mobility.AgentMobilityService\;jade.core.migration.InterPlatformMobilityService\;jade.core.SecureAgent.SecureAgentTPMService -agents A1:vom.CAAgent\;WORKERA:vom.AgentWorker
+``` 
+
 ## HOPS:
   AID PLATFORM: ams@192.168.0.110:1364/JADE 
   
